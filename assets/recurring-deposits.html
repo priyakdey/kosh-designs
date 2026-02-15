@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recurring Deposits - Sampada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .sidebar-collapsed { width: 4rem; }
+        .sidebar-expanded { width: 18rem; }
+        .sidebar-transition { transition: width 0.3s ease-in-out; }
+        .nav-item { transition: all 0.2s; }
+        .nav-item:hover { background: rgba(147, 51, 234, 0.1); }
+        .dark .nav-item:hover { background: rgba(167, 139, 250, 0.1); }
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left: 3px solid #667eea;
+        }
+        .dark .nav-item.active {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%);
+            border-left: 3px solid #a78bfa;
+        }
+        .modal-hidden { display: none !important; }
+        .stat-up { color: #10b981; }
+        .stat-down { color: #ef4444; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 sidebar-transition sidebar-expanded z-30">
+        <div class="flex flex-col h-full">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg text-white">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold gradient-text sidebar-text">Sampada</span>
+                </div>
+                <button id="sidebar-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto p-4">
+                <div class="space-y-2">
+                    <a href="../dashboard.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+                    <a href="../income.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="sidebar-text">Income</span>
+                    </a>
+                    <a href="../expenses.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span class="sidebar-text">Expenses</span>
+                    </a>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm font-semibold">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            <span class="sidebar-text">Assets</span>
+                        </div>
+                        <div class="pl-8 space-y-1">
+                            <a href="mutual-funds.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                <span class="sidebar-text">Mutual Funds</span>
+                            </a>
+                            <a href="stocks.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                <span class="sidebar-text">Stocks</span>
+                            </a>
+                            <a href="../sgb.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                                <span class="sidebar-text">SGB</span>
+                            </a>
+                            <a href="../ppf.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span class="sidebar-text">PPF</span>
+                            </a>
+                            <a href="fixed-deposits.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                                <span class="sidebar-text">Fixed Deposits</span>
+                            </a>
+                            <a href="recurring-deposits.html" class="nav-item active flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                                <span class="sidebar-text">Recurring Deposits</span>
+                            </a>
+                            <a href="../nps.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                <span class="sidebar-text">NPS</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm font-semibold">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <span class="sidebar-text">Liabilities</span>
+                        </div>
+                        <div class="pl-8 space-y-1">
+                            <a href="../credit-cards.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                                <span class="sidebar-text">Credit Cards</span>
+                            </a>
+                            <a href="../loans.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                <span class="sidebar-text">Loans</span>
+                            </a>
+                        </div>
+                    </div>
+                    <a href="../goals.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                        </svg>
+                        <span class="sidebar-text">Goals</span>
+                    </a>
+                    <a href="../reports.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <span class="sidebar-text">Reports</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200 dark:border-gray-800">
+                <a href="../profile-settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold flex-shrink-0">PD</div>
+                    <div class="flex-1 min-w-0 sidebar-text">
+                        <p class="font-semibold text-sm truncate">Priyak Dey</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">View Settings</p>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 flex-shrink-0 sidebar-text" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main-content" class="transition-all duration-300" style="margin-left: 18rem;">
+        <!-- Top Bar -->
+        <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-20">
+            <div class="px-6 py-4 flex items-center justify-between gap-4">
+                <div class="flex-1 max-w-2xl">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" placeholder="Search for Mutual Funds, Stocks, Income..." class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg id="sun-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors font-medium">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- RD Page Content -->
+        <main class="p-6">
+            <!-- Page Header -->
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold">Recurring Deposits</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Track your recurring deposits</p>
+                </div>
+                <button id="add-rd-btn" class="px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">+ Add RD</button>
+            </div>
+
+            <!-- Personal/Family Tabs -->
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-800">
+                <div class="flex gap-4">
+                    <button id="personal-tab" class="px-4 py-2 border-b-2 border-purple-500 text-purple-600 dark:text-purple-400 font-semibold">Personal</button>
+                    <button id="family-tab" class="px-4 py-2 border-b-2 border-transparent text-gray-400 dark:text-gray-600 font-semibold cursor-not-allowed" disabled>
+                        Family
+                        <span class="ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md">Coming Soon</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Family Info Banner -->
+            <div id="family-info-banner" class="hidden mb-6 p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <p class="text-sm font-medium text-blue-900 dark:text-blue-100">Family View</p>
+                        <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">Viewing combined family RDs. You can only manage your own deposits.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Contributed</p>
+                        <div class="p-2 bg-cyan-100 dark:bg-cyan-900/20 rounded-lg">
+                            <svg class="w-4 h-4 text-cyan-600 dark:text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold">₹2,16,000</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Across 4 active RDs</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Accrued Interest</p>
+                        <div class="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                            <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold stat-up">₹18,460</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Interest accrued so far</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Maturity Value</p>
+                        <div class="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
+                            <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold">₹2,34,460</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Contribution + Interest</p>
+                </div>
+            </div>
+
+            <!-- RD Table -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+                    <h3 class="text-lg font-semibold">Recurring Deposits</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Your RD portfolio</p>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('bank')">
+                                    <div class="flex items-center gap-1">
+                                        <span>Bank/Institution</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('amount')">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <span>Monthly Installment</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('rate')">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <span>Interest Rate</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('start')">
+                                    <div class="flex items-center gap-1">
+                                        <span>RD Start Date</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('maturity')">
+                                    <div class="flex items-center gap-1">
+                                        <span>Maturity Date</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Installments Paid</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('maturityvalue')">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <span>Maturity Amount</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">HDFC Bank</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">RD No: HD2024567890</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹10,000/mo</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-semibold bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300">
+                                        7.25% p.a.
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">15 Jan 2024</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">15 Jan 2027</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">19 / 24</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹2,52,910</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">ICICI Bank</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">RD No: IC2024112233</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹7,500/mo</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-semibold bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300">
+                                        7.50% p.a.
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">01 Mar 2024</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">01 Mar 2026</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">11 / 24</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹1,93,440</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">SBI (State Bank of India)</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">RD No: SBI445566778</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹4,000/mo</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-semibold bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300">
+                                        7.00% p.a.
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">10 Jun 2023</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">10 Jun 2028</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">28 / 36</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹1,60,250</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+
+                            <!-- Row 4 -->
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">Axis Bank</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">RD No: AX2025998877</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹3,000/mo</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-sm font-semibold bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300">
+                                        7.75% p.a.
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">20 Nov 2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">20 Nov 2026</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">3 / 12</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹36,860</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Rows per page:</span>
+                        <select id="rows-per-page" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                        </select>
+                        <span class="text-sm text-gray-600 dark:text-gray-400" id="pagination-info">Showing 1-4 of 4</span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button id="prev-page" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" disabled>
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+
+                        <div class="flex items-center gap-1" id="page-numbers">
+                            <button class="page-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-purple-500 text-white">1</button>
+                        </div>
+
+                        <button id="next-page" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" disabled>
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add RD Modal -->
+    <div id="add-rd-modal" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" style="display: none;">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative max-h-[90vh] overflow-y-auto">
+            <button id="close-modal-btn" class="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold">Add Recurring Deposit</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">Create or import an RD schedule</p>
+            </div>
+
+            <form class="space-y-5">
+                <!-- Bank/Institution -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Bank/Institution <span class="text-red-500">*</span></label>
+                    <select class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">Select bank...</option>
+                        <option value="hdfc">HDFC Bank</option>
+                        <option value="icici">ICICI Bank</option>
+                        <option value="sbi">State Bank of India (SBI)</option>
+                        <option value="axis">Axis Bank</option>
+                        <option value="kotak">Kotak Mahindra Bank</option>
+                        <option value="indusind">IndusInd Bank</option>
+                        <option value="pnb">Punjab National Bank (PNB)</option>
+                        <option value="bob">Bank of Baroda</option>
+                        <option value="post">Post Office</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <!-- RD Number -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">RD Number</label>
+                    <input type="text" placeholder="HD2024567890 (optional)" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+
+                <!-- Monthly Installment and Interest Rate -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Monthly Installment (₹) <span class="text-red-500">*</span></label>
+                        <input type="number" placeholder="10000" step="500" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Interest Rate (% p.a.) <span class="text-red-500">*</span></label>
+                        <input type="number" placeholder="7.25" step="0.01" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                    </div>
+                </div>
+
+                <!-- RD Start Date -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">RD Start Date <span class="text-red-500">*</span></label>
+                    <input type="date" value="2024-01-15" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                </div>
+
+                <!-- Auto-debit Day -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Auto-debit Day of Month <span class="text-red-500">*</span></label>
+                    <input type="number" placeholder="5" min="1" max="28" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Most banks support 1 to 28 for monthly RD auto-debit</p>
+                </div>
+
+                <!-- Tenure -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Tenure <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <input type="number" placeholder="1" min="0" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">Years</p>
+                        </div>
+                        <div>
+                            <input type="number" placeholder="6" min="0" max="11" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">Months</p>
+                        </div>
+                        <div>
+                            <input type="number" placeholder="15" min="0" max="31" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">Days</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Maturity Date (Auto-calculated) -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Maturity Date</label>
+                    <input type="date" value="2027-01-15" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" readonly />
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Auto-calculated based on investment date and tenure</p>
+                </div>
+
+                <!-- Payout Type -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Payout Type <span class="text-red-500">*</span></label>
+                    <select class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="maturity">On Maturity</option>
+                        <option value="monthly">Monthly Credit</option>
+                    </select>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex gap-3 pt-4">
+                    <button type="button" id="cancel-btn" class="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Cancel</button>
+                    <button type="submit" class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">Add RD</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Theme, sidebar, modal - same patterns
+        function initTheme() {
+            const saved = localStorage.getItem('theme');
+            const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.add(theme);
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            if (theme === 'dark') {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.classList.remove(currentTheme);
+            html.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+            
+            if (isCollapsed) {
+                sidebar.classList.remove('sidebar-collapsed');
+                sidebar.classList.add('sidebar-expanded');
+                mainContent.style.marginLeft = '18rem';
+                document.querySelectorAll('.sidebar-text').forEach(el => { el.style.display = 'inline'; });
+            } else {
+                sidebar.classList.remove('sidebar-expanded');
+                sidebar.classList.add('sidebar-collapsed');
+                mainContent.style.marginLeft = '4rem';
+                document.querySelectorAll('.sidebar-text').forEach(el => { el.style.display = 'none'; });
+            }
+        }
+
+        function markSidebarComingSoon() {
+            const comingSoonLabels = new Set(["SGB", "PPF", "NPS", "Credit Cards", "Loans", "Goals"]);
+            document.querySelectorAll(".sidebar-text").forEach(labelEl => {
+                const label = labelEl.textContent.trim();
+                if (!comingSoonLabels.has(label)) return;
+                const navLink = labelEl.closest("a.nav-item");
+                if (!navLink) return;
+                navLink.setAttribute("aria-disabled", "true");
+                navLink.setAttribute("tabindex", "-1");
+                navLink.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
+                if (!navLink.querySelector(".coming-soon-badge")) {
+                    const badge = document.createElement("span");
+                    badge.className = "coming-soon-badge sidebar-text ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md";
+                    badge.textContent = "Coming Soon";
+                    labelEl.insertAdjacentElement("afterend", badge);
+                }
+            });
+        }
+
+        function showModal() {
+            const modal = document.getElementById('add-rd-modal');
+            modal.classList.remove('modal-hidden');
+            modal.style.display = 'flex';
+        }
+
+        function hideModal() {
+            const modal = document.getElementById('add-rd-modal');
+            modal.classList.add('modal-hidden');
+            modal.style.display = 'none';
+        }
+
+        // Sorting
+        let currentSort = { column: null, direction: 'asc' };
+
+        function sortTable(column) {
+            if (currentSort.column === column) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = column;
+                currentSort.direction = 'asc';
+            }
+            console.log(`Sorting by ${column} in ${currentSort.direction} order`);
+        }
+
+        // Pagination
+        let currentPage = 1;
+        let rowsPerPage = 10;
+        let totalRows = 4;
+
+        function updatePagination() {
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+            const start = (currentPage - 1) * rowsPerPage + 1;
+            const end = Math.min(currentPage * rowsPerPage, totalRows);
+
+            document.getElementById('pagination-info').textContent = `Showing ${start}-${end} of ${totalRows}`;
+            document.getElementById('prev-page').disabled = currentPage === 1;
+            document.getElementById('next-page').disabled = currentPage === totalPages;
+
+            const pageNumbersDiv = document.getElementById('page-numbers');
+            pageNumbersDiv.innerHTML = '';
+
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.className = i === currentPage 
+                    ? 'page-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-purple-500 text-white'
+                    : 'page-btn px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors';
+                btn.textContent = i;
+                btn.onclick = () => goToPage(i);
+                pageNumbersDiv.appendChild(btn);
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            updatePagination();
+        }
+
+        function changeRowsPerPage(value) {
+            rowsPerPage = parseInt(value);
+            currentPage = 1;
+            updatePagination();
+        }
+
+        // Personal/Family tabs
+        let currentView = 'personal';
+
+        function switchToPersonal() {
+            currentView = 'personal';
+            document.getElementById('personal-tab').className = 'px-4 py-2 border-b-2 border-purple-500 text-purple-600 dark:text-purple-400 font-semibold';
+            document.getElementById('family-tab').className = 'px-4 py-2 border-b-2 border-transparent text-gray-400 dark:text-gray-600 font-semibold cursor-not-allowed';
+            document.getElementById('family-info-banner').classList.add('hidden');
+        }
+
+        function switchToFamily() {
+            currentView = 'family';
+            document.getElementById('personal-tab').className = 'px-4 py-2 border-b-2 border-transparent text-gray-600 dark:text-gray-400 font-semibold hover:text-gray-900 dark:hover:text-gray-100 transition-colors';
+            document.getElementById('family-tab').className = 'px-4 py-2 border-b-2 border-purple-500 text-purple-600 dark:text-purple-400 font-semibold';
+            document.getElementById('family-info-banner').classList.remove('hidden');
+        }
+
+        // Initialize
+        initTheme();
+        markSidebarComingSoon();
+        updatePagination();
+
+        // Event listeners
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
+        document.getElementById('add-rd-btn').addEventListener('click', showModal);
+        document.getElementById('close-modal-btn').addEventListener('click', hideModal);
+        document.getElementById('cancel-btn').addEventListener('click', hideModal);
+        document.getElementById('personal-tab').addEventListener('click', switchToPersonal);
+        document.getElementById('rows-per-page').addEventListener('change', (e) => changeRowsPerPage(e.target.value));
+        document.getElementById('prev-page').addEventListener('click', () => goToPage(currentPage - 1));
+        document.getElementById('next-page').addEventListener('click', () => goToPage(currentPage + 1));
+        
+        document.getElementById('add-rd-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideModal();
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('add-rd-modal');
+                if (!modal.classList.contains('modal-hidden')) hideModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutual Funds - Sampada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .sidebar-collapsed { width: 4rem; }
+        .sidebar-expanded { width: 18rem; }
+        .sidebar-transition { transition: width 0.3s ease-in-out; }
+        .nav-item { transition: all 0.2s; }
+        .nav-item:hover { background: rgba(147, 51, 234, 0.1); }
+        .dark .nav-item:hover { background: rgba(167, 139, 250, 0.1); }
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left: 3px solid #667eea;
+        }
+        .dark .nav-item.active {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%);
+            border-left: 3px solid #a78bfa;
+        }
+        .modal-hidden { display: none !important; }
+        .stat-up { color: #10b981; }
+        .stat-down { color: #ef4444; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+    
+    <!-- Sidebar (same as other pages) -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 sidebar-transition sidebar-expanded z-30">
+        <div class="flex flex-col h-full">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg text-white">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold gradient-text sidebar-text">Sampada</span>
+                </div>
+                <button id="sidebar-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto p-4">
+                <div class="space-y-2">
+                    <a href="../dashboard.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+                    <a href="../income.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="sidebar-text">Income</span>
+                    </a>
+                    <a href="../expenses.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span class="sidebar-text">Expenses</span>
+                    </a>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm font-semibold">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            <span class="sidebar-text">Assets</span>
+                        </div>
+                        <div class="pl-8 space-y-1">
+                            <a href="mutual-funds.html" class="nav-item active flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                <span class="sidebar-text">Mutual Funds</span>
+                            </a>
+                            <a href="stocks.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                <span class="sidebar-text">Stocks</span>
+                            </a>
+                            <a href="../sgb.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                                <span class="sidebar-text">SGB</span>
+                            </a>
+                            <a href="../ppf.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span class="sidebar-text">PPF</span>
+                            </a>
+                            <a href="fixed-deposits.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                                <span class="sidebar-text">Fixed Deposits</span>
+                            </a>
+                            <a href="recurring-deposits.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                                <span class="sidebar-text">Recurring Deposits</span>
+                            </a>
+                            <a href="../nps.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                <span class="sidebar-text">NPS</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm font-semibold">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <span class="sidebar-text">Liabilities</span>
+                        </div>
+                        <div class="pl-8 space-y-1">
+                            <a href="../credit-cards.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                                <span class="sidebar-text">Credit Cards</span>
+                            </a>
+                            <a href="../loans.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                <span class="sidebar-text">Loans</span>
+                            </a>
+                        </div>
+                    </div>
+                    <a href="../goals.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                        </svg>
+                        <span class="sidebar-text">Goals</span>
+                    </a>
+                    <a href="../reports.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <span class="sidebar-text">Reports</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200 dark:border-gray-800">
+                <a href="../profile-settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold flex-shrink-0">PD</div>
+                    <div class="flex-1 min-w-0 sidebar-text">
+                        <p class="font-semibold text-sm truncate">Priyak Dey</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">View Settings</p>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 flex-shrink-0 sidebar-text" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main-content" class="transition-all duration-300" style="margin-left: 18rem;">
+        <!-- Top Bar -->
+        <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-20">
+            <div class="px-6 py-4 flex items-center justify-between gap-4">
+                <div class="flex-1 max-w-2xl">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" placeholder="Search for Mutual Funds, Stocks, Income..." class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg id="sun-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <button class="px-4 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors font-medium">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MF Page Content -->
+        <main class="p-6">
+            <!-- Page Header -->
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold">Mutual Funds</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Track your mutual fund portfolio</p>
+                </div>
+                <button id="add-fund-btn" class="px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">+ Add Transaction</button>
+            </div>
+
+            <!-- Personal/Family Tabs -->
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-800">
+                <div class="flex gap-4">
+                    <button id="personal-tab" class="px-4 py-2 border-b-2 border-purple-500 text-purple-600 dark:text-purple-400 font-semibold">Personal</button>
+                    <button id="family-tab" class="px-4 py-2 border-b-2 border-transparent text-gray-400 dark:text-gray-600 font-semibold cursor-not-allowed" disabled>
+                        Family
+                        <span class="ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md">Coming Soon</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Family Info Banner -->
+            <div id="family-info-banner" class="hidden mb-6 p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <p class="text-sm font-medium text-blue-900 dark:text-blue-100">Family View</p>
+                        <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">Viewing combined family portfolio. You can only manage your own holdings.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Invested</p>
+                        <div class="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                            <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold" id="total-invested">₹3,25,000</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Current Value</p>
+                        <div class="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
+                            <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold" id="current-value">₹4,25,650</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Returns</p>
+                        <div class="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                            <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold stat-up" id="total-returns">+₹1,00,650</p>
+                    <p class="text-sm stat-up font-semibold mt-1">+30.97%</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Today's Change</p>
+                        <div class="p-2 bg-amber-100 dark:bg-amber-900/20 rounded-lg">
+                            <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-2xl font-bold stat-up">+₹2,450</p>
+                    <p class="text-sm stat-up font-semibold mt-1">+0.58%</p>
+                </div>
+            </div>
+
+            <!-- Portfolio Growth Chart - Full Width -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 mb-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-lg font-semibold">Portfolio Growth</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Invested vs Current Value over time</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="time-period-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-period="1m">1M</button>
+                        <button class="time-period-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-period="6m">6M</button>
+                        <button class="time-period-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-period="1y">1Y</button>
+                        <button class="time-period-btn px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg text-sm font-semibold transition-colors" data-period="all">All</button>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="relative" style="height: 320px;">
+                    <!-- Y-axis labels -->
+                    <div class="absolute left-0 top-0 bottom-8 flex flex-col justify-between text-xs text-gray-500 dark:text-gray-400 pr-2">
+                        <span>₹5L</span>
+                        <span>₹4L</span>
+                        <span>₹3L</span>
+                        <span>₹2L</span>
+                        <span>₹1L</span>
+                        <span>₹0</span>
+                    </div>
+
+                    <!-- Chart area -->
+                    <div class="ml-12 h-full relative">
+                        <!-- Grid lines -->
+                        <div class="absolute inset-0 flex flex-col justify-between pb-8">
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700"></div>
+                        </div>
+
+                        <!-- SVG Chart -->
+                        <svg class="w-full h-full" viewBox="0 0 800 280" preserveAspectRatio="none">
+                            <!-- Invested Line (Blue) -->
+                            <path d="M 0 200 L 100 180 L 200 160 L 300 145 L 400 135 L 500 125 L 600 115 L 700 105 L 800 100" 
+                                  fill="none" 
+                                  stroke="#3b82f6" 
+                                  stroke-width="3" 
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                            
+                            <!-- Current Value Line (Green) -->
+                            <path d="M 0 220 L 100 185 L 200 155 L 300 130 L 400 110 L 500 95 L 600 75 L 700 60 L 800 45" 
+                                  fill="none" 
+                                  stroke="#10b981" 
+                                  stroke-width="3" 
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                            
+                            <!-- Hover line placeholder (will be controlled by JS) -->
+                            <line id="hover-line" 
+                                  x1="0" y1="0" 
+                                  x2="0" y2="280" 
+                                  stroke="#6b7280" 
+                                  stroke-width="1" 
+                                  stroke-dasharray="5,5" 
+                                  opacity="0"/>
+                            
+                            <!-- Data points (for hover detection) -->
+                            <circle cx="0" cy="200" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="50000" data-current="45000" data-date="Aug 2025"/>
+                            <circle cx="100" cy="180" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="95000" data-current="100000" data-date="Sep 2025"/>
+                            <circle cx="200" cy="160" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="145000" data-current="160000" data-date="Oct 2025"/>
+                            <circle cx="300" cy="145" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="195000" data-current="220000" data-date="Nov 2025"/>
+                            <circle cx="400" cy="135" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="245000" data-current="280000" data-date="Dec 2025"/>
+                            <circle cx="500" cy="125" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="285000" data-current="340000" data-date="Jan 2026"/>
+                            <circle cx="600" cy="115" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="315000" data-current="385000" data-date="Feb 2026"/>
+                        </svg>
+
+                        <!-- X-axis labels -->
+                        <div class="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-500 dark:text-gray-400 pt-2">
+                            <span>Aug '25</span>
+                            <span>Sep '25</span>
+                            <span>Oct '25</span>
+                            <span>Nov '25</span>
+                            <span>Dec '25</span>
+                            <span>Jan '26</span>
+                            <span>Feb '26</span>
+                        </div>
+                    </div>
+
+                    <!-- Tooltip (hidden by default, shown on hover) -->
+                    <div id="chart-tooltip" class="absolute hidden bg-gray-900 dark:bg-gray-800 text-white rounded-lg shadow-lg p-3 pointer-events-none" style="z-index: 10;">
+                        <p class="text-xs font-semibold mb-2" id="tooltip-date">Oct 2025</p>
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-0.5 bg-blue-500"></div>
+                                <span class="text-xs">Invested: <span class="font-semibold" id="tooltip-invested">₹1,45,000</span></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-0.5 bg-green-500"></div>
+                                <span class="text-xs">Current: <span class="font-semibold" id="tooltip-current">₹1,60,000</span></span>
+                            </div>
+                            <div class="border-t border-gray-700 dark:border-gray-600 mt-1 pt-1">
+                                <span class="text-xs stat-up font-semibold" id="tooltip-gain">+₹15,000 (+10.3%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-1 bg-blue-500 rounded"></div>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Total Invested</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-1 bg-green-500 rounded"></div>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Current Value</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Allocation Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- Fund Type Allocation -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <h3 class="text-lg font-semibold mb-4">Fund Type Allocation</h3>
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="relative w-40 h-40">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <!-- Large Cap - 45% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#8b5cf6" stroke-width="3.2" stroke-dasharray="45 55" stroke-dashoffset="0" />
+                                <!-- Mid Cap - 25% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#3b82f6" stroke-width="3.2" stroke-dasharray="25 75" stroke-dashoffset="-45" />
+                                <!-- Small Cap - 15% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#f59e0b" stroke-width="3.2" stroke-dasharray="15 85" stroke-dashoffset="-70" />
+                                <!-- Debt - 10% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#10b981" stroke-width="3.2" stroke-dasharray="10 90" stroke-dashoffset="-85" />
+                                <!-- Liquid - 5% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#6b7280" stroke-width="3.2" stroke-dasharray="5 95" stroke-dashoffset="-95" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                                    <p class="text-lg font-bold">₹4.25L</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+                                <span>Large Cap</span>
+                            </div>
+                            <span class="font-semibold">45%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                                <span>Mid Cap</span>
+                            </div>
+                            <span class="font-semibold">25%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                                <span>Small Cap</span>
+                            </div>
+                            <span class="font-semibold">15%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                <span>Debt</span>
+                            </div>
+                            <span class="font-semibold">10%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-gray-500"></div>
+                                <span>Liquid</span>
+                            </div>
+                            <span class="font-semibold">5%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sector Allocation -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <h3 class="text-lg font-semibold mb-4">Sector Allocation</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-700 dark:text-gray-300">IT & Technology</span>
+                                <span class="font-semibold">28%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-indigo-500 h-2 rounded-full" style="width: 28%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-700 dark:text-gray-300">Banking & Financial</span>
+                                <span class="font-semibold">22%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 22%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-700 dark:text-gray-300">FMCG</span>
+                                <span class="font-semibold">15%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 15%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-700 dark:text-gray-300">Pharma & Healthcare</span>
+                                <span class="font-semibold">12%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-red-500 h-2 rounded-full" style="width: 12%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-700 dark:text-gray-300">Auto & Manufacturing</span>
+                                <span class="font-semibold">10%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-orange-500 h-2 rounded-full" style="width: 10%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-700 dark:text-gray-300">Others</span>
+                                <span class="font-semibold">13%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 13%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Growth Chart - Full Width -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 mb-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-lg font-semibold">Portfolio Growth</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Invested vs Current Value over time</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="time-period-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-period="1m">1M</button>
+                        <button class="time-period-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-period="6m">6M</button>
+                        <button class="time-period-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-period="1y">1Y</button>
+                        <button class="time-period-btn px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg text-sm font-semibold transition-colors" data-period="all">All</button>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="relative" style="height: 320px;">
+                    <!-- Y-axis labels -->
+                    <div class="absolute left-0 top-0 bottom-8 flex flex-col justify-between text-xs text-gray-500 dark:text-gray-400 pr-2">
+                        <span>₹5L</span>
+                        <span>₹4L</span>
+                        <span>₹3L</span>
+                        <span>₹2L</span>
+                        <span>₹1L</span>
+                        <span>₹0</span>
+                    </div>
+
+                    <!-- Chart area -->
+                    <div class="ml-12 h-full relative">
+                        <!-- Grid lines -->
+                        <div class="absolute inset-0 flex flex-col justify-between pb-8">
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700 border-dashed"></div>
+                            <div class="border-t border-gray-200 dark:border-gray-700"></div>
+                        </div>
+
+                        <!-- SVG Chart -->
+                        <svg class="w-full h-full" viewBox="0 0 800 280" preserveAspectRatio="none">
+                            <!-- Invested Line (Blue) -->
+                            <path d="M 0 200 L 100 180 L 200 160 L 300 145 L 400 135 L 500 125 L 600 115 L 700 105 L 800 100" 
+                                  fill="none" 
+                                  stroke="#3b82f6" 
+                                  stroke-width="3" 
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                            
+                            <!-- Current Value Line (Green) -->
+                            <path d="M 0 220 L 100 185 L 200 155 L 300 130 L 400 110 L 500 95 L 600 75 L 700 60 L 800 45" 
+                                  fill="none" 
+                                  stroke="#10b981" 
+                                  stroke-width="3" 
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                            
+                            <!-- Hover line placeholder (will be controlled by JS) -->
+                            <line id="hover-line" 
+                                  x1="0" y1="0" 
+                                  x2="0" y2="280" 
+                                  stroke="#6b7280" 
+                                  stroke-width="1" 
+                                  stroke-dasharray="5,5" 
+                                  opacity="0"/>
+                            
+                            <!-- Data points (for hover detection) -->
+                            <circle cx="0" cy="200" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="50000" data-current="45000" data-date="Aug 2025"/>
+                            <circle cx="100" cy="180" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="95000" data-current="100000" data-date="Sep 2025"/>
+                            <circle cx="200" cy="160" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="145000" data-current="160000" data-date="Oct 2025"/>
+                            <circle cx="300" cy="145" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="195000" data-current="220000" data-date="Nov 2025"/>
+                            <circle cx="400" cy="135" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="245000" data-current="280000" data-date="Dec 2025"/>
+                            <circle cx="500" cy="125" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="285000" data-current="340000" data-date="Jan 2026"/>
+                            <circle cx="600" cy="115" r="5" fill="#3b82f6" opacity="0" class="data-point" data-invested="315000" data-current="385000" data-date="Feb 2026"/>
+                        </svg>
+
+                        <!-- X-axis labels -->
+                        <div class="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-gray-500 dark:text-gray-400 pt-2">
+                            <span>Aug '25</span>
+                            <span>Sep '25</span>
+                            <span>Oct '25</span>
+                            <span>Nov '25</span>
+                            <span>Dec '25</span>
+                            <span>Jan '26</span>
+                            <span>Feb '26</span>
+                        </div>
+                    </div>
+
+                    <!-- Tooltip (hidden by default, shown on hover) -->
+                    <div id="chart-tooltip" class="absolute hidden bg-gray-900 dark:bg-gray-800 text-white rounded-lg shadow-lg p-3 pointer-events-none" style="z-index: 10;">
+                        <p class="text-xs font-semibold mb-2" id="tooltip-date">Oct 2025</p>
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-0.5 bg-blue-500"></div>
+                                <span class="text-xs">Invested: <span class="font-semibold" id="tooltip-invested">₹1,45,000</span></span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-0.5 bg-green-500"></div>
+                                <span class="text-xs">Current: <span class="font-semibold" id="tooltip-current">₹1,60,000</span></span>
+                            </div>
+                            <div class="border-t border-gray-700 dark:border-gray-600 mt-1 pt-1">
+                                <span class="text-xs stat-up font-semibold" id="tooltip-gain">+₹15,000 (+10.3%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-1 bg-blue-500 rounded"></div>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Total Invested</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-1 bg-green-500 rounded"></div>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Current Value</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Holdings Table -->
+            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+                    <h3 class="text-lg font-semibold">Holdings</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Your mutual fund portfolio</p>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('name')">
+                                    <div class="flex items-center gap-1">
+                                        <span>Fund Name</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('invested')">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <span>Invested</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('current')">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <span>Current Value</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('returns')">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <span>Returns</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="sortTable('broker')">
+                                    <div class="flex items-center gap-1">
+                                        <span>Broker</span>
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                                        </svg>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">Axis Bluechip Fund - Direct Growth</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Large Cap • Equity</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">₹1,06,048</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹1,51,119</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <div class="text-sm stat-up font-semibold">+₹45,071</div>
+                                    <div class="text-xs stat-up">+42.5%</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Zerodha Coin</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">Parag Parikh Flexi Cap - Direct Growth</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Large & Mid Cap • Equity</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">₹63,406</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹87,626</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <div class="text-sm stat-up font-semibold">+₹24,220</div>
+                                    <div class="text-xs stat-up">+38.2%</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Groww</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">ICICI Pru Corporate Bond - Direct Growth</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Debt • Corporate Bond</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">₹99,138</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹1,04,412</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <div class="text-sm stat-up font-semibold">+₹5,274</div>
+                                    <div class="text-xs stat-up">+5.3%</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Paytm Money</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">Kotak Emerging Equity - Direct Growth</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Mid Cap • Equity</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">₹35,408</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹52,493</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <div class="text-sm stat-up font-semibold">+₹17,085</div>
+                                    <div class="text-xs stat-up">+48.2%</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Direct/AMC</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div>
+                                        <p class="font-medium">SBI Small Cap Fund - Direct Growth</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Small Cap • Equity</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">₹21,000</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm font-semibold">₹30,000</td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+                                    <div class="text-sm stat-up font-semibold">+₹9,000</div>
+                                    <div class="text-xs stat-up">+42.9%</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">Kuvera</span>
+                                </td>
+                                <td class="px-6 py-4 text-right whitespace-nowrap text-sm">
+                                    <button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-2">View</button>
+                                    <button class="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Rows per page:</span>
+                        <select id="rows-per-page" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                        </select>
+                        <span class="text-sm text-gray-600 dark:text-gray-400" id="pagination-info">Showing 1-5 of 5</span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button id="prev-page" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" disabled>
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+
+                        <div class="flex items-center gap-1" id="page-numbers">
+                            <button class="page-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-purple-500 text-white">1</button>
+                        </div>
+
+                        <button id="next-page" class="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div id="add-fund-modal" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" style="display: none;">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative max-h-[90vh] overflow-y-auto">
+            <button id="close-modal-btn" class="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold">Add Transaction</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">Record your mutual fund transaction</p>
+            </div>
+
+            <form class="space-y-5">
+                <!-- Transaction Type: Buy/Sell -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Transaction Type <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" id="buy-btn" class="tx-type-btn px-4 py-3 border-2 border-green-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg font-semibold transition-colors">
+                            Buy
+                        </button>
+                        <button type="button" id="sell-btn" class="tx-type-btn px-4 py-3 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            Sell
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MF Scheme Search -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">Mutual Fund Scheme <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" placeholder="Search from 30K+ mutual funds..." class="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">e.g., Axis Bluechip Direct Growth, ICICI Technology Direct Growth</p>
+                </div>
+
+                <!-- BUY SECTION -->
+                <div id="buy-section">
+                    <!-- Investment Type (Lumpsum/SIP) -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Investment Type <span class="text-red-500">*</span></label>
+                        <select id="investment-type" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="lumpsum">Lumpsum</option>
+                            <option value="sip">SIP</option>
+                        </select>
+                    </div>
+
+                    <!-- Date (changes label based on Lumpsum/SIP) -->
+                    <div class="mt-5">
+                        <label class="block text-sm font-medium mb-2" id="date-label">Investment Date <span class="text-red-500">*</span></label>
+                        <input type="date" value="2026-02-14" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                    </div>
+
+                    <!-- Invested Amount -->
+                    <div class="mt-5">
+                        <label class="block text-sm font-medium mb-2">Invested Amount (₹) <span class="text-red-500">*</span></label>
+                        <input type="number" placeholder="10000" step="0.01" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Amount you invested on this date (NAV will be fetched automatically)</p>
+                    </div>
+
+                    <!-- Broker -->
+                    <div class="mt-5">
+                        <label class="block text-sm font-medium mb-2">Broker/Platform</label>
+                        <select class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="">Select broker...</option>
+                            <option value="zerodha">Zerodha Coin</option>
+                            <option value="groww">Groww</option>
+                            <option value="paytm">Paytm Money</option>
+                            <option value="kuvera">Kuvera</option>
+                            <option value="direct">Direct/AMC</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="border-t border-gray-200 dark:border-gray-800 pt-4 mt-5">
+                        <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Optional: For Existing Holdings</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">If you already have this fund and want to track current value, enter these details</p>
+                    </div>
+
+                    <!-- Total Invested Till Date (Optional) -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Total Invested Till Date (₹)</label>
+                        <input type="number" placeholder="325000 (optional)" step="0.01" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Total amount you've invested in this fund over time</p>
+                    </div>
+
+                    <!-- Current Value (Optional) -->
+                    <div class="mt-5">
+                        <label class="block text-sm font-medium mb-2">Current Value (₹)</label>
+                        <input type="number" placeholder="425650 (optional)" step="0.01" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Current market value of your holdings</p>
+                    </div>
+                </div>
+
+                <!-- SELL SECTION -->
+                <div id="sell-section" class="hidden">
+                    <!-- Sale Date -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Sale Date <span class="text-red-500">*</span></label>
+                        <input type="date" value="2026-02-14" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                    </div>
+
+                    <!-- Sell Amount OR Units -->
+                    <div class="grid grid-cols-2 gap-4 mt-5">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Sell Amount (₹)</label>
+                            <input type="number" placeholder="50000" step="0.01" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">OR Units</label>
+                            <input type="number" placeholder="850.50" step="0.001" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Enter either amount or units (NAV will be fetched automatically)</p>
+
+                    <!-- Sale NAV (Optional) -->
+                    <div class="mt-5">
+                        <label class="block text-sm font-medium mb-2">Sale NAV (₹)</label>
+                        <input type="number" placeholder="Auto-fetched (optional override)" step="0.0001" class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">NAV will be auto-fetched. You can override if needed.</p>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex gap-3 pt-4">
+                    <button type="button" id="cancel-btn" class="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Cancel</button>
+                    <button type="submit" class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">
+                        <span id="submit-btn-text">Add Transaction</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Theme, sidebar - same pattern
+        function initTheme() {
+            const saved = localStorage.getItem('theme');
+            const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.add(theme);
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            if (theme === 'dark') {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.classList.remove(currentTheme);
+            html.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+            
+            if (isCollapsed) {
+                sidebar.classList.remove('sidebar-collapsed');
+                sidebar.classList.add('sidebar-expanded');
+                mainContent.style.marginLeft = '18rem';
+                document.querySelectorAll('.sidebar-text').forEach(el => { el.style.display = 'inline'; });
+            } else {
+                sidebar.classList.remove('sidebar-expanded');
+                sidebar.classList.add('sidebar-collapsed');
+                mainContent.style.marginLeft = '4rem';
+                document.querySelectorAll('.sidebar-text').forEach(el => { el.style.display = 'none'; });
+            }
+        }
+
+        function markSidebarComingSoon() {
+            const comingSoonLabels = new Set(["SGB", "PPF", "NPS", "Credit Cards", "Loans", "Goals"]);
+            document.querySelectorAll(".sidebar-text").forEach(labelEl => {
+                const label = labelEl.textContent.trim();
+                if (!comingSoonLabels.has(label)) return;
+                const navLink = labelEl.closest("a.nav-item");
+                if (!navLink) return;
+                navLink.setAttribute("aria-disabled", "true");
+                navLink.setAttribute("tabindex", "-1");
+                navLink.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
+                if (!navLink.querySelector(".coming-soon-badge")) {
+                    const badge = document.createElement("span");
+                    badge.className = "coming-soon-badge sidebar-text ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md";
+                    badge.textContent = "Coming Soon";
+                    labelEl.insertAdjacentElement("afterend", badge);
+                }
+            });
+        }
+
+        function showModal() {
+            const modal = document.getElementById('add-fund-modal');
+            modal.classList.remove('modal-hidden');
+            modal.style.display = 'flex';
+        }
+
+        function hideModal() {
+            const modal = document.getElementById('add-fund-modal');
+            modal.classList.add('modal-hidden');
+            modal.style.display = 'none';
+        }
+
+        // Transaction Type Toggle (Buy/Sell)
+        let currentTxType = 'buy';
+
+        function setTransactionType(type) {
+            currentTxType = type;
+            const buyBtn = document.getElementById('buy-btn');
+            const sellBtn = document.getElementById('sell-btn');
+            const buySection = document.getElementById('buy-section');
+            const sellSection = document.getElementById('sell-section');
+            const submitBtnText = document.getElementById('submit-btn-text');
+
+            if (type === 'buy') {
+                buyBtn.className = 'tx-type-btn px-4 py-3 border-2 border-green-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg font-semibold transition-colors';
+                sellBtn.className = 'tx-type-btn px-4 py-3 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors';
+                buySection.classList.remove('hidden');
+                sellSection.classList.add('hidden');
+                submitBtnText.textContent = 'Add Buy Transaction';
+            } else {
+                buyBtn.className = 'tx-type-btn px-4 py-3 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors';
+                sellBtn.className = 'tx-type-btn px-4 py-3 border-2 border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg font-semibold transition-colors';
+                buySection.classList.add('hidden');
+                sellSection.classList.remove('hidden');
+                submitBtnText.textContent = 'Add Sell Transaction';
+            }
+        }
+
+        // Investment type label change (Lumpsum/SIP)
+        function updateDateLabel() {
+            const investmentType = document.getElementById('investment-type').value;
+            const dateLabel = document.getElementById('date-label');
+            if (investmentType === 'sip') {
+                dateLabel.innerHTML = 'SIP Date <span class="text-red-500">*</span>';
+            } else {
+                dateLabel.innerHTML = 'Investment Date <span class="text-red-500">*</span>';
+            }
+        }
+
+        // Sorting
+        let currentSort = { column: null, direction: 'asc' };
+
+        function sortTable(column) {
+            // Toggle direction if clicking same column
+            if (currentSort.column === column) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = column;
+                currentSort.direction = 'asc';
+            }
+
+            // In real implementation, this would sort the data and re-render
+            console.log(`Sorting by ${column} in ${currentSort.direction} order`);
+            // TODO: Implement actual sorting logic with backend data
+        }
+
+        // Pagination
+        let currentPage = 1;
+        let rowsPerPage = 10;
+        let totalRows = 5; // This would come from backend
+
+        function updatePagination() {
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+            const start = (currentPage - 1) * rowsPerPage + 1;
+            const end = Math.min(currentPage * rowsPerPage, totalRows);
+
+            // Update info text
+            document.getElementById('pagination-info').textContent = `Showing ${start}-${end} of ${totalRows}`;
+
+            // Update prev/next buttons
+            document.getElementById('prev-page').disabled = currentPage === 1;
+            document.getElementById('next-page').disabled = currentPage === totalPages;
+
+            // Update page numbers
+            const pageNumbersDiv = document.getElementById('page-numbers');
+            pageNumbersDiv.innerHTML = '';
+
+            // Show max 5 page numbers
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.className = i === currentPage 
+                    ? 'page-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-purple-500 text-white'
+                    : 'page-btn px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors';
+                btn.textContent = i;
+                btn.onclick = () => goToPage(i);
+                pageNumbersDiv.appendChild(btn);
+            }
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            updatePagination();
+            // TODO: Fetch and render data for this page
+        }
+
+        function changeRowsPerPage(value) {
+            rowsPerPage = parseInt(value);
+            currentPage = 1; // Reset to first page
+            updatePagination();
+            // TODO: Fetch and render data
+        }
+
+        // Chart Time Period Switching
+        let currentPeriod = 'all';
+
+        function setTimePeriod(period) {
+            currentPeriod = period;
+            
+            // Update button styles
+            document.querySelectorAll('.time-period-btn').forEach(btn => {
+                const btnPeriod = btn.getAttribute('data-period');
+                if (btnPeriod === period) {
+                    btn.className = 'time-period-btn px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg text-sm font-semibold transition-colors';
+                } else {
+                    btn.className = 'time-period-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors';
+                }
+            });
+
+            // TODO: Fetch and render chart data for selected period
+            console.log(`Switched to ${period} view`);
+        }
+
+        // Chart Hover Interaction
+        function initChartHover() {
+            const svg = document.querySelector('svg');
+            const tooltip = document.getElementById('chart-tooltip');
+            const hoverLine = document.getElementById('hover-line');
+            const dataPoints = document.querySelectorAll('.data-point');
+
+            if (!svg || !tooltip || !hoverLine) return;
+
+            svg.addEventListener('mousemove', (e) => {
+                const rect = svg.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Find closest data point
+                let closestPoint = null;
+                let minDistance = Infinity;
+
+                dataPoints.forEach(point => {
+                    const cx = parseFloat(point.getAttribute('cx'));
+                    const cy = parseFloat(point.getAttribute('cy'));
+                    const distance = Math.abs(cx - (x / rect.width) * 800);
+                    
+                    if (distance < minDistance && distance < 50) {
+                        minDistance = distance;
+                        closestPoint = point;
+                    }
+                });
+
+                if (closestPoint) {
+                    const cx = parseFloat(closestPoint.getAttribute('cx'));
+                    const invested = closestPoint.getAttribute('data-invested');
+                    const current = closestPoint.getAttribute('data-current');
+                    const date = closestPoint.getAttribute('data-date');
+                    
+                    // Show vertical line
+                    hoverLine.setAttribute('x1', cx);
+                    hoverLine.setAttribute('x2', cx);
+                    hoverLine.setAttribute('opacity', '0.5');
+
+                    // Update tooltip
+                    const gain = parseInt(current) - parseInt(invested);
+                    const gainPercent = ((gain / parseInt(invested)) * 100).toFixed(1);
+                    
+                    document.getElementById('tooltip-date').textContent = date;
+                    document.getElementById('tooltip-invested').textContent = `₹${(parseInt(invested) / 1000).toFixed(0)}K`;
+                    document.getElementById('tooltip-current').textContent = `₹${(parseInt(current) / 1000).toFixed(0)}K`;
+                    document.getElementById('tooltip-gain').textContent = gain >= 0 
+                        ? `+₹${(gain / 1000).toFixed(0)}K (+${gainPercent}%)`
+                        : `-₹${(Math.abs(gain) / 1000).toFixed(0)}K (${gainPercent}%)`;
+                    document.getElementById('tooltip-gain').className = gain >= 0 
+                        ? 'text-xs stat-up font-semibold'
+                        : 'text-xs stat-down font-semibold';
+
+                    // Position tooltip
+                    const tooltipX = e.clientX - rect.left + 20;
+                    const tooltipY = e.clientY - rect.top - 80;
+                    tooltip.style.left = `${tooltipX}px`;
+                    tooltip.style.top = `${tooltipY}px`;
+                    tooltip.classList.remove('hidden');
+                } else {
+                    hoverLine.setAttribute('opacity', '0');
+                    tooltip.classList.add('hidden');
+                }
+            });
+
+            svg.addEventListener('mouseleave', () => {
+                hoverLine.setAttribute('opacity', '0');
+                tooltip.classList.add('hidden');
+            });
+        }
+
+        // Personal/Family tabs
+        let currentView = 'personal';
+
+        function switchToPersonal() {
+            currentView = 'personal';
+            document.getElementById('personal-tab').className = 'px-4 py-2 border-b-2 border-purple-500 text-purple-600 dark:text-purple-400 font-semibold';
+            document.getElementById('family-tab').className = 'px-4 py-2 border-b-2 border-transparent text-gray-400 dark:text-gray-600 font-semibold cursor-not-allowed';
+            document.getElementById('family-info-banner').classList.add('hidden');
+        }
+
+        function switchToFamily() {
+            currentView = 'family';
+            document.getElementById('personal-tab').className = 'px-4 py-2 border-b-2 border-transparent text-gray-600 dark:text-gray-400 font-semibold hover:text-gray-900 dark:hover:text-gray-100 transition-colors';
+            document.getElementById('family-tab').className = 'px-4 py-2 border-b-2 border-purple-500 text-purple-600 dark:text-purple-400 font-semibold';
+            document.getElementById('family-info-banner').classList.remove('hidden');
+        }
+
+        // Initialize
+        initTheme();
+        markSidebarComingSoon();
+        updatePagination();
+        initChartHover();
+
+        // Event listeners
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
+        document.getElementById('add-fund-btn').addEventListener('click', showModal);
+        document.getElementById('close-modal-btn').addEventListener('click', hideModal);
+        document.getElementById('cancel-btn').addEventListener('click', hideModal);
+        document.getElementById('personal-tab').addEventListener('click', switchToPersonal);
+        document.getElementById('investment-type').addEventListener('change', updateDateLabel);
+        document.getElementById('buy-btn').addEventListener('click', () => setTransactionType('buy'));
+        document.getElementById('sell-btn').addEventListener('click', () => setTransactionType('sell'));
+        document.getElementById('rows-per-page').addEventListener('change', (e) => changeRowsPerPage(e.target.value));
+        document.getElementById('prev-page').addEventListener('click', () => goToPage(currentPage - 1));
+        document.getElementById('next-page').addEventListener('click', () => goToPage(currentPage + 1));
+        
+        // Time period buttons
+        document.querySelectorAll('.time-period-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const period = btn.getAttribute('data-period');
+                setTimePeriod(period);
+            });
+        });
+        
+        document.getElementById('add-fund-modal').addEventListener('click', function(e) {
+            if (e.target === this) hideModal();
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('add-fund-modal');
+                if (!modal.classList.contains('modal-hidden')) hideModal();
+            }
+        });
+    </script>
+</body>
+</html>

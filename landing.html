@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sampada - Family Finance Tracking Platform</title>
+    <meta name="description"
+        content="Track income, expenses, mutual funds, stocks, fixed deposits, and net worth in one place. Sampada is a financial tracking platform for families, not a trading service.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <style>
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.6s ease-out forwards;
+        }
+
+        .animate-delay-100 {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+
+        .animate-delay-200 {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        .animate-delay-300 {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .glass-effect {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .modal-hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg text-white">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">Sampada</span>
+                </div>
+
+                <!-- Nav -->
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <a href="#features"
+                        class="hover:text-purple-600 dark:hover:text-purple-300 transition-colors">Features</a>
+                    <a href="#pricing"
+                        class="hover:text-purple-600 dark:hover:text-purple-300 transition-colors">Pricing</a>
+                    <a href="#why-sampada"
+                        class="hover:text-purple-600 dark:hover:text-purple-300 transition-colors">Why Sampada</a>
+                    <a href="#faq" class="hover:text-purple-600 dark:hover:text-purple-300 transition-colors">FAQ</a>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-4">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        aria-label="Toggle theme">
+                        <svg id="sun-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+
+                    <!-- Login Button -->
+                    <button id="login-btn"
+                        class="px-6 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-medium hover:shadow-lg hover:scale-105 transition-all duration-200">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 text-sm font-semibold text-purple-700 dark:text-purple-300 mb-6 animate-fade-in">
+                    Tracking only
+                    <span class="text-gray-500 dark:text-gray-400">•</span>
+                    Not a broker, not a trading app
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
+                    Your Family's Financial
+                    <br />
+                    <span class="gradient-text">Dashboard</span>
+                </h1>
+
+                <p
+                    class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto animate-fade-in animate-delay-100">
+                    Track income, expenses, investments, and goals — all in one place.
+                    Built for modern Indian families.
+                </p>
+
+                <div
+                    class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in animate-delay-200">
+                    <button id="get-started-btn"
+                        class="px-8 py-4 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white text-lg font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-200">
+                        Get Started
+                    </button>
+
+                    <a href="#features"
+                        class="px-8 py-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        Learn More
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto animate-fade-in animate-delay-300">
+                    <div>
+                        <div class="text-3xl font-bold gradient-text">Free</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">Early Access</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold gradient-text">5 min</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">Setup Time</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold gradient-text">∞</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">Family Members</div>
+                    </div>
+                </div>
+
+                <!-- Trust strip -->
+                <div
+                    class="mt-10 grid sm:grid-cols-3 gap-3 text-sm font-medium text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    <div
+                        class="px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+                        No money movement
+                    </div>
+                    <div
+                        class="px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+                        No trading or advisory
+                    </div>
+                    <div
+                        class="px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+                        Built for household tracking
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-6 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                    Everything You Need to
+                    <span class="gradient-text"> Track Your Wealth</span>
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">
+                    A single source of truth for your entire family's finances
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div
+                    class="p-8 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white mb-4">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Complete Financial Tracking</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Track income, expenses, mutual funds, stocks, FDs, PPF,
+                        and more — all in one unified dashboard.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div
+                    class="p-8 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white mb-4">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Family Collaboration</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Invite family members to share financial data, track
+                        household expenses, and plan together.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div
+                    class="p-8 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div
+                        class="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white mb-4">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Secure & Private</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Your data stays with you. No third-party integrations,
+                        no data selling, just pure tracking.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-20 px-6">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Pricing</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Simple, clear, and transparent</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                <div
+                    class="p-8 md:p-10 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-8">
+                        <div>
+                            <div
+                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 mb-4">
+                                Current Plan
+                            </div>
+                            <h3 class="text-3xl font-bold mb-2">Early Access</h3>
+                            <p class="text-gray-600 dark:text-gray-300">Full access during the current release phase.</p>
+                        </div>
+                        <div class="sm:text-right">
+                            <div class="text-4xl font-bold">₹0</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">per month</div>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-3 text-sm text-gray-700 dark:text-gray-300">
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-800 px-4 py-3">Income and expense tracking</div>
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-800 px-4 py-3">Investment tracking dashboard</div>
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-800 px-4 py-3">Family member collaboration</div>
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-800 px-4 py-3">Founder-led support</div>
+                    </div>
+                </div>
+
+                <div
+                    class="p-8 md:p-10 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/60 opacity-90">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-8">
+                        <div>
+                            <div
+                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-300 mb-4">
+                                Coming Soon
+                            </div>
+                            <h3 class="text-3xl font-bold mb-2">Pro</h3>
+                            <p class="text-gray-600 dark:text-gray-300">For users who need expanded limits and advanced controls.</p>
+                        </div>
+                        <div class="sm:text-right">
+                            <div class="text-4xl font-bold text-gray-500 dark:text-gray-400">TBD</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">per month</div>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-3 text-sm text-gray-600 dark:text-gray-300">
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-800 px-4 py-3">Higher storage allocation</div>
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-800 px-4 py-3">Feature unlocks for power users</div>
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-800 px-4 py-3">Priority support queue</div>
+                        <div class="rounded-lg border border-gray-200 dark:border-gray-800 px-4 py-3">Everything in Early Access</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="pt-6 mt-6 border-t border-gray-200 dark:border-gray-800">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+                        If paid plans are introduced later, they will be structured by features and storage with advance notice.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Sampada -->
+    <section id="why-sampada" class="py-20 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Why Families Choose <span
+                        class="gradient-text">Sampada</span></h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Clear positioning for a tracking-first product</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+                    <h3 class="text-2xl font-bold mb-4">What Sampada is</h3>
+                    <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <li>Consolidated income, expense, and investment tracking</li>
+                        <li>Family-level visibility for net worth and cash flow</li>
+                        <li>Simple records of assets like MF, stocks, FD, and PPF</li>
+                    </ul>
+                </div>
+
+                <div class="p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+                    <h3 class="text-2xl font-bold mb-4">What Sampada is not</h3>
+                    <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <li>Not a brokerage account</li>
+                        <li>Not a trading terminal</li>
+                        <li>Not a financial product marketplace</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Scope -->
+    <section id="data-scope" class="py-20 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Data Scope & Transparency</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Clear expectations on data sources and update
+                    cadence</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+                    <h3 class="text-2xl font-bold mb-4">Automated market data</h3>
+                    <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <li>Mutual funds via public MF APIs and scheme datasets</li>
+                        <li>Daily NAV refresh based on previous market day close</li>
+                        <li>Stocks sourced from NSE public endpoints</li>
+                    </ul>
+                </div>
+
+                <div class="p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
+                    <h3 class="text-2xl font-bold mb-4">Manual tracking modules</h3>
+                    <ul class="space-y-3 text-gray-700 dark:text-gray-300">
+                        <li>Income entries are manually maintained</li>
+                        <li>Expense tracking is manually maintained</li>
+                        <li>Fixed deposits and similar instruments are manually maintained</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="text-center mt-8 text-sm text-gray-500 dark:text-gray-400">
+                Account Aggregator (AA) integration is currently not available. Data is sourced from selected public
+                market endpoints and user-maintained entries.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-20 px-6 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto max-w-4xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Answers users expect before signing up</p>
+            </div>
+
+            <div class="space-y-4">
+                <details
+                    class="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <summary class="cursor-pointer font-semibold text-lg">Does Sampada support trading or order
+                        placement?</summary>
+                    <p class="mt-3 text-gray-600 dark:text-gray-300">No. Sampada is a tracking and reporting platform
+                        only.</p>
+                </details>
+
+                <details
+                    class="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <summary class="cursor-pointer font-semibold text-lg">Who is this built for?</summary>
+                    <p class="mt-3 text-gray-600 dark:text-gray-300">Individuals and families who want one place to
+                        monitor money, assets, and goals.</p>
+                </details>
+
+                <details
+                    class="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <summary class="cursor-pointer font-semibold text-lg">How long does setup take?</summary>
+                    <p class="mt-3 text-gray-600 dark:text-gray-300">Most households can set up their first dashboard in
+                        about 5 minutes.</p>
+                </details>
+
+                <details
+                    class="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <summary class="cursor-pointer font-semibold text-lg">Do you connect via Account Aggregator (AA)?
+                    </summary>
+                    <p class="mt-3 text-gray-600 dark:text-gray-300">Not currently. The platform combines selected
+                        public market data with manual entries.</p>
+                </details>
+
+                <details
+                    class="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <summary class="cursor-pointer font-semibold text-lg">Which values are automated vs manually
+                        entered?</summary>
+                    <p class="mt-3 text-gray-600 dark:text-gray-300">Mutual fund and stock references are refreshed from
+                        public sources, while income, expenses, and fixed deposits are manually maintained.</p>
+                </details>
+
+                <details
+                    class="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <summary class="cursor-pointer font-semibold text-lg">Will pricing remain free forever?</summary>
+                    <p class="mt-3 text-gray-600 dark:text-gray-300">Early access is free. If paid plans are introduced,
+                        pricing will be based on feature access and storage limits, not a reduced quality of core
+                        service.</p>
+                </details>
+
+                <details
+                    class="group p-6 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                    <summary class="cursor-pointer font-semibold text-lg">How quickly can I expect support responses?
+                    </summary>
+                    <p class="mt-3 text-gray-600 dark:text-gray-300">Support is currently founder-led. Replies are
+                        handled personally and may be delayed during high request volume.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="py-20 px-6">
+        <div class="container mx-auto max-w-4xl text-center">
+            <div class="p-10 md:p-14 rounded-3xl bg-gradient-to-r from-purple-600 to-indigo-700 text-white shadow-2xl">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Start tracking your family wealth today</h2>
+                <p class="text-lg md:text-xl text-purple-100 mb-8">Get a single dashboard for income, expenses, and
+                    long-term assets.</p>
+                <button id="bottom-cta-btn"
+                    class="px-8 py-4 rounded-lg bg-white text-purple-700 text-lg font-semibold hover:scale-105 transition-transform">
+                    Create Free Account
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-200 dark:border-gray-800">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg text-white">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold gradient-text">Sampada</span>
+                </div>
+
+                <p class="text-gray-600 dark:text-gray-400 text-sm">
+                    © 2026 Sampada. Built with ❤️ for Indian families.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal"
+        class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+        style="display: none;">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-fade-in">
+            <!-- Close button -->
+            <button id="close-modal-btn"
+                class="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Logo -->
+            <div class="flex justify-center mb-6">
+                <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-3 rounded-xl text-white">
+                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-3xl font-bold text-center mb-2">
+                Welcome to <span class="gradient-text">Sampada</span>
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400 text-center mb-8">
+                Track your family's wealth, together
+            </p>
+
+            <!-- Google Login Button -->
+            <button id="google-login-btn"
+                class="w-full py-4 px-6 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-3 font-semibold">
+                <svg class="w-6 h-6" viewBox="0 0 24 24">
+                    <path fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                    <path fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                </svg>
+                Continue with Google
+            </button>
+
+            <!-- Privacy note -->
+            <p class="text-xs text-gray-500 dark:text-gray-500 text-center mt-6">
+                By continuing, you agree to our terms and privacy policy.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Theme management
+        function initTheme() {
+            const saved = localStorage.getItem('theme');
+            const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.add(theme);
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            if (theme === 'dark') {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.classList.remove(currentTheme);
+            html.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        // Modal management
+        function showModal() {
+            const modal = document.getElementById('login-modal');
+            modal.classList.remove('modal-hidden');
+            modal.style.display = 'flex';
+        }
+
+        function hideModal() {
+            const modal = document.getElementById('login-modal');
+            modal.classList.add('modal-hidden');
+            modal.style.display = 'none';
+        }
+
+        function handleGoogleLogin() {
+            console.log('Initiating Google OAuth login...');
+            window.location.href = '/api/oauth2/authorization/google';
+        }
+
+        // Initialize
+        initTheme();
+
+        // Event listeners
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('login-btn').addEventListener('click', showModal);
+        document.getElementById('get-started-btn').addEventListener('click', showModal);
+        document.getElementById('bottom-cta-btn').addEventListener('click', showModal);
+        document.getElementById('close-modal-btn').addEventListener('click', hideModal);
+        document.getElementById('google-login-btn').addEventListener('click', handleGoogleLogin);
+
+        // Close modal on backdrop click
+        document.getElementById('login-modal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                hideModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('login-modal');
+                if (!modal.classList.contains('modal-hidden')) {
+                    hideModal();
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

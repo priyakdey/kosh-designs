@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sampada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-collapsed {
+            width: 4rem;
+        }
+
+        .sidebar-expanded {
+            width: 18rem;
+        }
+
+        .sidebar-transition {
+            transition: width 0.3s ease-in-out;
+        }
+
+        .nav-item {
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: rgba(147, 51, 234, 0.1);
+        }
+
+        .dark .nav-item:hover {
+            background: rgba(167, 139, 250, 0.1);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left: 3px solid #667eea;
+        }
+
+        .dark .nav-item.active {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%);
+            border-left: 3px solid #a78bfa;
+        }
+
+        .widget-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .widget-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-up {
+            color: #10b981;
+        }
+
+        .stat-down {
+            color: #ef4444;
+        }
+
+        .mini-chart {
+            height: 60px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 sidebar-transition sidebar-expanded z-30">
+        <div class="flex flex-col h-full">
+            <!-- Logo -->
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg text-white">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold gradient-text sidebar-text">Sampada</span>
+                </div>
+                <button id="sidebar-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 overflow-y-auto p-4">
+                <div class="space-y-2">
+                    <!-- Dashboard -->
+                    <a href="dashboard.html" class="nav-item active flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+
+                    <!-- Income -->
+                    <a href="income.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="sidebar-text">Income</span>
+                    </a>
+
+                    <!-- Expenses -->
+                    <a href="expenses.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span class="sidebar-text">Expenses</span>
+                    </a>
+
+                    <!-- Investments -->
+                    <div class="space-y-1">
+                        <div
+                            class="flex items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm font-semibold">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            <span class="sidebar-text">Investments</span>
+                        </div>
+
+                        <div class="pl-8 space-y-1">
+                            <a href="assets/mutual-funds.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                <span class="sidebar-text">Mutual Funds</span>
+                            </a>
+                            <a href="assets/stocks.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                <span class="sidebar-text">Stocks</span>
+                            </a>
+                            <a href="sgb.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                                <span class="sidebar-text">SGB</span>
+                            </a>
+                            <a href="ppf.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span class="sidebar-text">PPF</span>
+                            </a>
+                            <a href="assets/fixed-deposits.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                                <span class="sidebar-text">Fixed Deposits</span>
+                            </a>
+                            <a href="assets/recurring-deposits.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                                <span class="sidebar-text">Recurring Deposits</span>
+                            </a>
+                            <a href="nps.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                <span class="sidebar-text">NPS</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Liabilities -->
+                    <div class="space-y-1">
+                        <div
+                            class="flex items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm font-semibold">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <span class="sidebar-text">Liabilities</span>
+                        </div>
+
+                        <div class="pl-8 space-y-1">
+                            <a href="liabilities/credit-cards.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                                <span class="sidebar-text">Credit Cards</span>
+                            </a>
+                            <a href="loans.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                <span class="sidebar-text">Loans</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Goals -->
+                    <a href="goals.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                        </svg>
+                        <span class="sidebar-text">Goals</span>
+                    </a>
+
+                    <!-- Reports -->
+                    <a href="reports.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <span class="sidebar-text">Reports</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Profile Settings Footer -->
+            <div class="p-4 border-t border-gray-200 dark:border-gray-800">
+                <a href="profile-settings.html"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <!-- Profile Picture -->
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                        PD
+                    </div>
+                    <!-- Name and Settings -->
+                    <div class="flex-1 min-w-0 sidebar-text">
+                        <p class="font-semibold text-sm truncate">Priyak Dey</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">View Settings</p>
+                    </div>
+                    <!-- Settings Icon -->
+                    <svg class="w-5 h-5 text-gray-400 flex-shrink-0 sidebar-text" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div id="main-content" class="transition-all duration-300" style="margin-left: 18rem;">
+        <!-- Top Bar -->
+        <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-20">
+            <div class="px-6 py-4 flex items-center justify-between gap-4">
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-2xl">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" placeholder="Search for Mutual Funds, Stocks, Income..."
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
+                    </div>
+                </div>
+
+                <!-- Right Controls -->
+                <div class="flex items-center gap-3">
+                    <!-- Notifications -->
+                    <button class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        aria-label="Notifications">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <!-- Notification Badge -->
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        aria-label="Toggle theme">
+                        <svg id="sun-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+
+                    <!-- Logout -->
+                    <button
+                        class="px-4 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors font-medium">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-6">
+            <!-- Personal/Family Tabs -->
+            <div class="mb-6 border-b border-gray-200 dark:border-gray-800">
+                <div class="flex gap-4">
+                    <button
+                        class="px-4 py-2 border-b-2 border-purple-500 text-purple-600 dark:text-purple-400 font-semibold">
+                        Personal
+                    </button>
+                    <button
+                        class="px-4 py-2 border-b-2 border-transparent text-gray-400 dark:text-gray-600 font-semibold cursor-not-allowed"
+                        disabled>
+                        Family
+                        <span
+                            class="ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md">Coming
+                            Soon</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Net Worth Summary -->
+            <div class="mb-6 p-6 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-purple-100 mb-1">Total Net Worth</p>
+                        <h2 class="text-4xl font-bold">₹12,45,680</h2>
+                        <div class="flex items-center gap-2 mt-2">
+                            <svg class="w-5 h-5 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                            <span class="text-green-300 font-semibold">+8.5%</span>
+                            <span class="text-purple-100">this month</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-purple-100 mb-1">Assets</p>
+                        <p class="text-2xl font-semibold">₹15,20,000</p>
+                        <p class="text-purple-100 mt-3 mb-1">Liabilities</p>
+                        <p class="text-xl font-semibold">₹2,74,320</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div
+                class="mb-6 widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-lg font-semibold">Quick Actions</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">One-tap entries</p>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <button id="quick-add-expense"
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors font-medium">
+                        <span class="text-lg leading-none">+</span>
+                        Add Expense
+                    </button>
+                    <button id="quick-add-income"
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors font-medium">
+                        <span class="text-lg leading-none">+</span>
+                        Add Income
+                    </button>
+                    <button id="quick-add-investment"
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors font-medium">
+                        <span class="text-lg leading-none">+</span>
+                        Add Investment
+                    </button>
+                    <button id="quick-add-liability"
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors font-medium">
+                        <span class="text-lg leading-none">+</span>
+                        Add Liability
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Widgets Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- Cash Flow This Month - UPDATED TO 3 COLUMNS -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Cash Flow This Month</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Feb 2026</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Income</p>
+                            <p class="text-2xl font-bold text-green-600 dark:text-green-400">₹85,000</p>
+                            <div class="flex items-center gap-1 mt-1">
+                                <svg class="w-3 h-3 stat-up" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                                </svg>
+                                <span class="text-xs stat-up font-semibold">+5.2%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Expenses</p>
+                            <p class="text-2xl font-bold text-red-600 dark:text-red-400">₹42,500</p>
+                            <div class="flex items-center gap-1 mt-1">
+                                <svg class="w-3 h-3 stat-down" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                </svg>
+                                <span class="text-xs stat-down font-semibold">-3.1%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Investments</p>
+                            <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">₹30,000</p>
+                            <div class="flex items-center gap-1 mt-1">
+                                <svg class="w-3 h-3 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 12h14" />
+                                </svg>
+                                <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">0.0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-gray-200 dark:border-gray-800">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Savings Rate</span>
+                            <span class="text-sm font-semibold text-purple-600 dark:text-purple-400">35%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full"
+                                style="width: 35%"></div>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">You saved ₹12,500 this month (after
+                            investments)</p>
+                    </div>
+                </div>
+
+                <!-- Expense Breakdown (Donut Chart Representation) -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Expense Breakdown</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Feb 2026</p>
+                    </div>
+                    <div class="flex items-center justify-center mb-4">
+                        <!-- Donut Chart (CSS-based) -->
+                        <div class="relative w-32 h-32">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <!-- Rent - 40% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#ef4444" stroke-width="3.2"
+                                    stroke-dasharray="40 60" stroke-dashoffset="0" />
+                                <!-- Food - 25% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#f59e0b" stroke-width="3.2"
+                                    stroke-dasharray="25 75" stroke-dashoffset="-40" />
+                                <!-- Transport - 15% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#3b82f6" stroke-width="3.2"
+                                    stroke-dasharray="15 85" stroke-dashoffset="-65" />
+                                <!-- Others - 20% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#8b5cf6" stroke-width="3.2"
+                                    stroke-dasharray="20 80" stroke-dashoffset="-80" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <p class="text-2xl font-bold">₹42.5k</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <span class="text-gray-600 dark:text-gray-400">Rent</span>
+                            <span class="ml-auto font-semibold">₹17k</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                            <span class="text-gray-600 dark:text-gray-400">Food</span>
+                            <span class="ml-auto font-semibold">₹10.6k</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <span class="text-gray-600 dark:text-gray-400">Transport</span>
+                            <span class="ml-auto font-semibold">₹6.4k</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+                            <span class="text-gray-600 dark:text-gray-400">Others</span>
+                            <span class="ml-auto font-semibold">₹8.5k</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Row - Investment Widgets -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+
+                <!-- Mutual Funds Widget (Area Chart) -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Mutual Funds</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Past 30 Days</p>
+                        </div>
+                        <div class="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
+                            <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-3xl font-bold">₹4,25,000</p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <svg class="w-4 h-4 stat-up" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                            <span class="text-sm stat-up font-semibold">+12.4%</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">returns</span>
+                        </div>
+                    </div>
+                    <!-- Area Chart -->
+                    <div class="mini-chart bg-purple-50 dark:bg-purple-900/10 rounded-lg relative overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 200 60" preserveAspectRatio="none">
+                            <!-- Area fill -->
+                            <defs>
+                                <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#9333ea;stop-opacity:0.3" />
+                                    <stop offset="100%" style="stop-color:#9333ea;stop-opacity:0.05" />
+                                </linearGradient>
+                            </defs>
+                            <polygon points="0,60 0,40 25,35 50,30 75,28 100,25 125,20 150,18 175,15 200,12 200,60"
+                                fill="url(#areaGradient)" />
+                            <!-- Line -->
+                            <polyline points="0,40 25,35 50,30 75,28 100,25 125,20 150,18 175,15 200,12" fill="none"
+                                stroke="#9333ea" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Stocks Widget (Line Chart) -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Stocks</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Past 30 Days</p>
+                        </div>
+                        <div class="p-2 bg-indigo-100 dark:bg-indigo-900/20 rounded-lg">
+                            <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-3xl font-bold">₹6,50,000</p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <svg class="w-4 h-4 stat-up" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                            <span class="text-sm stat-up font-semibold">+18.7%</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">returns</span>
+                        </div>
+                    </div>
+                    <!-- Smooth Line Chart -->
+                    <div class="mini-chart bg-indigo-50 dark:bg-indigo-900/10 rounded-lg">
+                        <svg class="w-full h-full" viewBox="0 0 200 60" preserveAspectRatio="none">
+                            <!-- Line with smooth curve -->
+                            <path d="M0,45 Q25,42 50,38 T100,25 Q125,22 150,20 T200,10" fill="none" stroke="#4f46e5"
+                                stroke-width="2.5" />
+                            <!-- Dots at key points -->
+                            <circle cx="0" cy="45" r="2.5" fill="#4f46e5" />
+                            <circle cx="50" cy="38" r="2.5" fill="#4f46e5" />
+                            <circle cx="100" cy="25" r="2.5" fill="#4f46e5" />
+                            <circle cx="150" cy="20" r="2.5" fill="#4f46e5" />
+                            <circle cx="200" cy="10" r="2.5" fill="#4f46e5" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- SGB Widget (Line Chart) -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">SGB</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Past 30 Days</p>
+                        </div>
+                        <div class="p-2 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg">
+                            <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-3xl font-bold">₹1,85,000</p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <svg class="w-4 h-4 stat-up" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                            </svg>
+                            <span class="text-sm stat-up font-semibold">+15.3%</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">returns</span>
+                        </div>
+                    </div>
+                    <!-- Line Chart -->
+                    <div class="mini-chart bg-yellow-50 dark:bg-yellow-900/10 rounded-lg">
+                        <svg class="w-full h-full" viewBox="0 0 200 60" preserveAspectRatio="none">
+                            <polyline points="0,45 25,42 50,40 75,35 100,32 125,30 150,28 175,25 200,20" fill="none"
+                                stroke="#ca8a04" stroke-width="2" />
+                            <!-- Dots -->
+                            <circle cx="0" cy="45" r="2" fill="#ca8a04" />
+                            <circle cx="50" cy="40" r="2" fill="#ca8a04" />
+                            <circle cx="100" cy="32" r="2" fill="#ca8a04" />
+                            <circle cx="150" cy="28" r="2" fill="#ca8a04" />
+                            <circle cx="200" cy="20" r="2" fill="#ca8a04" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Credit Cards Widget -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Credit Cards</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Current Cycle</p>
+                        </div>
+                        <div class="p-2 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
+                            <svg class="w-5 h-5 text-orange-600 dark:text-orange-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-3xl font-bold">₹42,500</p>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">Outstanding</span>
+                            <span
+                                class="text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 px-2 py-1 rounded font-semibold">Due
+                                in 5 days</span>
+                        </div>
+                    </div>
+                    <!-- Utilization Bars -->
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-600 dark:text-gray-400">HDFC</span>
+                                <span class="font-semibold">28%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-orange-500 h-2 rounded-full" style="width: 28%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-gray-600 dark:text-gray-400">ICICI</span>
+                                <span class="font-semibold">15%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 15%"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 pt-1">Total Limit: ₹2,50,000</p>
+                    </div>
+                </div>
+
+                <!-- Goals Widget (Progress Bars) -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Active Goals</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">In Progress</p>
+                        </div>
+                        <div class="p-2 bg-teal-100 dark:bg-teal-900/20 rounded-lg">
+                            <svg class="w-5 h-5 text-teal-600 dark:text-teal-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium">House Down Payment</span>
+                                <span class="text-sm font-semibold text-teal-600 dark:text-teal-400">68%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-teal-500 to-teal-600 h-3 rounded-full flex items-center justify-end pr-2"
+                                    style="width: 68%">
+                                    <span class="text-xs text-white font-semibold">₹6.8L</span>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Target: ₹10L by Dec 2026</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium">Emergency Fund</span>
+                                <span class="text-sm font-semibold text-green-600 dark:text-green-400">100%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full flex items-center justify-end pr-2"
+                                    style="width: 100%">
+                                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="text-xs text-green-600 dark:text-green-400 mt-1 font-semibold">✓ Goal Achieved!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Investment Allocation Widget (Donut Chart) -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Investment Allocation</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Current Portfolio</p>
+                        </div>
+                        <div class="p-2 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg">
+                            <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center mb-4">
+                        <!-- Donut Chart -->
+                        <div class="relative w-32 h-32">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <!-- Stocks - 36% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#6366f1" stroke-width="3.2"
+                                    stroke-dasharray="36 64" stroke-dashoffset="0" />
+                                <!-- Mutual Funds - 30% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#a855f7" stroke-width="3.2"
+                                    stroke-dasharray="30 70" stroke-dashoffset="-36" />
+                                <!-- SGB - 12% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#eab308" stroke-width="3.2"
+                                    stroke-dasharray="12 88" stroke-dashoffset="-66" />
+                                <!-- Retirement (NPS+PPF+PF) - 22% -->
+                                <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#10b981" stroke-width="3.2"
+                                    stroke-dasharray="22 78" stroke-dashoffset="-78" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Total</p>
+                                    <p class="text-lg font-bold">₹14.7L</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Legend -->
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-indigo-500"></div>
+                            <div class="flex-1">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Stocks</span>
+                                    <span class="font-semibold">36%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+                            <div class="flex-1">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">MF</span>
+                                    <span class="font-semibold">30%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                            <div class="flex-1">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Retirement</span>
+                                    <span class="font-semibold">22%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="flex-1">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600 dark:text-gray-400">Gold</span>
+                                    <span class="font-semibold">12%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Cash Flow Trend & Net Worth Tracker - 50/50 Split -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Cash Flow Trend Chart -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Cash Flow Trend</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Income vs Expenses vs Investments
+                                • Last 6 months</p>
+                        </div>
+                        <div class="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="w-full overflow-x-auto">
+                        <div class="min-w-[500px]">
+                            <svg class="w-full h-64" viewBox="0 0 900 280" preserveAspectRatio="none">
+                                <!-- Grid lines -->
+                                <line x1="60" y1="230" x2="860" y2="230" stroke="#9ca3af" stroke-width="1"
+                                    opacity="0.45" />
+                                <line x1="60" y1="180" x2="860" y2="180" stroke="#9ca3af" stroke-width="1"
+                                    opacity="0.25" />
+                                <line x1="60" y1="130" x2="860" y2="130" stroke="#9ca3af" stroke-width="1"
+                                    opacity="0.25" />
+                                <line x1="60" y1="80" x2="860" y2="80" stroke="#9ca3af" stroke-width="1"
+                                    opacity="0.25" />
+
+                                <!-- Income Line (Green - Top) -->
+                                <polyline points="60,90 220,88 380,86 540,82 700,78 860,74" fill="none" stroke="#10b981"
+                                    stroke-width="2.5" />
+
+                                <!-- Expenses Line (Red - Middle) -->
+                                <polyline points="60,160 220,156 380,152 540,148 700,144 860,140" fill="none"
+                                    stroke="#ef4444" stroke-width="2.5" />
+
+                                <!-- Investments Line (Blue - Growing) -->
+                                <polyline points="60,190 220,185 380,178 540,170 700,162 860,152" fill="none"
+                                    stroke="#3b82f6" stroke-width="2.5" />
+
+                                <!-- Month labels -->
+                                <g fill="#6b7280" font-size="11">
+                                    <text x="60" y="255">Sep</text>
+                                    <text x="220" y="255">Oct</text>
+                                    <text x="380" y="255">Nov</text>
+                                    <text x="540" y="255">Dec</text>
+                                    <text x="700" y="255">Jan</text>
+                                    <text x="860" y="255" text-anchor="end">Feb</text>
+                                </g>
+
+                                <!-- Y-axis labels -->
+                                <g fill="#6b7280" font-size="10" text-anchor="end">
+                                    <text x="50" y="75">₹1L</text>
+                                    <text x="50" y="135">₹80K</text>
+                                    <text x="50" y="185">₹60K</text>
+                                    <text x="50" y="235">₹40K</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                            <span class="font-medium">Income</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                            <span class="font-medium">Expenses</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                            <span class="font-medium">Investments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Net Worth Tracker (Area Chart) -->
+                <div
+                    class="widget-card bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold">Net Worth Tracker</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Since inception • Jan 2024 - Feb
+                                2026</p>
+                        </div>
+                        <div class="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
+                            <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-3xl font-bold">₹12,45,680</p>
+                    </div>
+                    <div class="w-full overflow-x-auto">
+                        <div class="min-w-[500px]">
+                            <svg class="w-full h-48" viewBox="0 0 900 200" preserveAspectRatio="none">
+                                <!-- Area fill gradient -->
+                                <defs>
+                                    <linearGradient id="netWorthGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.4" />
+                                        <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.05" />
+                                    </linearGradient>
+                                </defs>
+
+                                <!-- Grid lines -->
+                                <line x1="60" y1="160" x2="860" y2="160" stroke="#9ca3af" stroke-width="1"
+                                    opacity="0.3" />
+                                <line x1="60" y1="120" x2="860" y2="120" stroke="#9ca3af" stroke-width="1"
+                                    opacity="0.2" />
+                                <line x1="60" y1="80" x2="860" y2="80" stroke="#9ca3af" stroke-width="1"
+                                    opacity="0.2" />
+                                <line x1="60" y1="40" x2="860" y2="40" stroke="#9ca3af" stroke-width="1"
+                                    opacity="0.2" />
+
+                                <!-- Area polygon (filled) -->
+                                <polygon
+                                    points="60,180 60,145 140,142 220,138 300,132 380,125 460,118 540,108 620,98 700,85 780,70 860,52 860,180"
+                                    fill="url(#netWorthGradient)" />
+
+                                <!-- Line (on top of area) -->
+                                <polyline
+                                    points="60,145 140,142 220,138 300,132 380,125 460,118 540,108 620,98 700,85 780,70 860,52"
+                                    fill="none" stroke="#8b5cf6" stroke-width="3" />
+
+                                <!-- Dots at key milestones -->
+                                <circle cx="60" cy="145" r="3" fill="#8b5cf6" />
+                                <circle cx="380" cy="125" r="3" fill="#8b5cf6" />
+                                <circle cx="700" cy="85" r="3" fill="#8b5cf6" />
+                                <circle cx="860" cy="52" r="4" fill="#8b5cf6" stroke="#fff" stroke-width="2" />
+
+                                <!-- Time labels -->
+                                <g fill="#6b7280" font-size="10">
+                                    <text x="60" y="195">Jan '24</text>
+                                    <text x="300" y="195">Jul '24</text>
+                                    <text x="540" y="195">Jan '25</text>
+                                    <text x="780" y="195">Jul '25</text>
+                                    <text x="860" y="195" text-anchor="end">Feb '26</text>
+                                </g>
+
+                                <!-- Y-axis value labels -->
+                                <g fill="#6b7280" font-size="10" text-anchor="end">
+                                    <text x="50" y="45">₹12L</text>
+                                    <text x="50" y="85">₹9L</text>
+                                    <text x="50" y="125">₹6L</text>
+                                    <text x="50" y="165">₹3L</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Quick Action Modal -->
+    <div id="quick-action-modal"
+        class="hidden fixed inset-0 z-40 items-center justify-center bg-black/40 backdrop-blur-[1px] p-4">
+        <div
+            class="w-full max-w-md bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-xl">
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+                <h3 id="quick-action-title" class="text-lg font-semibold">Choose action</h3>
+                <button id="quick-action-close"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    aria-label="Close quick action modal">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="quick-action-options" class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+    </div>
+
+    <script>
+        // Theme management
+        function initTheme() {
+            const saved = localStorage.getItem('theme');
+            const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.add(theme);
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            if (theme === 'dark') {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.classList.remove(currentTheme);
+            html.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+
+            if (isCollapsed) {
+                sidebar.classList.remove('sidebar-collapsed');
+                sidebar.classList.add('sidebar-expanded');
+                mainContent.style.marginLeft = '18rem';
+
+                // Show text
+                document.querySelectorAll('.sidebar-text').forEach(el => {
+                    el.style.display = 'inline';
+                });
+            } else {
+                sidebar.classList.remove('sidebar-expanded');
+                sidebar.classList.add('sidebar-collapsed');
+                mainContent.style.marginLeft = '4rem';
+
+                // Hide text
+                document.querySelectorAll('.sidebar-text').forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+        }
+
+        function markSidebarComingSoon() {
+            const comingSoonLabels = new Set(["SGB", "PPF", "NPS", "Loans", "Goals"]);
+            document.querySelectorAll(".sidebar-text").forEach(labelEl => {
+                const label = labelEl.textContent.trim();
+                if (!comingSoonLabels.has(label)) return;
+                const navLink = labelEl.closest("a.nav-item");
+                if (!navLink) return;
+                navLink.setAttribute("aria-disabled", "true");
+                navLink.setAttribute("tabindex", "-1");
+                navLink.classList.add("opacity-50", "cursor-not-allowed", "pointer-events-none");
+                if (!navLink.querySelector(".coming-soon-badge")) {
+                    const badge = document.createElement("span");
+                    badge.className = "coming-soon-badge sidebar-text ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md";
+                    badge.textContent = "Coming Soon";
+                    labelEl.insertAdjacentElement("afterend", badge);
+                }
+            });
+        }
+
+        function openQuickActionModal(title, options) {
+            const modal = document.getElementById('quick-action-modal');
+            const titleEl = document.getElementById('quick-action-title');
+            const optionsContainer = document.getElementById('quick-action-options');
+
+            titleEl.textContent = title;
+            optionsContainer.innerHTML = '';
+
+            options.forEach(option => {
+                if (option.enabled === false) {
+                    return;
+                }
+                const button = document.createElement('button');
+                button.className =
+                    'w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors';
+                button.innerHTML = `
+                    <p class="font-semibold text-sm">${option.label}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">${option.subtitle}</p>
+                `;
+                button.addEventListener('click', () => {
+                    if (typeof option.onClick === 'function') {
+                        option.onClick();
+                    } else if (option.href) {
+                        window.location.href = option.href;
+                    }
+                });
+                optionsContainer.appendChild(button);
+            });
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        const FEATURE_FLAGS = {
+            sgbEnabled: false
+        };
+
+        function closeQuickActionModal() {
+            const modal = document.getElementById('quick-action-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Initialize
+        initTheme();
+        markSidebarComingSoon();
+
+        // Event listeners
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
+
+        document.getElementById('quick-add-expense').addEventListener('click', () => {
+            window.location.href = 'expenses.html?quickAction=add';
+        });
+
+        document.getElementById('quick-add-income').addEventListener('click', () => {
+            window.location.href = 'income.html?quickAction=add';
+        });
+
+        document.getElementById('quick-add-investment').addEventListener('click', () => {
+            openQuickActionModal('Add Investment', [
+                { label: 'Mutual Funds', subtitle: 'Track SIP or one-time purchase', href: 'investments/mutual-funds.html?quickAction=add' },
+                { label: 'Stocks', subtitle: 'Add a stock buy or sell entry', href: 'investments/stocks.html?quickAction=add' },
+                { label: 'Fixed Deposits', subtitle: 'Add new FD investment', href: 'investments/fixed-deposits.html?quickAction=add' },
+                { label: 'Recurring Deposits', subtitle: 'Add or import an RD schedule', href: 'investments/recurring-deposits.html?quickAction=add' },
+                { label: 'SGB', subtitle: 'Record a SGB entry', href: 'sgb.html?quickAction=add', enabled: FEATURE_FLAGS.sgbEnabled }
+            ]);
+        });
+
+        document.getElementById('quick-add-liability').addEventListener('click', () => {
+            openQuickActionModal('Add Liability', [
+                { label: 'Credit Card', subtitle: 'Add card or outstanding transaction', href: 'liabilities/credit-cards.html?quickAction=add' },
+                { label: 'Loan', subtitle: 'Add loan details or EMI', href: 'loans.html?quickAction=add' }
+            ]);
+        });
+
+        document.getElementById('quick-action-close').addEventListener('click', closeQuickActionModal);
+        document.getElementById('quick-action-modal').addEventListener('click', (event) => {
+            if (event.target.id === 'quick-action-modal') {
+                closeQuickActionModal();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeQuickActionModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

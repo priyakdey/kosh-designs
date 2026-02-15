@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Cards - Sampada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dark .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar-collapsed {
+            width: 4rem;
+        }
+
+        .sidebar-expanded {
+            width: 18rem;
+        }
+
+        .sidebar-transition {
+            transition: width 0.3s ease-in-out;
+        }
+
+        .nav-item {
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: rgba(147, 51, 234, 0.1);
+        }
+
+        .dark .nav-item:hover {
+            background: rgba(167, 139, 250, 0.1);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left: 3px solid #667eea;
+        }
+
+        .dark .nav-item.active {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(192, 132, 252, 0.1) 100%);
+            border-left: 3px solid #a78bfa;
+        }
+
+        .modal-hidden {
+            display: none !important;
+        }
+
+        .card-gradient {
+            background: linear-gradient(130deg, #111827 0%, #312e81 60%, #7c3aed 100%);
+        }
+
+        .risk-high {
+            color: #ef4444;
+        }
+
+        .risk-medium {
+            color: #f59e0b;
+        }
+
+        .risk-low {
+            color: #10b981;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+    <aside id="sidebar"
+        class="fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 sidebar-transition sidebar-expanded z-30">
+        <div class="flex flex-col h-full">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg text-white">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold gradient-text sidebar-text">Sampada</span>
+                </div>
+                <button id="sidebar-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto p-4">
+                <div class="space-y-2">
+                    <a href="../dashboard.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+
+                    <a href="../income.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="sidebar-text">Income</span>
+                    </a>
+
+                    <a href="../expenses.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span class="sidebar-text">Expenses</span>
+                    </a>
+
+                    <div class="space-y-1">
+                        <div
+                            class="flex items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm font-semibold">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            <span class="sidebar-text">Assets</span>
+                        </div>
+                        <div class="pl-8 space-y-1">
+                            <a href="../assets/mutual-funds.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                <span class="sidebar-text">Mutual Funds</span>
+                            </a>
+                            <a href="../assets/stocks.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                <span class="sidebar-text">Stocks</span>
+                            </a>
+                            <a href="../sgb.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+                                <span class="sidebar-text">SGB</span>
+                            </a>
+                            <a href="../ppf.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                <span class="sidebar-text">PPF</span>
+                            </a>
+                            <a href="../assets/fixed-deposits.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                                <span class="sidebar-text">Fixed Deposits</span>
+                            </a>
+                            <a href="../assets/recurring-deposits.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                                <span class="sidebar-text">Recurring Deposits</span>
+                            </a>
+                            <a href="../nps.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                <span class="sidebar-text">NPS</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div
+                            class="flex items-center gap-3 px-3 py-2 text-gray-500 dark:text-gray-400 text-sm font-semibold">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <span class="sidebar-text">Liabilities</span>
+                        </div>
+                        <div class="pl-8 space-y-1">
+                            <a href="credit-cards.html"
+                                class="nav-item active flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                                <span class="sidebar-text">Credit Cards</span>
+                            </a>
+                            <a href="loans.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                <span class="sidebar-text">Loans</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="../goals.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                        </svg>
+                        <span class="sidebar-text">Goals</span>
+                    </a>
+
+                    <a href="../reports.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <span class="sidebar-text">Reports</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200 dark:border-gray-800">
+                <a href="../profile-settings.html"
+                    class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                        PD
+                    </div>
+                    <div class="flex-1 min-w-0 sidebar-text">
+                        <p class="font-semibold text-sm truncate">Priyak Dey</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">View Settings</p>
+                    </div>
+                    <svg class="w-5 h-5 text-gray-400 flex-shrink-0 sidebar-text" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <div id="main-content" class="transition-all duration-300" style="margin-left: 18rem;">
+        <header class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-20">
+            <div class="px-6 py-4 flex items-center justify-between gap-4">
+                <div class="flex-1 max-w-2xl">
+                    <div class="relative">
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" placeholder="Search cards, due dates, banks..."
+                            class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="relative p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                        </svg>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg id="sun-icon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moon-icon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+
+                    <button
+                        class="px-4 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors font-medium">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-6">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold">Credit Cards</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1">Track balances, due dates, utilization, and payment
+                        risk in one place.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="add-expense-btn"
+                        class="px-6 py-2 bg-gradient-to-r from-red-500 to-rose-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">
+                        + Add Bill
+                    </button>
+                    <button id="pay-bill-btn"
+                        class="px-6 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">
+                        Pay Bill
+                    </button>
+                    <button id="add-card-btn"
+                        class="px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">
+                        + Add Card
+                    </button>
+                </div>
+            </div>
+
+            <div class="mb-6 p-5 rounded-xl bg-gradient-to-br from-orange-500 to-rose-500 text-white">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <p class="text-orange-100 mb-1">Total Outstanding</p>
+                        <h2 class="text-4xl font-bold">₹1,38,450</h2>
+                        <p class="text-sm text-orange-100 mt-2">Across 3 active cards</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+                        <div>
+                            <p class="text-orange-100">Credit Limit</p>
+                            <p class="text-xl font-semibold">₹4,00,000</p>
+                        </div>
+                        <div>
+                            <p class="text-orange-100">Utilization</p>
+                            <p class="text-xl font-semibold">34.6%</p>
+                        </div>
+                        <div>
+                            <p class="text-orange-100">Due in 7 days</p>
+                            <p class="text-xl font-semibold">₹48,200</p>
+                        </div>
+                        <div>
+                            <p class="text-orange-100">Min Due</p>
+                            <p class="text-xl font-semibold">₹6,920</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+                <div
+                    class="xl:col-span-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Card Utilization</h3>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">Keep each card below 30%</span>
+                    </div>
+                    <div class="space-y-4" id="utilization-bars">
+                        <div>
+                            <div class="flex items-center justify-between text-sm mb-1">
+                                <span class="font-medium">HDFC Regalia •••• 4821</span>
+                                <span class="risk-high">78%</span>
+                            </div>
+                            <div class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-red-500" style="width: 78%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between text-sm mb-1">
+                                <span class="font-medium">ICICI Amazon Pay •••• 1960</span>
+                                <span class="risk-medium">42%</span>
+                            </div>
+                            <div class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-amber-500" style="width: 42%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between text-sm mb-1">
+                                <span class="font-medium">SBI Cashback •••• 7754</span>
+                                <span class="risk-low">14%</span>
+                            </div>
+                            <div class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-500" style="width: 14%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="mt-5 pt-4 border-t border-gray-200 dark:border-gray-800 text-sm text-gray-500 dark:text-gray-400">
+                        High utilization can impact credit score. Consider paying down the red-zone card before
+                        statement generation.
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
+                    <h3 class="text-lg font-semibold mb-4">Payment Timeline</h3>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start gap-3">
+                            <div class="w-2 h-2 rounded-full bg-red-500 mt-2"></div>
+                            <div>
+                                <p class="font-medium">18/02/2026</p>
+                                <p class="text-gray-500 dark:text-gray-400">HDFC Regalia due: <span
+                                        class="text-gray-900 dark:text-gray-100 font-semibold">₹32,500</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-2 h-2 rounded-full bg-amber-500 mt-2"></div>
+                            <div>
+                                <p class="font-medium">22/02/2026</p>
+                                <p class="text-gray-500 dark:text-gray-400">ICICI Amazon Pay due: <span
+                                        class="text-gray-900 dark:text-gray-100 font-semibold">₹15,700</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-2 h-2 rounded-full bg-emerald-500 mt-2"></div>
+                            <div>
+                                <p class="font-medium">02/03/2026</p>
+                                <p class="text-gray-500 dark:text-gray-400">SBI Cashback due: <span
+                                        class="text-gray-900 dark:text-gray-100 font-semibold">₹8,900</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="w-full mt-6 px-4 py-2 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 font-medium hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors">
+                        Mark Upcoming Payment
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 mb-6">
+                <div
+                    class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                    <div class="p-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-semibold">Card Portfolio</h3>
+                        </div>
+                    </div>
+                    <div id="card-list" class="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto card-gradient text-white"
+                            data-card-id="card-1" data-card-name="HDFC Regalia" data-outstanding="78000">
+                            <div class="flex items-start justify-between mb-5">
+                                <div>
+                                    <p class="text-[10px] uppercase tracking-widest text-white/70">HDFC Bank</p>
+                                    <p class="text-base font-semibold">Regalia</p>
+                                </div>
+                            </div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 4821</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹78,000</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,00,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">18/02/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">05/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-1">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-1">Remove</button>
+                            </div>
+                        </article>
+
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-slate-900 to-blue-900 text-white"
+                            data-card-id="card-2" data-card-name="ICICI Amazon Pay" data-outstanding="42000">
+                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">ICICI Bank</p><p class="text-base font-semibold">Amazon Pay</p></div></div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 1960</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹42,000</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,00,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">22/02/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">10/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-2">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-2">Remove</button>
+                            </div>
+                        </article>
+
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-zinc-800 to-emerald-900 text-white"
+                            data-card-id="card-3" data-card-name="SBI Cashback" data-outstanding="18450">
+                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">SBI Card</p><p class="text-base font-semibold">Cashback</p></div></div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 7754</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹18,450</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,00,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">02/03/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">17/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-3">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-3">Remove</button>
+                            </div>
+                        </article>
+
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-indigo-900 to-violet-900 text-white"
+                            data-card-id="card-4" data-card-name="Axis Magnus" data-outstanding="56300">
+                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">Axis Bank</p><p class="text-base font-semibold">Magnus</p></div></div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 3391</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹56,300</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹2,50,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">24/02/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">11/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-4">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-4">Remove</button>
+                            </div>
+                        </article>
+
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-cyan-900 to-sky-900 text-white"
+                            data-card-id="card-5" data-card-name="Kotak Zen" data-outstanding="22100">
+                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">Kotak</p><p class="text-base font-semibold">Zen</p></div></div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 6184</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹22,100</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹90,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">20/02/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">07/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-5">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-5">Remove</button>
+                            </div>
+                        </article>
+
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-amber-900 to-orange-900 text-white"
+                            data-card-id="card-6" data-card-name="Amex Gold" data-outstanding="30900">
+                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">American Express</p><p class="text-base font-semibold">Gold</p></div></div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 0917</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹30,900</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,50,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">27/02/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">14/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-6">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-6">Remove</button>
+                            </div>
+                        </article>
+
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-lime-900 to-emerald-800 text-white"
+                            data-card-id="card-7" data-card-name="IndusInd Legend" data-outstanding="12750">
+                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">IndusInd</p><p class="text-base font-semibold">Legend</p></div></div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 5508</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹12,750</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹80,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">19/02/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">06/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-7">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-7">Remove</button>
+                            </div>
+                        </article>
+
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-gray-800 to-neutral-950 text-white"
+                            data-card-id="card-8" data-card-name="Yes Prosperity" data-outstanding="40200">
+                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">YES Bank</p><p class="text-base font-semibold">Prosperity</p></div></div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 7305</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹40,200</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,20,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">26/02/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">13/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-8">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-8">Remove</button>
+                            </div>
+                        </article>
+
+                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-rose-900 to-fuchsia-900 text-white"
+                            data-card-id="card-9" data-card-name="RBL Shoprite" data-outstanding="9800">
+                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">RBL Bank</p><p class="text-base font-semibold">Shoprite</p></div></div>
+                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 8442</p>
+                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹9,800</p></div>
+                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹60,000</p></div>
+                                <div><p>Due By</p><p class="text-xs font-semibold text-white">21/02/2026</p></div>
+                                <div><p>Billing</p><p class="text-xs font-semibold text-white">08/02/2026</p></div>
+                            </div>
+                            <div class="mt-3 flex items-center gap-2">
+                                <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-9">Security</button>
+                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-9">Remove</button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+            </div>
+
+            <div
+                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+                    <h3 class="text-lg font-semibold">Recent Card Activity</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Last 5 high-value or risky transactions</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
+                                    Date</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
+                                    Card</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
+                                    Merchant</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
+                                    Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-activity-body" class="divide-y divide-gray-200 dark:divide-gray-800">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm">14/02/2026</td>
+                                <td class="px-6 py-4 text-sm font-medium">HDFC •••• 4821</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Air India</td>
+                                <td class="px-6 py-4 text-sm font-semibold">₹21,300</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm">13/02/2026</td>
+                                <td class="px-6 py-4 text-sm font-medium">ICICI •••• 1960</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Amazon India</td>
+                                <td class="px-6 py-4 text-sm font-semibold">₹8,940</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                                <td class="px-6 py-4 text-sm">12/02/2026</td>
+                                <td class="px-6 py-4 text-sm font-medium">SBI •••• 7754</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Zomato</td>
+                                <td class="px-6 py-4 text-sm font-semibold">₹1,260</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="add-card-modal"
+        class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+        style="display: none;">
+        <div
+            class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative max-h-[90vh] overflow-y-auto">
+            <button id="close-add-card-modal"
+                class="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold">Add Credit Card</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">Store only card metadata. Never store full card number
+                    or CVV.</p>
+            </div>
+
+            <form id="add-card-form" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Bank Name</label>
+                        <input id="bank-name" type="text" placeholder="e.g., Axis Bank"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Type</label>
+                        <input id="card-type" type="text" placeholder="e.g., Regalia"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Last 4 Digits</label>
+                        <input id="card-last4" type="text" maxlength="4" pattern="[0-9]{4}" placeholder="1234"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Credit Limit (INR)</label>
+                        <input id="card-limit" type="number" min="10000" step="1000" placeholder="100000"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Current Outstanding (INR)</label>
+                        <input id="card-outstanding" type="number" min="0" step="100" placeholder="0"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Billing</label>
+                        <input id="card-billing-date" type="date"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Due By</label>
+                        <input id="card-due-date" type="date"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                </div>
+
+                <div
+                    class="p-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-sm text-amber-800 dark:text-amber-300">
+                    Security guardrail: this mock intentionally captures only safe metadata (bank, type, last-4,
+                    limits, billing cycle, and due-date settings).
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" id="cancel-add-card"
+                        class="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Cancel</button>
+                    <button type="submit"
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">Save
+                        Card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="add-expense-modal"
+        class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+        style="display: none;">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-xl w-full p-8 relative">
+            <button id="close-add-expense-modal"
+                class="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold">Add Bill</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">Track a new card bill entry.</p>
+            </div>
+
+            <form id="add-expense-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Card</label>
+                    <select id="expense-card-select"
+                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        required>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Description</label>
+                    <input id="expense-description" type="text" placeholder="e.g., Swiggy dinner"
+                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        required>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Amount Used (INR)</label>
+                        <input id="expense-amount" type="number" min="1" step="1" placeholder="1200"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Date</label>
+                        <input id="expense-date" type="date"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
+                    </div>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" id="cancel-add-expense"
+                        class="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Cancel</button>
+                    <button type="submit"
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">Save
+                        Bill</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="pay-bill-modal"
+        class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+        style="display: none;">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-xl w-full p-8 relative">
+            <button id="close-pay-bill-modal"
+                class="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold">Pay Bill</h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">Record card bill payment status.</p>
+            </div>
+
+            <form id="pay-bill-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Card</label>
+                    <select id="pay-card-select"
+                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        required>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Payment Type</label>
+                    <select id="payment-type"
+                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        required>
+                        <option value="full">Paid in full</option>
+                        <option value="min_due">Paid min Due</option>
+                        <option value="custom">Paid custom</option>
+                    </select>
+                </div>
+                <div id="payment-amount-wrap" class="hidden">
+                    <label class="block text-sm font-medium mb-2">Amount (INR)</label>
+                    <input id="payment-amount" type="number" min="1" step="1" placeholder="1000"
+                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" id="cancel-pay-bill"
+                        class="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Cancel</button>
+                    <button type="submit"
+                        class="flex-1 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all">Save
+                        Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="security-modal"
+        class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+        style="display: none;">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-lg w-full p-8 relative">
+            <button id="close-security-modal"
+                class="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold">Card Security Controls</h2>
+                <p id="security-card-label" class="text-gray-500 dark:text-gray-400 mt-1">Managing: HDFC Regalia</p>
+            </div>
+
+            <div class="space-y-4 text-sm">
+                <label
+                    class="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <span>Lock card for online transactions</span>
+                    <input type="checkbox" class="w-4 h-4 text-purple-600" checked>
+                </label>
+                <label
+                    class="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <span>Allow international transactions</span>
+                    <input type="checkbox" class="w-4 h-4 text-purple-600">
+                </label>
+                <label
+                    class="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <span>Instant SMS + app alert for every swipe</span>
+                    <input type="checkbox" class="w-4 h-4 text-purple-600" checked>
+                </label>
+                <label
+                    class="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-700">
+                    <span>Mask card metadata on dashboard</span>
+                    <input id="mask-toggle" type="checkbox" class="w-4 h-4 text-purple-600" checked>
+                </label>
+            </div>
+
+            <button id="save-security-btn"
+                class="w-full mt-6 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all">Save
+                Security Settings</button>
+        </div>
+    </div>
+
+    <div id="remove-modal"
+        class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm"
+        style="display: none;">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-8">
+            <h2 class="text-xl font-bold mb-2">Remove Card?</h2>
+            <p id="remove-card-label" class="text-gray-500 dark:text-gray-400 mb-6">You are removing HDFC Regalia.</p>
+            <div class="flex gap-3">
+                <button id="cancel-remove"
+                    class="flex-1 px-5 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-800">Cancel</button>
+                <button id="confirm-remove"
+                    class="flex-1 px-5 py-2.5 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pendingRemoveCardId = null;
+
+        function initTheme() {
+            const saved = localStorage.getItem('theme');
+            const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.add(theme);
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            if (theme === 'dark') {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            html.classList.remove(currentTheme);
+            html.classList.add(newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+
+            if (isCollapsed) {
+                sidebar.classList.remove('sidebar-collapsed');
+                sidebar.classList.add('sidebar-expanded');
+                mainContent.style.marginLeft = '18rem';
+                document.querySelectorAll('.sidebar-text').forEach((el) => {
+                    el.style.display = 'inline';
+                });
+            } else {
+                sidebar.classList.remove('sidebar-expanded');
+                sidebar.classList.add('sidebar-collapsed');
+                mainContent.style.marginLeft = '4rem';
+                document.querySelectorAll('.sidebar-text').forEach((el) => {
+                    el.style.display = 'none';
+                });
+            }
+        }
+
+        function markSidebarComingSoon() {
+            const comingSoonLabels = new Set(['SGB', 'PPF', 'NPS', 'Loans', 'Goals']);
+            document.querySelectorAll('.sidebar-text').forEach((labelEl) => {
+                const label = labelEl.textContent.trim();
+                if (!comingSoonLabels.has(label)) return;
+                const navLink = labelEl.closest('a.nav-item');
+                if (!navLink) return;
+                navLink.setAttribute('aria-disabled', 'true');
+                navLink.setAttribute('tabindex', '-1');
+                navLink.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+                if (!navLink.querySelector('.coming-soon-badge')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'coming-soon-badge sidebar-text ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md';
+                    badge.textContent = 'Coming Soon';
+                    labelEl.insertAdjacentElement('afterend', badge);
+                }
+            });
+        }
+
+        function showModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.remove('modal-hidden');
+            modal.style.display = 'flex';
+        }
+
+        function hideModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.add('modal-hidden');
+            modal.style.display = 'none';
+        }
+
+        function setSecurityContext(cardId) {
+            const card = document.querySelector(`[data-card-id="${cardId}"]`);
+            const name = card ? card.getAttribute('data-card-name') : 'Selected Card';
+            document.getElementById('security-card-label').textContent = `Managing: ${name}`;
+            showModal('security-modal');
+        }
+
+        function setRemoveContext(cardId) {
+            const card = document.querySelector(`[data-card-id="${cardId}"]`);
+            const name = card ? card.getAttribute('data-card-name') : 'Selected Card';
+            pendingRemoveCardId = cardId;
+            document.getElementById('remove-card-label').textContent = `You are removing ${name}. This action only removes it from this local mock.`;
+            showModal('remove-modal');
+        }
+
+        function attachCardActions(scope = document) {
+            scope.querySelectorAll('.security-btn').forEach((btn) => {
+                btn.addEventListener('click', () => setSecurityContext(btn.dataset.cardId));
+            });
+
+            scope.querySelectorAll('.remove-btn').forEach((btn) => {
+                btn.addEventListener('click', () => setRemoveContext(btn.dataset.cardId));
+            });
+        }
+
+        function formatMoney(value) {
+            return Number(value).toLocaleString('en-IN');
+        }
+
+        function formatDueDate(value) {
+            const date = new Date(value + 'T00:00:00');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const yyyy = date.getFullYear();
+            return `${dd}/${mm}/${yyyy}`;
+        }
+
+        function addCardFromForm(e) {
+            e.preventDefault();
+            const bank = document.getElementById('bank-name').value.trim();
+            const type = document.getElementById('card-type').value.trim();
+            const last4 = document.getElementById('card-last4').value.trim();
+            const limit = document.getElementById('card-limit').value;
+            const outstanding = document.getElementById('card-outstanding').value;
+            const billingDate = document.getElementById('card-billing-date').value;
+            const dueDate = document.getElementById('card-due-date').value;
+
+            const cardId = `card-${Date.now()}`;
+
+            const article = document.createElement('article');
+            article.className = 'rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-zinc-900 to-slate-800 text-white';
+            article.setAttribute('data-card-id', cardId);
+            article.setAttribute('data-card-name', `${bank} ${type}`);
+            article.setAttribute('data-outstanding', String(Number(outstanding)));
+            article.innerHTML = `
+                <div class="flex items-start justify-between mb-5">
+                    <div>
+                        <p class="text-[10px] uppercase tracking-widest text-white/70">${bank}</p>
+                        <p class="text-base font-semibold">${type}</p>
+                    </div>
+                </div>
+                <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• ${last4}</p>
+                <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
+                    <div>
+                        <p>Outstanding</p>
+                        <p class="text-xs font-semibold text-white">₹${formatMoney(outstanding)}</p>
+                    </div>
+                    <div>
+                        <p>Limit</p>
+                        <p class="text-xs font-semibold text-white">₹${formatMoney(limit)}</p>
+                    </div>
+                    <div>
+                        <p>Due By</p>
+                        <p class="text-xs font-semibold text-white">${formatDueDate(dueDate)}</p>
+                    </div>
+                    <div>
+                        <p>Billing</p>
+                        <p class="text-xs font-semibold text-white">${formatDueDate(billingDate)}</p>
+                    </div>
+                </div>
+                <div class="mt-3 flex items-center gap-2">
+                    <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="${cardId}">Security</button>
+                    <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="${cardId}">Remove</button>
+                </div>
+            `;
+
+            const list = document.getElementById('card-list');
+            list.prepend(article);
+            attachCardActions(article);
+            refreshCardSelectOptions();
+            e.target.reset();
+            hideModal('add-card-modal');
+        }
+
+        function confirmRemoveCard() {
+            if (!pendingRemoveCardId) return;
+            const card = document.querySelector(`[data-card-id="${pendingRemoveCardId}"]`);
+            if (card) card.remove();
+            pendingRemoveCardId = null;
+            refreshCardSelectOptions();
+            hideModal('remove-modal');
+        }
+
+        function handleMaskToggle() {
+            const enabled = document.getElementById('mask-toggle').checked;
+            document.querySelectorAll('.card-number').forEach((el) => {
+                if (enabled) {
+                    const last4 = el.textContent.trim().slice(-4);
+                    el.textContent = `•••• •••• •••• ${last4}`;
+                }
+            });
+        }
+
+        function fillCardOptions(selectId) {
+            const select = document.getElementById(selectId);
+            if (!select) return;
+            select.innerHTML = '';
+            const cards = document.querySelectorAll('#card-list [data-card-id]');
+            if (!cards.length) {
+                const option = document.createElement('option');
+                option.textContent = 'No cards available';
+                option.value = '';
+                option.disabled = true;
+                option.selected = true;
+                select.appendChild(option);
+                return;
+            }
+            cards.forEach((card) => {
+                const option = document.createElement('option');
+                const name = card.getAttribute('data-card-name') || 'Card';
+                const numberEl = card.querySelector('.card-number');
+                const last4 = numberEl ? numberEl.textContent.trim().slice(-4) : '0000';
+                option.value = card.getAttribute('data-card-id');
+                option.textContent = `${name} •••• ${last4}`;
+                select.appendChild(option);
+            });
+        }
+
+        function refreshCardSelectOptions() {
+            fillCardOptions('expense-card-select');
+            fillCardOptions('pay-card-select');
+        }
+
+        function formatDateForTable(value) {
+            const date = new Date(value + 'T00:00:00');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const yyyy = date.getFullYear();
+            return `${dd}/${mm}/${yyyy}`;
+        }
+
+        function addExpenseFromForm(e) {
+            e.preventDefault();
+            const select = document.getElementById('expense-card-select');
+            const selectedOption = select.options[select.selectedIndex];
+            const cardLabel = selectedOption ? selectedOption.textContent : 'Card';
+            const description = document.getElementById('expense-description').value.trim();
+            const amount = document.getElementById('expense-amount').value;
+            const date = document.getElementById('expense-date').value;
+            const tbody = document.getElementById('recent-activity-body');
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors';
+            row.innerHTML = `
+                <td class="px-6 py-4 text-sm">${formatDateForTable(date)}</td>
+                <td class="px-6 py-4 text-sm font-medium">${cardLabel}</td>
+                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${description}</td>
+                <td class="px-6 py-4 text-sm font-semibold">₹${formatMoney(amount)}</td>
+            `;
+            tbody.prepend(row);
+            e.target.reset();
+            hideModal('add-expense-modal');
+        }
+
+        function togglePaymentAmountInput() {
+            const paymentType = document.getElementById('payment-type').value;
+            const wrap = document.getElementById('payment-amount-wrap');
+            const input = document.getElementById('payment-amount');
+            const needsAmount = paymentType === 'min_due' || paymentType === 'custom';
+            wrap.classList.toggle('hidden', !needsAmount);
+            input.required = needsAmount;
+            if (!needsAmount) input.value = '';
+        }
+
+        function getCardOutstanding(cardId) {
+            const card = document.querySelector(`#card-list [data-card-id="${cardId}"]`);
+            if (!card) return 0;
+            return Number(card.getAttribute('data-outstanding') || '0');
+        }
+
+        function setCardOutstanding(cardId, value) {
+            const card = document.querySelector(`#card-list [data-card-id="${cardId}"]`);
+            if (!card) return;
+            const safeValue = Math.max(0, Math.round(value));
+            card.setAttribute('data-outstanding', String(safeValue));
+            const valueEl = Array.from(card.querySelectorAll('p')).find((p) => p.textContent.trim() === 'Outstanding');
+            if (valueEl && valueEl.nextElementSibling) {
+                valueEl.nextElementSibling.textContent = `₹${formatMoney(safeValue)}`;
+            }
+        }
+
+        function addPaymentFromForm(e) {
+            e.preventDefault();
+            const select = document.getElementById('pay-card-select');
+            const selectedOption = select.options[select.selectedIndex];
+            if (!selectedOption || !selectedOption.value) return;
+            const cardId = selectedOption.value;
+            const cardLabel = selectedOption.textContent;
+            const paymentType = document.getElementById('payment-type').value;
+            const customAmount = Number(document.getElementById('payment-amount').value || '0');
+            const currentOutstanding = getCardOutstanding(cardId);
+
+            let paymentAmount = currentOutstanding;
+            let paymentLabel = 'Paid in full';
+            if (paymentType === 'min_due') {
+                paymentAmount = customAmount;
+                paymentLabel = 'Paid min Due';
+            } else if (paymentType === 'custom') {
+                paymentAmount = customAmount;
+                paymentLabel = 'Paid custom';
+            }
+
+            if (paymentAmount <= 0) return;
+            setCardOutstanding(cardId, currentOutstanding - paymentAmount);
+            refreshCardSelectOptions();
+
+            const tbody = document.getElementById('recent-activity-body');
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const yyyy = today.getFullYear();
+            const row = document.createElement('tr');
+            row.className = 'hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors';
+            row.innerHTML = `
+                <td class="px-6 py-4 text-sm">${dd}/${mm}/${yyyy}</td>
+                <td class="px-6 py-4 text-sm font-medium">${cardLabel}</td>
+                <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">${paymentLabel}</td>
+                <td class="px-6 py-4 text-sm font-semibold">₹${formatMoney(paymentAmount)}</td>
+            `;
+            tbody.prepend(row);
+            e.target.reset();
+            togglePaymentAmountInput();
+            hideModal('pay-bill-modal');
+        }
+
+        initTheme();
+        markSidebarComingSoon();
+        attachCardActions();
+        refreshCardSelectOptions();
+        togglePaymentAmountInput();
+
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
+        document.getElementById('add-expense-btn').addEventListener('click', () => showModal('add-expense-modal'));
+        document.getElementById('pay-bill-btn').addEventListener('click', () => showModal('pay-bill-modal'));
+        document.getElementById('add-card-btn').addEventListener('click', () => showModal('add-card-modal'));
+        document.getElementById('close-add-card-modal').addEventListener('click', () => hideModal('add-card-modal'));
+        document.getElementById('cancel-add-card').addEventListener('click', () => hideModal('add-card-modal'));
+        document.getElementById('close-add-expense-modal').addEventListener('click', () => hideModal('add-expense-modal'));
+        document.getElementById('cancel-add-expense').addEventListener('click', () => hideModal('add-expense-modal'));
+        document.getElementById('close-pay-bill-modal').addEventListener('click', () => hideModal('pay-bill-modal'));
+        document.getElementById('cancel-pay-bill').addEventListener('click', () => hideModal('pay-bill-modal'));
+        document.getElementById('close-security-modal').addEventListener('click', () => hideModal('security-modal'));
+        document.getElementById('cancel-remove').addEventListener('click', () => hideModal('remove-modal'));
+        document.getElementById('confirm-remove').addEventListener('click', confirmRemoveCard);
+        document.getElementById('save-security-btn').addEventListener('click', () => hideModal('security-modal'));
+        document.getElementById('mask-toggle').addEventListener('change', handleMaskToggle);
+        document.getElementById('add-card-form').addEventListener('submit', addCardFromForm);
+        document.getElementById('add-expense-form').addEventListener('submit', addExpenseFromForm);
+        document.getElementById('pay-bill-form').addEventListener('submit', addPaymentFromForm);
+        document.getElementById('payment-type').addEventListener('change', togglePaymentAmountInput);
+
+        ['add-card-modal', 'add-expense-modal', 'pay-bill-modal', 'security-modal', 'remove-modal'].forEach((id) => {
+            const modal = document.getElementById(id);
+            modal.addEventListener('click', function (e) {
+                if (e.target === this) hideModal(id);
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                hideModal('add-card-modal');
+                hideModal('add-expense-modal');
+                hideModal('pay-bill-modal');
+                hideModal('security-modal');
+                hideModal('remove-modal');
+            }
+        });
+    </script>
+</body>
+
+</html>
