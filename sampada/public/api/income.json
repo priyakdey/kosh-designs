@@ -1,0 +1,47 @@
+{
+  "summary": {
+    "totalIncome": 85000,
+    "changePercent": 5.2,
+    "totalEntries": 3
+  },
+  "allocation": [
+    { "source": "Salary", "amount": 63750, "percent": 75, "color": "#10b981" },
+    { "source": "Dividend", "amount": 12750, "percent": 15, "color": "#3b82f6" },
+    { "source": "Rental", "amount": 8500, "percent": 10, "color": "#a855f7" }
+  ],
+  "entries": [
+    {
+      "id": "inc_1",
+      "date": "2026-02-10",
+      "source": "Salary",
+      "description": "Monthly Salary - Visa",
+      "amount": 63750,
+      "currency": "INR",
+      "recurring": "Every month on 10th"
+    },
+    {
+      "id": "inc_2",
+      "date": "2026-02-05",
+      "source": "Dividend",
+      "description": "Mutual Fund Dividend",
+      "amount": 12750,
+      "currency": "INR",
+      "recurring": null
+    },
+    {
+      "id": "inc_3",
+      "date": "2026-02-01",
+      "source": "Rental",
+      "description": "Apartment Rent - Bengaluru",
+      "amount": 8500,
+      "currency": "INR",
+      "recurring": "Every month on 1st"
+    }
+  ],
+  "months": [
+    "February 2026",
+    "January 2026",
+    "December 2025",
+    "November 2025"
+  ]
+}

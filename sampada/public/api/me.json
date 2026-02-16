@@ -1,0 +1,11 @@
+{
+  "user": {
+    "id": "user_1",
+    "name": "Priyak Dey",
+    "email": "priyak@example.com",
+    "initials": "PD",
+    "timezone": "Asia/Kolkata",
+    "currency": "INR"
+  },
+  "token": "mock_token_12345"
+}

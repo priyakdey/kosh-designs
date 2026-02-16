@@ -1,0 +1,93 @@
+{
+  "summary": {
+    "totalExpenses": 42500,
+    "changePercent": -3.1,
+    "totalEntries": 8
+  },
+  "allocation": [
+    { "category": "Rent", "amount": 17000, "percent": 40, "color": "#ef4444" },
+    { "category": "Food", "amount": 10625, "percent": 25, "color": "#f59e0b" },
+    { "category": "Transport", "amount": 6375, "percent": 15, "color": "#3b82f6" },
+    { "category": "Others", "amount": 8500, "percent": 20, "color": "#8b5cf6" }
+  ],
+  "entries": [
+    {
+      "id": "exp_1",
+      "date": "2026-02-01",
+      "category": "Rent",
+      "description": "Monthly Rent - Apartment",
+      "amount": 17000,
+      "currency": "INR",
+      "recurring": "Every month on 1st"
+    },
+    {
+      "id": "exp_2",
+      "date": "2026-02-12",
+      "category": "Food",
+      "description": "Groceries - BigBasket",
+      "amount": 4500,
+      "currency": "INR",
+      "recurring": null
+    },
+    {
+      "id": "exp_3",
+      "date": "2026-02-08",
+      "category": "Transport",
+      "description": "Uber rides",
+      "amount": 1250,
+      "currency": "INR",
+      "recurring": null
+    },
+    {
+      "id": "exp_4",
+      "date": "2026-02-05",
+      "category": "Utilities",
+      "description": "Electricity Bill - BESCOM",
+      "amount": 2800,
+      "currency": "INR",
+      "recurring": "Every month on 5th"
+    },
+    {
+      "id": "exp_5",
+      "date": "2026-02-10",
+      "category": "Food",
+      "description": "Swiggy orders",
+      "amount": 3200,
+      "currency": "INR",
+      "recurring": null
+    },
+    {
+      "id": "exp_6",
+      "date": "2026-02-14",
+      "category": "Shopping",
+      "description": "Amazon - Books & Accessories",
+      "amount": 2750,
+      "currency": "INR",
+      "recurring": null
+    },
+    {
+      "id": "exp_7",
+      "date": "2026-02-03",
+      "category": "Entertainment",
+      "description": "Netflix + Spotify subscriptions",
+      "amount": 800,
+      "currency": "INR",
+      "recurring": "Every month on 3rd"
+    },
+    {
+      "id": "exp_8",
+      "date": "2026-02-15",
+      "category": "Transport",
+      "description": "Metro card recharge",
+      "amount": 500,
+      "currency": "INR",
+      "recurring": null
+    }
+  ],
+  "months": [
+    "February 2026",
+    "January 2026",
+    "December 2025",
+    "November 2025"
+  ]
+}
