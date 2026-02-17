@@ -39,11 +39,15 @@ export function useSetupProfile() {
   return useMutation({
     mutationFn: async ({ displayName, timezone, currency }: ProfileSetupInput) => {
       try {
-        await backendApi.post("/profile", {
-          name: displayName,
-          timezone,
-          currency,
-        });
+        await backendApi.post(
+          "/profile",
+          { displayName, timezone, currency },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
       } catch (error) {
         if (
           !axios.isAxiosError(error) ||

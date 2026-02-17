@@ -5,6 +5,7 @@ import {
   redirect,
   Outlet,
 } from "@tanstack/react-router";
+import { useAuth } from "@/contexts/AuthContext";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Landing } from "@/pages/Landing";
 import { Dashboard } from "@/pages/Dashboard";
@@ -28,19 +29,23 @@ const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: Outlet,
 });
 
-const landingRoute = createRoute({
+function HomePage() {
+  const auth = useAuth();
+  if (auth.isLoading) return null;
+  if (auth.isAuthenticated) {
+    return (
+      <MainLayout>
+        <Dashboard />
+      </MainLayout>
+    );
+  }
+  return <Landing />;
+}
+
+const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: Landing,
-  beforeLoad: ({ context }) => {
-    if (context.auth.isLoading) {
-      return;
-    }
-
-    if (context.auth.isAuthenticated) {
-      throw redirect({ to: "/dashboard" });
-    }
-  },
+  component: HomePage,
 });
 
 const authenticatedRoute = createRoute({
@@ -56,12 +61,6 @@ const authenticatedRoute = createRoute({
       throw redirect({ to: "/" });
     }
   },
-});
-
-const dashboardRoute = createRoute({
-  getParentRoute: () => authenticatedRoute,
-  path: "/dashboard",
-  component: Dashboard,
 });
 
 const incomeRoute = createRoute({
@@ -128,9 +127,8 @@ const notFoundRoute = createRoute({
 });
 
 const routeTree = rootRoute.addChildren([
-  landingRoute,
+  indexRoute,
   authenticatedRoute.addChildren([
-    dashboardRoute,
     incomeRoute,
     expensesRoute,
     profileSettingsRoute,

@@ -33,7 +33,7 @@ export function AppSelect({
     <Select value={value} onValueChange={onChange} disabled={disabled}>
       <SelectTrigger
         className={cn(
-          "w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 h-200",
+          "w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 h-11",
           className,
         )}
       >

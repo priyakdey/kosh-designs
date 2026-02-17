@@ -98,10 +98,10 @@ export function Sidebar() {
         <div className="space-y-1">
           {/* Dashboard */}
           <NavLink
-            to="/dashboard"
+            to="/"
             icon={<Home className="w-5 h-5" />}
             label="Dashboard"
-            active={isActive("/dashboard")}
+            active={isActive("/")}
             collapsed={collapsed}
           />
 

@@ -1,9 +1,10 @@
+import type { ReactNode } from "react";
 import { Outlet } from "@tanstack/react-router";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { useUIStore } from "@/stores/uiStore";
 
-export function MainLayout() {
+export function MainLayout({ children }: { children?: ReactNode }) {
   const sidebarCollapsed = useUIStore((s) => s.sidebarCollapsed);
 
   return (
@@ -15,7 +16,7 @@ export function MainLayout() {
       >
         <Header />
         <main className="p-6">
-          <Outlet />
+          {children ?? <Outlet />}
         </main>
       </div>
     </div>

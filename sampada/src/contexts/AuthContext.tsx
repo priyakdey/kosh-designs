@@ -42,7 +42,7 @@ const mapProfileToUser = (profile: ProfileDetailsResponse): User => ({
   name: profile.name,
   email: profile.email,
   initials: getInitials(profile.name, profile.email),
-  timezone: profile.timezone ?? Intl.DateTimeFormat().resolvedOptions().timeZone,
+  timezone: profile.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
   currency: profile.currency ?? "",
 });
 
