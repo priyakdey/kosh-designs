@@ -7,5 +7,4 @@ export { DataTableCard } from "./DataTableCard";
 export { CategoryBadge } from "./CategoryBadge";
 export { MonthSelector } from "./MonthSelector";
 export { GradientButton } from "./GradientButton";
-export { RecurrenceField } from "./RecurrenceField";
 export { ComingSoonBadge } from "./ComingSoonBadge";

@@ -12,14 +12,12 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUIStore } from "@/stores/uiStore";
 import { ComingSoonBadge } from "@/components/shared/ComingSoonBadge";
 
-interface SidebarProps {
-  collapsed: boolean;
-  onToggle: () => void;
-}
-
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar() {
+  const collapsed = useUIStore((s) => s.sidebarCollapsed);
+  const onToggle = useUIStore((s) => s.toggleSidebar);
   const location = useLocation();
   const { user } = useAuth();
 

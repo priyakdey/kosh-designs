@@ -26,7 +26,49 @@ Sampada is a comprehensive personal finance management application tailored for 
 
 ### State Management
 - **React Context** (Auth + Theme)
-- TanStack Query for server state
+- **Zustand** (dynamic UI state)
+- **TanStack Query** for server state
+- **react-hook-form** + **zod** (form state & validation)
+
+### Forms
+- **react-hook-form** (form state management)
+- **zod** + **@hookform/resolvers** (schema validation)
+- **shadcn/ui Form** (form field primitives with error display)
+
+## State Management Architecture
+
+| Layer | Technology | What it manages |
+|-------|-----------|----------------|
+| **Auth** | React Context (`AuthContext`) | User session, login/logout, cookie, isLoading |
+| **Theme** | React Context (`ThemeContext`) | Theme toggle, dark mode, localStorage sync |
+| **Server State** | TanStack Query | API data fetching, caching, mutations |
+| **UI State** | Zustand (`src/stores/`) | Sidebar collapse, modal coordination, filters, chart ranges |
+| **Form State** | react-hook-form + zod | Field values, validation, dirty/touched tracking |
+
+### Rules
+- **React Context** = cross-app environment state (auth, theme, currency, timezone). Provided via `<Provider>` wrappers.
+- **Zustand** = dynamic UI / feature state only (filters, selected items, UI coordination). Feature-scoped stores in `src/stores/`. Never auth, theme, or server data.
+- **TanStack Query** = all server state. Never store API data in Zustand or Context.
+- **react-hook-form** = all form state. Never use raw `useState` for form fields.
+
+### Zustand Store Guidelines
+- One store per feature domain (e.g., `useUIStore.ts`, `useDashboardStore.ts`)
+- Each store must be small with a clear single purpose
+- Never mix unrelated domains in one store
+- Persist only what's needed (use `partialize`)
+
+### Form Pattern
+All forms use: **shadcn Form** + **react-hook-form** + **zod**
+
+```
+src/schemas/        → Zod schemas (validation + types)
+src/components/forms/ → Form components (UI + hook wiring)
+```
+
+Each form:
+1. Zod schema in `src/schemas/<domain>Schema.ts` — single source of truth for validation + inferred types
+2. Form component in `src/components/forms/` — uses `useForm()` + `zodResolver` + shadcn `<Form>` / `<FormField>` / `<FormItem>` / `<FormLabel>` / `<FormControl>` / `<FormMessage>`
+3. Page renders form inside `<FormModal>` and passes `onSubmit` + `onCancel` callbacks
 
 ## Logo SVG
 ```svg

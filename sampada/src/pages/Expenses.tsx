@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Wallet } from "lucide-react";
 import { useExpenses } from "@/hooks/useExpenses";
+import { useUIStore } from "@/stores/uiStore";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { formatCurrency } from "@/lib/utils";
 import {
@@ -13,8 +14,8 @@ import {
   CategoryBadge,
   MonthSelector,
   GradientButton,
-  RecurrenceField,
 } from "@/components/shared";
+import { AddExpenseForm } from "@/components/forms/AddExpenseForm";
 
 const CATEGORY_BADGE_COLORS: Record<string, string> = {
   Rent: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
@@ -59,9 +60,9 @@ function formatDate(dateStr: string): string {
 
 export function Expenses() {
   const { data, isLoading } = useExpenses();
-  const [modalOpen, setModalOpen] = useState(false);
+  const { activeModal, openModal, closeModal } = useUIStore();
+  const modalOpen = activeModal === "add-expense";
   const [selectedMonth, setSelectedMonth] = useState("February 2026");
-  const [isRecurring, setIsRecurring] = useState(false);
 
   if (isLoading || !data) {
     return (
@@ -91,7 +92,7 @@ export function Expenses() {
           onChange={setSelectedMonth}
           months={months}
         />
-        <GradientButton onClick={() => setModalOpen(true)}>
+        <GradientButton onClick={() => openModal("add-expense")}>
           + Add Expense
         </GradientButton>
       </PageHeader>
@@ -207,104 +208,14 @@ export function Expenses() {
       {/* Add Expense Modal */}
       <FormModal
         open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={closeModal}
         title="Add Expense"
         subtitle="Record a new expense entry"
       >
-        <form
-          className="space-y-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setModalOpen(false);
-          }}
-        >
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Category <span className="text-red-500">*</span>
-            </label>
-            <select className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
-              <option value="">Select category...</option>
-              <option value="rent">Rent</option>
-              <option value="food">Food & Dining</option>
-              <option value="transport">Transport</option>
-              <option value="utilities">Utilities</option>
-              <option value="healthcare">Healthcare</option>
-              <option value="shopping">Shopping</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="education">Education</option>
-              <option value="insurance">Insurance</option>
-              <option value="emi">EMI</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-2">
-              <label className="block text-sm font-medium mb-2">
-                Amount <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="number"
-                placeholder="0.00"
-                step="0.01"
-                className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Currency</label>
-              <select className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                <option value="INR">INR (₹)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Description
-            </label>
-            <input
-              type="text"
-              placeholder="e.g., Monthly rent for apartment"
-              className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Date <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="date"
-              defaultValue="2026-02-14"
-              className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
-
-          <RecurrenceField
-            id="expense-recurring"
-            label="This is a recurring expense"
-            isRecurring={isRecurring}
-            onRecurringChange={setIsRecurring}
-          />
-
-          <div className="flex gap-3 pt-4">
-            <button
-              type="button"
-              onClick={() => setModalOpen(false)}
-              className="flex-1 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all"
-            >
-              Save Expense
-            </button>
-          </div>
-        </form>
+        <AddExpenseForm
+          onSubmit={() => closeModal()}
+          onCancel={closeModal}
+        />
       </FormModal>
     </div>
   );
