@@ -42,7 +42,7 @@ const mapProfileToUser = (profile: ProfileDetailsResponse): User => ({
   name: profile.name,
   email: profile.email,
   initials: getInitials(profile.name, profile.email),
-  timezone: profile.timezone ?? "",
+  timezone: profile.timezone ?? Intl.DateTimeFormat().resolvedOptions().timeZone,
   currency: profile.currency ?? "",
 });
 
@@ -83,8 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (profileQuery.isSuccess && profileQuery.data) {
       const profile = profileQuery.data;
-      const firstTimeLogin =
-        profile.isFirstTimeLogin ?? profile.firstTimeLogin ?? false;
+      const firstTimeLogin = profile.isFirstTimeLogin ?? false;
       setUser(mapProfileToUser(profile));
       setRequiresProfileSetup(firstTimeLogin);
       return;

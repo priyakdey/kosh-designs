@@ -8,7 +8,6 @@ export interface ProfileDetailsResponse {
   avatarUrl: string | null;
   timezone: string | null;
   currency: string | null;
-  firstTimeLogin?: boolean;
   isFirstTimeLogin?: boolean;
 }
 

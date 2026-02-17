@@ -133,7 +133,7 @@ export function InteractiveDonutChart({
           </div>
         </div>
         <div className="col-span-2 h-full min-h-[300px] flex flex-col justify-center">
-          <div className="max-h-[280px] overflow-y-auto pr-1 space-y-2">
+          <div className="max-h-[280px] overflow-y-auto pr-1 space-y-2 app-scrollbar">
             {chartData.map((item) => (
               <div
                 key={item.name}

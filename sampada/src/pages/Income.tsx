@@ -175,9 +175,6 @@ export function Income() {
                 Last 6 months
               </p>
             </div>
-            <span className="text-xs text-green-600 dark:text-green-400 font-semibold bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">
-              +8.4% avg
-            </span>
           </div>
           <div className="flex-1 min-h-28">
             <ResponsiveContainer width="100%" height="100%">

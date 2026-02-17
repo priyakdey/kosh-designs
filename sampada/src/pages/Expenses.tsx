@@ -185,9 +185,6 @@ export function Expenses() {
                 Last 6 months
               </p>
             </div>
-            <span className="text-xs text-green-600 dark:text-green-400 font-semibold bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">
-              ↓ Improving
-            </span>
           </div>
           <div className="flex-1 min-h-28">
             <ResponsiveContainer width="100%" height="100%">
@@ -413,8 +410,8 @@ export function Expenses() {
                 key={page}
                 onClick={() => setCurrentPage(page)}
                 className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${page === currentPage
-                    ? "bg-purple-500 text-white"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-purple-500 text-white"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
                   }`}
               >
                 {page}

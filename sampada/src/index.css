@@ -103,6 +103,33 @@
   height: 60px;
 }
 
+.app-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.55) transparent;
+}
+
+.app-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.app-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.7), rgba(139, 92, 246, 0.7));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.dark .app-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(167, 139, 250, 0.75), rgba(192, 132, 252, 0.75));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
