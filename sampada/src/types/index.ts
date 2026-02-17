@@ -55,10 +55,29 @@ export interface IncomeSummary {
   totalIncome: number;
   changePercent: number;
   totalEntries: number;
+  recurringTotal: number;
+  oneTimeTotal: number;
+  sourcesCount: number;
+}
+
+export interface IncomeTrendPoint {
+  month: string;
+  amount: number;
+}
+
+export interface IncomeHighlights {
+  topSource: string;
+  topSourceAmount: number;
+  topSourcePercent: number;
+  bestMonth: string;
+  bestMonthAmount: number;
+  sixMonthAvg: number;
 }
 
 export interface IncomeData {
   summary: IncomeSummary;
+  trend: IncomeTrendPoint[];
+  highlights: IncomeHighlights;
   allocation: IncomeAllocation[];
   entries: IncomeEntry[];
   months: string[];
