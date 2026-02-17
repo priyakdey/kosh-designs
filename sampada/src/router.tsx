@@ -20,6 +20,7 @@ import { CreditCards } from "@/pages/liabilities/CreditCards";
 interface RouterContext {
   auth: {
     isAuthenticated: boolean;
+    isLoading: boolean;
   };
 }
 
@@ -32,6 +33,10 @@ const landingRoute = createRoute({
   path: "/",
   component: Landing,
   beforeLoad: ({ context }) => {
+    if (context.auth.isLoading) {
+      return;
+    }
+
     if (context.auth.isAuthenticated) {
       throw redirect({ to: "/dashboard" });
     }
@@ -43,6 +48,10 @@ const authenticatedRoute = createRoute({
   id: "authenticated",
   component: MainLayout,
   beforeLoad: ({ context }) => {
+    if (context.auth.isLoading) {
+      return;
+    }
+
     if (!context.auth.isAuthenticated) {
       throw redirect({ to: "/" });
     }
@@ -139,6 +148,7 @@ export const router = createRouter({
   context: {
     auth: {
       isAuthenticated: false,
+      isLoading: true,
     },
   },
 });

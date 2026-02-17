@@ -16,6 +16,7 @@ import {
   WidgetCard,
   FormModal,
   DataTableCard,
+  AppSelect,
   GradientButton,
 } from "@/components/shared";
 import { AddMutualFundTransactionForm } from "@/components/forms/AddMutualFundTransactionForm";
@@ -29,6 +30,7 @@ function formatCompactCurrency(value: number): string {
 export function MutualFunds() {
   const { data, isLoading } = useMutualFunds();
   const [modalOpen, setModalOpen] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState("5");
 
   if (isLoading || !data) {
     return (
@@ -59,7 +61,10 @@ export function MutualFunds() {
         title="Mutual Funds"
         subtitle="Track your mutual fund portfolio"
       >
-        <GradientButton onClick={() => setModalOpen(true)}>
+        <GradientButton
+          onClick={() => setModalOpen(true)}
+          className="h-10 min-w-44 inline-flex items-center justify-center"
+        >
           + Add Transaction
         </GradientButton>
       </PageHeader>
@@ -262,11 +267,16 @@ export function MutualFunds() {
             <span className="text-sm text-gray-600 dark:text-gray-400">
               Rows per page:
             </span>
-            <select className="px-3 py-1.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
+            <AppSelect
+              value={rowsPerPage}
+              onChange={setRowsPerPage}
+              options={[
+                { value: "5", label: "5" },
+                { value: "10", label: "10" },
+                { value: "20", label: "20" },
+              ]}
+              className="h-8 text-sm w-20"
+            />
             <span className="text-sm text-gray-600 dark:text-gray-400">
               Showing 1-{holdings.length} of {holdings.length}
             </span>

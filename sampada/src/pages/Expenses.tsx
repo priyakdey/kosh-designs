@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { Wallet } from "lucide-react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useExpenses } from "@/hooks/useExpenses";
 import { useUIStore } from "@/stores/uiStore";
-import { DonutChart } from "@/components/charts/DonutChart";
 import { formatCurrency } from "@/lib/utils";
+import { InteractiveDonutChart } from "@/components/charts/InteractiveDonutChart";
 import {
   PageHeader,
   PersonalFamilyTabs,
-  StatCard,
-  WidgetCard,
   FormModal,
   DataTableCard,
   CategoryBadge,
   MonthSelector,
   GradientButton,
+  AppSelect,
 } from "@/components/shared";
 import { AddExpenseForm } from "@/components/forms/AddExpenseForm";
 
@@ -39,6 +46,9 @@ const CATEGORY_BADGE_COLORS: Record<string, string> = {
     "bg-gray-100 dark:bg-gray-900/30 text-gray-800 dark:text-gray-300",
 };
 
+const RECURRING_BADGE_CLASS =
+  "text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 px-2 py-1 rounded";
+
 function formatCompactCurrency(value: number): string {
   if (value >= 100000) {
     return `₹${(value / 100000).toFixed(1)}L`;
@@ -50,12 +60,7 @@ function formatCompactCurrency(value: number): string {
 }
 
 function formatDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  return d.toLocaleDateString("en-IN", {
-    month: "short",
-    day: "2-digit",
-    year: "numeric",
-  });
+  return new Date(dateStr).toLocaleDateString("en-GB");
 }
 
 export function Expenses() {
@@ -63,6 +68,8 @@ export function Expenses() {
   const { activeModal, openModal, closeModal } = useUIStore();
   const modalOpen = activeModal === "add-expense";
   const [selectedMonth, setSelectedMonth] = useState("February 2026");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   if (isLoading || !data) {
     return (
@@ -73,68 +80,256 @@ export function Expenses() {
   }
 
   const { summary, allocation, entries, months } = data;
+  const recurringTotal = entries
+    .filter((entry) => !!entry.recurring)
+    .reduce((sum, entry) => sum + entry.amount, 0);
+  const variableTotal = Math.max(0, summary.totalExpenses - recurringTotal);
+  const categoryCount = allocation.filter((item) => item.percent > 0).length;
 
-  const donutData = allocation.map((a) => ({
-    name: a.category,
-    value: a.amount,
-    color: a.color,
-    percent: a.percent,
-  }));
+  const topCategory = allocation.reduce((max, item) =>
+    item.amount > max.amount ? item : max,
+  );
+
+  const lastMonthTotal = summary.totalExpenses / (1 + summary.changePercent / 100);
+  const savedAmount = Math.max(0, lastMonthTotal - summary.totalExpenses);
+  const trend = [
+    { month: "Sep", amount: 55000 },
+    { month: "Oct", amount: 52000 },
+    { month: "Nov", amount: 49000 },
+    { month: "Dec", amount: 47000 },
+    { month: "Jan", amount: 44000 },
+    { month: "Feb", amount: summary.totalExpenses },
+  ];
+  const sixMonthAvg =
+    trend.reduce((sum, point) => sum + point.amount, 0) / trend.length;
+
+  const totalEntries = entries.length;
+  const totalPages = Math.max(1, Math.ceil(totalEntries / rowsPerPage));
+  const startIdx = (currentPage - 1) * rowsPerPage;
+  const pageEntries = entries.slice(startIdx, startIdx + rowsPerPage);
 
   return (
     <div>
-      <PageHeader
-        title="Expenditure"
-        subtitle="Track and manage your expenses"
-      >
+      <PageHeader title="Expenditure" subtitle="Track and manage your expenses">
         <MonthSelector
           value={selectedMonth}
           onChange={setSelectedMonth}
           months={months}
         />
-        <GradientButton onClick={() => openModal("add-expense")}>
+        <GradientButton
+          onClick={() => openModal("add-expense")}
+          className="h-10 min-w-44 inline-flex items-center justify-center"
+        >
           + Add Expense
         </GradientButton>
       </PageHeader>
 
       <PersonalFamilyTabs />
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <StatCard
-          title="Total Expenses"
-          subtitle="Your personal expenses"
-          icon={
-            <Wallet className="w-5 h-5 text-red-600 dark:text-red-400" />
-          }
-          iconBg="bg-red-100 dark:bg-red-900/20"
-          value={summary.totalExpenses}
-          changePercent={summary.changePercent}
-          trendDirection="down"
-          changeLabel="vs last month (Good!)"
-          footerLabel="Total Entries"
-          footerValue={summary.totalEntries}
-        />
-
-        {/* Expense by Category */}
-        <WidgetCard>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Expense by Category</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Your distribution
-            </p>
+      <div className="mb-6 p-5 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 text-white">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-red-100 text-sm mb-1">Total Expenses • Feb 2026</p>
+            <div className="flex items-end gap-3">
+              <h2 className="text-4xl font-bold">
+                {formatCurrency(summary.totalExpenses)}
+              </h2>
+              <div className="flex items-center gap-1 mb-1 bg-white/20 px-2 py-0.5 rounded-full">
+                <svg
+                  className="w-3.5 h-3.5 text-green-200"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                  />
+                </svg>
+                <span className="text-green-200 font-semibold text-sm">
+                  {summary.changePercent.toFixed(1)}%
+                </span>
+                <span className="text-red-200 text-xs">vs last month</span>
+              </div>
+            </div>
           </div>
-          <DonutChart
-            data={donutData}
-            centerLabel={formatCompactCurrency(summary.totalExpenses)}
-          />
-        </WidgetCard>
+          <div className="flex flex-wrap gap-3">
+            <div className="bg-white/15 rounded-xl px-4 py-2.5 text-center min-w-[90px]">
+              <p className="text-xs text-red-100">Entries</p>
+              <p className="text-xl font-bold">{summary.totalEntries}</p>
+            </div>
+            <div className="bg-white/15 rounded-xl px-4 py-2.5 text-center min-w-[90px]">
+              <p className="text-xs text-red-100">Fixed</p>
+              <p className="text-xl font-bold">{formatCompactCurrency(recurringTotal)}</p>
+            </div>
+            <div className="bg-white/15 rounded-xl px-4 py-2.5 text-center min-w-[90px]">
+              <p className="text-xs text-red-100">Variable</p>
+              <p className="text-xl font-bold">{formatCompactCurrency(variableTotal)}</p>
+            </div>
+            <div className="bg-white/15 rounded-xl px-4 py-2.5 text-center min-w-[90px]">
+              <p className="text-xs text-red-100">Categories</p>
+              <p className="text-xl font-bold">{categoryCount}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Expense Table */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+        <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 flex flex-col">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h3 className="text-sm font-semibold">Expense Trend</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Last 6 months
+              </p>
+            </div>
+            <span className="text-xs text-green-600 dark:text-green-400 font-semibold bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">
+              ↓ Improving
+            </span>
+          </div>
+          <div className="flex-1 min-h-28">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={trend} margin={{ left: 8, right: 12 }}>
+                <defs>
+                  <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#ef4444" stopOpacity={0.25} />
+                    <stop offset="100%" stopColor="#ef4444" stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <XAxis
+                  dataKey="month"
+                  interval={0}
+                  padding={{ left: 8, right: 8 }}
+                  axisLine={false}
+                  tickLine={false}
+                  tickMargin={8}
+                  tick={{ fontSize: 11, fill: "#9ca3af" }}
+                />
+                <YAxis hide domain={["dataMin - 3000", "dataMax + 3000"]} />
+                <Tooltip
+                  formatter={(value: number | undefined) => [
+                    formatCurrency(value ?? 0),
+                    "Expense",
+                  ]}
+                  contentStyle={{
+                    backgroundColor: "rgba(0,0,0,0.8)",
+                    border: "none",
+                    borderRadius: "8px",
+                    color: "#fff",
+                    fontSize: "12px",
+                  }}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="amount"
+                  stroke="#ef4444"
+                  strokeWidth={2.5}
+                  fill="url(#expenseGrad)"
+                  dot={{ r: 3, fill: "#ef4444" }}
+                  activeDot={{ r: 4, fill: "#ef4444", stroke: "#fff", strokeWidth: 2 }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex justify-between mt-1 text-xs text-gray-400 dark:text-gray-500">
+            {trend.map((point, i) => (
+              <span
+                key={point.month}
+                className={
+                  i === trend.length - 1
+                    ? "text-green-600 dark:text-green-400 font-semibold"
+                    : i === 0
+                      ? "text-red-500 font-semibold"
+                      : undefined
+                }
+              >
+                {formatCompactCurrency(point.amount)}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 flex flex-col">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h3 className="text-sm font-semibold">By Category</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Your distribution
+              </p>
+            </div>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Feb 2026
+            </span>
+          </div>
+          <div className="flex-1 pt-2">
+            <InteractiveDonutChart
+              data={allocation.map((item) => ({
+                name: item.category,
+                amount: item.amount,
+                percent: item.percent,
+                color: item.color,
+              }))}
+              centerLabel={formatCompactCurrency(summary.totalExpenses)}
+              centerSubLabel="Expenses"
+            />
+          </div>
+        </div>
+
+        <div className="lg:col-span-1 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-3">
+          <h3 className="text-sm font-semibold">Highlights</h3>
+          <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">Top Category</p>
+            <p className="text-sm font-semibold text-red-700 dark:text-red-400 mt-0.5">
+              {topCategory.category}
+            </p>
+            <p className="text-xs text-gray-400">
+              {formatCurrency(topCategory.amount)} • {topCategory.percent}%
+            </p>
+          </div>
+          <div className="p-3 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">vs Last Month</p>
+            <p className="text-sm font-semibold text-green-700 dark:text-green-400 mt-0.5">
+              Saved {formatCurrency(savedAmount)}
+            </p>
+            <p className="text-xs text-gray-400">
+              Down from {formatCurrency(lastMonthTotal)}
+            </p>
+          </div>
+          <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30">
+            <p className="text-xs text-gray-500 dark:text-gray-400">Last 6M Average</p>
+            <p className="text-sm font-semibold text-amber-700 dark:text-amber-400 mt-0.5">
+              {formatCurrency(sixMonthAvg)}
+            </p>
+            <p className="text-xs text-gray-400">Per month</p>
+          </div>
+        </div>
+      </div>
+
       <DataTableCard
         title="Expense Entries"
         subtitle={`All expenses for ${selectedMonth}`}
+        headerRight={
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Rows per page:
+            </span>
+            <AppSelect
+              value={String(rowsPerPage)}
+              onChange={(value) => {
+                setRowsPerPage(Number(value));
+                setCurrentPage(1);
+              }}
+              options={[
+                { value: "5", label: "5" },
+                { value: "10", label: "10" },
+                { value: "20", label: "20" },
+              ]}
+              className="h-7 min-h-7 text-xs px-2 w-20"
+            />
+          </div>
+        }
       >
         <table className="w-full">
           <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
@@ -160,15 +355,13 @@ export function Expenses() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
-            {entries.map((entry) => (
+            {pageEntries.map((entry) => (
               <tr
                 key={entry.id}
                 className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
               >
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <span className="font-medium">
-                    {formatDate(entry.date)}
-                  </span>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  {formatDate(entry.date)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <CategoryBadge
@@ -184,9 +377,7 @@ export function Expenses() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   {entry.recurring ? (
-                    <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 px-2 py-1 rounded">
-                      {entry.recurring}
-                    </span>
+                    <span className={RECURRING_BADGE_CLASS}>{entry.recurring}</span>
                   ) : (
                     <span className="text-gray-500 dark:text-gray-400">-</span>
                   )}
@@ -203,19 +394,50 @@ export function Expenses() {
             ))}
           </tbody>
         </table>
+
+        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            Showing {startIdx + 1}-{Math.min(startIdx + rowsPerPage, totalEntries)} of{" "}
+            {totalEntries} entries
+          </span>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${page === currentPage
+                    ? "bg-purple-500 text-white"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       </DataTableCard>
 
-      {/* Add Expense Modal */}
       <FormModal
         open={modalOpen}
         onClose={closeModal}
         title="Add Expense"
         subtitle="Record a new expense entry"
       >
-        <AddExpenseForm
-          onSubmit={() => closeModal()}
-          onCancel={closeModal}
-        />
+        <AddExpenseForm onSubmit={() => closeModal()} onCancel={closeModal} />
       </FormModal>
     </div>
   );

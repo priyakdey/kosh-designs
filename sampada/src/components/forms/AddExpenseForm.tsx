@@ -15,6 +15,7 @@ import {
   CURRENCY_OPTIONS,
   RECURRENCE_OPTIONS,
 } from "@/schemas/expenseSchema";
+import { AppSelect } from "@/components/shared/AppSelect";
 
 interface AddExpenseFormProps {
   onSubmit: (values: ExpenseFormValues) => void;
@@ -53,14 +54,13 @@ export function AddExpenseForm({ onSubmit, onCancel }: AddExpenseFormProps) {
                 Category <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <select {...field} className={inputClasses}>
-                  <option value="">Select category...</option>
-                  {EXPENSE_CATEGORY_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
+                <AppSelect
+                  value={field.value ?? undefined}
+                  onChange={field.onChange}
+                  options={EXPENSE_CATEGORY_OPTIONS}
+                  placeholder="Select category..."
+                  className="h-11"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -105,20 +105,19 @@ export function AddExpenseForm({ onSubmit, onCancel }: AddExpenseFormProps) {
             name="currency"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="block text-sm font-medium mb-2">
-                  Currency
-                </FormLabel>
-                <FormControl>
-                  <select {...field} className={inputClasses}>
-                    {CURRENCY_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+              <FormLabel className="block text-sm font-medium mb-2">
+                Currency
+              </FormLabel>
+              <FormControl>
+                <AppSelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={CURRENCY_OPTIONS}
+                  className="h-11"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
             )}
           />
         </div>
@@ -203,13 +202,12 @@ export function AddExpenseForm({ onSubmit, onCancel }: AddExpenseFormProps) {
                         Every
                       </label>
                       <FormControl>
-                        <select {...field} className={`flex-1 ${inputClasses}`}>
-                          {RECURRENCE_OPTIONS.map((opt) => (
-                            <option key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </option>
-                          ))}
-                        </select>
+                        <AppSelect
+                          value={field.value}
+                          onChange={field.onChange}
+                          options={RECURRENCE_OPTIONS}
+                          className="flex-1 h-11"
+                        />
                       </FormControl>
                     </div>
                     <FormMessage />

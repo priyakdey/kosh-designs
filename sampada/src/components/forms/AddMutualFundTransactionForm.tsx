@@ -16,6 +16,7 @@ import {
   INVESTMENT_TYPE_OPTIONS,
   BROKER_OPTIONS,
 } from "@/schemas/mutualFundTransactionSchema";
+import { AppSelect } from "@/components/shared/AppSelect";
 
 interface AddMutualFundTransactionFormProps {
   onSubmit: (values: MutualFundTransactionFormValues) => void;
@@ -154,13 +155,12 @@ export function AddMutualFundTransactionForm({
                     Investment Type <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <select {...field} className={inputClasses}>
-                      {INVESTMENT_TYPE_OPTIONS.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
+                    <AppSelect
+                      value={field.value}
+                      onChange={field.onChange}
+                      options={INVESTMENT_TYPE_OPTIONS}
+                      className="h-11"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -222,14 +222,13 @@ export function AddMutualFundTransactionForm({
                     Broker/Platform
                   </FormLabel>
                   <FormControl>
-                    <select {...field} className={inputClasses}>
-                      <option value="">Select broker...</option>
-                      {BROKER_OPTIONS.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
+                    <AppSelect
+                      value={field.value ?? undefined}
+                      onChange={field.onChange}
+                      options={BROKER_OPTIONS}
+                      placeholder="Select broker..."
+                      className="h-11"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

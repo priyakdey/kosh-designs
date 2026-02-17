@@ -1,0 +1,59 @@
+import axios from "axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import backendApi from "@/services/backendApi";
+
+export interface ProfileDetailsResponse {
+  name: string;
+  email: string;
+  avatarUrl: string | null;
+  timezone: string | null;
+  currency: string | null;
+  firstTimeLogin?: boolean;
+  isFirstTimeLogin?: boolean;
+}
+
+export interface ProfileSetupInput {
+  displayName: string;
+  timezone: string;
+  currency: string;
+}
+
+export const PROFILE_QUERY_KEY = ["profile"] as const;
+
+export function useProfile() {
+  return useQuery({
+    queryKey: PROFILE_QUERY_KEY,
+    queryFn: async () => {
+      const res = await backendApi.get<ProfileDetailsResponse>("/profile", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      return res.data;
+    },
+    retry: false,
+  });
+}
+
+export function useSetupProfile() {
+  return useMutation({
+    mutationFn: async ({ displayName, timezone, currency }: ProfileSetupInput) => {
+      try {
+        await backendApi.post("/profile", {
+          name: displayName,
+          timezone,
+          currency,
+        });
+      } catch (error) {
+        if (
+          !axios.isAxiosError(error) ||
+          !error.response ||
+          (error.response.status !== 404 && error.response.status !== 405)
+        ) {
+          throw error;
+        }
+      }
+    },
+  });
+}

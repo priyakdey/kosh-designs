@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, X } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -9,11 +8,9 @@ export function Landing() {
   const [modalOpen, setModalOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { login } = useAuth();
-  const navigate = useNavigate();
 
   const handleLogin = async () => {
     await login();
-    navigate({ to: "/dashboard" });
   };
 
   const openModal = () => setModalOpen(true);
@@ -98,17 +95,6 @@ export function Landing() {
       <section className="pt-32 pb-20 px-6">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 text-sm font-semibold text-purple-700 dark:text-purple-300 mb-6"
-            >
-              Tracking only
-              <span className="text-gray-500 dark:text-gray-400">•</span>
-              Not a broker, not a trading app
-            </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -178,19 +164,6 @@ export function Landing() {
                 </div>
               </div>
             </motion.div>
-
-            {/* Trust strip */}
-            <div className="mt-10 grid sm:grid-cols-3 gap-3 text-sm font-medium text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              <div className="px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
-                No money movement
-              </div>
-              <div className="px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
-                No trading or advisory
-              </div>
-              <div className="px-4 py-3 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
-                Built for household tracking
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -289,12 +262,12 @@ export function Landing() {
                     Current Plan
                   </div>
                   <h3 className="text-3xl font-bold mb-2">Early Access</h3>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 text-xs">
                     Full access during the current release phase.
                   </p>
                 </div>
                 <div className="sm:text-right">
-                  <div className="text-4xl font-bold">&pound;0</div>
+                  <div className="text-4xl font-bold">&#8377;0</div>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
                     per month
                   </div>
@@ -324,7 +297,7 @@ export function Landing() {
                     Coming Soon
                   </div>
                   <h3 className="text-3xl font-bold mb-2">Pro</h3>
-                  <p className="text-gray-600 dark:text-gray-300">
+                  <p className="text-gray-600 dark:text-gray-300 text-xs">
                     For users who need expanded limits and advanced controls.
                   </p>
                 </div>
@@ -357,8 +330,8 @@ export function Landing() {
 
           <div className="max-w-5xl mx-auto">
             <div className="pt-6 mt-6 border-t border-gray-200 dark:border-gray-800">
-              <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                If paid plans are introduced later, they will be structured by
+              <p className="text-sm text-gray-500 dark:text-gray-400 text-center italic">
+                * If paid plans are introduced later, they will be structured by
                 features and storage with advance notice.
               </p>
             </div>
@@ -635,7 +608,7 @@ export function Landing() {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                   />
                 </svg>
-                Continue with Google
+                Login with, Google
               </button>
 
               <p className="text-xs text-gray-500 dark:text-gray-500 text-center mt-6">

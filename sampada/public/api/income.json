@@ -8,12 +8,30 @@
     "sourcesCount": 3
   },
   "trend": [
-    { "month": "Sep", "amount": 75000 },
-    { "month": "Oct", "amount": 78000 },
-    { "month": "Nov", "amount": 80000 },
-    { "month": "Dec", "amount": 80000 },
-    { "month": "Jan", "amount": 81000 },
-    { "month": "Feb", "amount": 85000 }
+    {
+      "month": "Sep",
+      "amount": 75000
+    },
+    {
+      "month": "Oct",
+      "amount": 78000
+    },
+    {
+      "month": "Nov",
+      "amount": 80000
+    },
+    {
+      "month": "Dec",
+      "amount": 80000
+    },
+    {
+      "month": "Jan",
+      "amount": 81000
+    },
+    {
+      "month": "Feb",
+      "amount": 85000
+    }
   ],
   "highlights": {
     "topSource": "Salary",
@@ -24,10 +42,30 @@
     "sixMonthAvg": 79833
   },
   "allocation": [
-    { "source": "Salary", "amount": 63750, "percent": 75, "color": "#10b981" },
-    { "source": "Dividend", "amount": 12750, "percent": 15, "color": "#3b82f6" },
-    { "source": "Rental", "amount": 8500, "percent": 10, "color": "#a855f7" },
-    { "source": "Freelance", "amount": 0, "percent": 0, "color": "#f59e0b" }
+    {
+      "source": "Salary",
+      "amount": 63750,
+      "percent": 75,
+      "color": "#10b981"
+    },
+    {
+      "source": "Dividend",
+      "amount": 12750,
+      "percent": 15,
+      "color": "#3b82f6"
+    },
+    {
+      "source": "Rental",
+      "amount": 8500,
+      "percent": 10,
+      "color": "#a855f7"
+    },
+    {
+      "source": "Freelance",
+      "amount": 0,
+      "percent": 0,
+      "color": "#f59e0b"
+    }
   ],
   "entries": [
     {
@@ -56,6 +94,33 @@
       "amount": 8500,
       "currency": "INR",
       "recurring": "Every month on 1st"
+    },
+    {
+      "id": "inc_4",
+      "date": "2026-02-15",
+      "source": "Freelance",
+      "description": "Consulting - Acme Corp",
+      "amount": 5000,
+      "currency": "INR",
+      "recurring": null
+    },
+    {
+      "id": "inc_4",
+      "date": "2026-02-15",
+      "source": "Freelance",
+      "description": "Consulting - Acme Corp",
+      "amount": 5000,
+      "currency": "INR",
+      "recurring": null
+    },
+    {
+      "id": "inc_4",
+      "date": "2026-02-15",
+      "source": "Freelance",
+      "description": "Consulting - Acme Corp",
+      "amount": 5000,
+      "currency": "INR",
+      "recurring": null
     },
     {
       "id": "inc_4",

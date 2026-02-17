@@ -11,12 +11,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIncome } from "@/hooks/useIncome";
 import { useUIStore } from "@/stores/uiStore";
 import { formatCurrency } from "@/lib/utils";
+import { InteractiveDonutChart } from "@/components/charts/InteractiveDonutChart";
 import {
   PageHeader,
   PersonalFamilyTabs,
   FormModal,
   CategoryBadge,
   MonthSelector,
+  AppSelect,
   GradientButton,
 } from "@/components/shared";
 import { AddIncomeForm } from "@/components/forms/AddIncomeForm";
@@ -94,7 +96,10 @@ export function Income() {
           onChange={setSelectedMonth}
           months={months}
         />
-        <GradientButton onClick={() => openModal("add-income")}>
+        <GradientButton
+          onClick={() => openModal("add-income")}
+          className="h-10 min-w-44 inline-flex items-center justify-center"
+        >
           + Add Income
         </GradientButton>
       </PageHeader>
@@ -176,7 +181,7 @@ export function Income() {
           </div>
           <div className="flex-1 min-h-28">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={trend}>
+              <AreaChart data={trend} margin={{ left: 8, right: 12 }}>
                 <defs>
                   <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#10b981" stopOpacity={0.3} />
@@ -185,8 +190,11 @@ export function Income() {
                 </defs>
                 <XAxis
                   dataKey="month"
+                  interval={0}
+                  padding={{ left: 8, right: 8 }}
                   axisLine={false}
                   tickLine={false}
+                  tickMargin={8}
                   tick={{ fontSize: 11, fill: "#9ca3af" }}
                 />
                 <YAxis hide domain={["dataMin - 5000", "dataMax + 5000"]} />
@@ -242,53 +250,17 @@ export function Income() {
               Feb 2026
             </span>
           </div>
-          {/* Content pushed to bottom */}
-          <div className="flex-1 flex flex-col justify-end">
-            {/* Stacked bar */}
-            <div className="w-full h-2.5 rounded-full overflow-hidden flex mb-4">
-              {allocation
-                .filter((a) => a.percent > 0)
-                .map((a) => (
-                  <div
-                    key={a.source}
-                    className="h-full"
-                    style={{ width: `${a.percent}%`, backgroundColor: a.color }}
-                  />
-                ))}
-            </div>
-            {/* Source rows */}
-            <div className="space-y-3 overflow-y-auto">
-              {allocation.map((a) => (
-                <div key={a.source} className="flex items-center gap-3">
-                  <div
-                    className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: a.color }}
-                  />
-                  <div className="flex-1">
-                    <div className="flex justify-between mb-1">
-                      <span className="text-xs font-medium">{a.source}</span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-semibold">
-                          {formatCurrency(a.amount)}
-                        </span>
-                        <span className="text-xs text-gray-400">
-                          {a.percent}%
-                        </span>
-                      </div>
-                    </div>
-                    <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5">
-                      <div
-                        className="h-1.5 rounded-full"
-                        style={{
-                          width: `${a.percent}%`,
-                          backgroundColor: a.color,
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="flex-1 pt-2">
+            <InteractiveDonutChart
+              data={allocation.map((item) => ({
+                name: item.source,
+                amount: item.amount,
+                percent: item.percent,
+                color: item.color,
+              }))}
+              centerLabel={formatCompactCurrency(summary.totalIncome)}
+              centerSubLabel="Income"
+            />
           </div>
         </div>
 
@@ -320,7 +292,7 @@ export function Income() {
           </div>
           <div className="p-3 rounded-lg bg-purple-50 dark:bg-purple-900/10 border border-purple-100 dark:border-purple-900/30">
             <p className="text-xs text-gray-500 dark:text-gray-400">
-              6M Average
+              Last 6M Average
             </p>
             <p className="text-sm font-semibold text-purple-700 dark:text-purple-400 mt-0.5">
               {formatCurrency(highlights.sixMonthAvg)}
@@ -343,18 +315,19 @@ export function Income() {
             <span className="text-xs text-gray-500 dark:text-gray-400">
               Rows per page:
             </span>
-            <select
-              value={rowsPerPage}
-              onChange={(e) => {
-                setRowsPerPage(Number(e.target.value));
+            <AppSelect
+              value={String(rowsPerPage)}
+              onChange={(value) => {
+                setRowsPerPage(Number(value));
                 setCurrentPage(1);
               }}
-              className="text-xs px-2 py-1 border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-purple-500"
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-            </select>
+              options={[
+                { value: "5", label: "5" },
+                { value: "10", label: "10" },
+                { value: "20", label: "20" },
+              ]}
+              className="h-7 min-h-7 text-xs px-2 w-20"
+            />
           </div>
         </div>
 
@@ -406,10 +379,9 @@ export function Income() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     {entry.recurring ? (
                       <span
-                        className={`text-xs px-2 py-1 rounded ${
-                          RECURRING_BADGE_COLORS[entry.source] ??
+                        className={`text-xs px-2 py-1 rounded ${RECURRING_BADGE_COLORS[entry.source] ??
                           "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
-                        }`}
+                          }`}
                       >
                         {entry.recurring}
                       </span>

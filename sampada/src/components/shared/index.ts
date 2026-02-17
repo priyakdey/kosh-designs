@@ -6,5 +6,6 @@ export { FormModal } from "./FormModal";
 export { DataTableCard } from "./DataTableCard";
 export { CategoryBadge } from "./CategoryBadge";
 export { MonthSelector } from "./MonthSelector";
+export { AppSelect } from "./AppSelect";
 export { GradientButton } from "./GradientButton";
 export { ComingSoonBadge } from "./ComingSoonBadge";
