@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUIStore } from "@/stores/uiStore";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ComingSoonBadge } from "@/components/shared/ComingSoonBadge";
 
 export function Sidebar() {
@@ -89,15 +90,15 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav
-        className={cn(
-          "flex-1 overflow-y-auto overflow-x-hidden",
-          collapsed ? "px-2 py-4" : "px-3 py-4",
-        )}
-      >
-        <div className="space-y-1">
-          {/* Dashboard */}
-          <NavLink
+      <ScrollArea className="flex-1 overflow-hidden">
+        <nav
+          className={cn(
+            collapsed ? "px-2 py-4" : "px-3 py-4",
+          )}
+        >
+          <div className="space-y-1">
+            {/* Dashboard */}
+            <NavLink
             to="/"
             icon={<Home className="w-5 h-5" />}
             label="Dashboard"
@@ -236,8 +237,9 @@ export function Sidebar() {
               comingSoon
             />
           </div>
-        </div>
-      </nav>
+          </div>
+        </nav>
+      </ScrollArea>
 
       {/* Profile Footer */}
       <div

@@ -17,6 +17,7 @@ import {
   BROKER_OPTIONS,
 } from "@/schemas/mutualFundTransactionSchema";
 import { AppSelect } from "@/components/shared/AppSelect";
+import { DatePicker } from "@/components/shared/DatePicker";
 
 interface AddMutualFundTransactionFormProps {
   onSubmit: (values: MutualFundTransactionFormValues) => void;
@@ -176,7 +177,12 @@ export function AddMutualFundTransactionForm({
                     Investment Date <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <input type="date" className={inputClasses} {...field} />
+                    <DatePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Select date"
+                      className="h-11"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -318,7 +324,12 @@ export function AddMutualFundTransactionForm({
                     Sale Date <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <input type="date" className={inputClasses} {...field} />
+                    <DatePicker
+                      value={field.value ?? ""}
+                      onChange={field.onChange}
+                      placeholder="Select date"
+                      className="h-11"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

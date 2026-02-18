@@ -9,3 +9,4 @@ export { MonthSelector } from "./MonthSelector";
 export { AppSelect } from "./AppSelect";
 export { GradientButton } from "./GradientButton";
 export { ComingSoonBadge } from "./ComingSoonBadge";
+export { DatePicker } from "./DatePicker";

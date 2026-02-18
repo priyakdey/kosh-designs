@@ -423,147 +423,344 @@
                             <h3 class="text-lg font-semibold">Card Portfolio</h3>
                         </div>
                     </div>
-                    <div id="card-list" class="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto card-gradient text-white"
+                    <div id="card-list" class="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+                        <article class="relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group"
                             data-card-id="card-1" data-card-name="HDFC Regalia" data-outstanding="78000">
-                            <div class="flex items-start justify-between mb-5">
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-red-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                            <div class="relative h-full p-5 flex flex-col justify-between">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-xs text-white/60">HDFC Bank</p>
+                                        <p class="text-base font-semibold mt-0.5">Regalia</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-red-500/20 text-red-300 ring-1 ring-red-400/30">78%</span>
+                                        <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="card-1">
+                                            <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
                                 <div>
-                                    <p class="text-[10px] uppercase tracking-widest text-white/70">HDFC Bank</p>
-                                    <p class="text-base font-semibold">Regalia</p>
+                                    <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• 4821</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-end justify-between mb-2">
+                                        <div>
+                                            <p class="text-xs text-white/60">Outstanding</p>
+                                            <p class="text-xl font-bold">₹78,000</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-white/60">Limit</p>
+                                            <p class="text-sm font-semibold text-white/90">₹1,00,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-red-400 to-red-500" style="width: 78%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-white/60">
+                                        <span>Due 18/02/2026</span>
+                                        <span>78% used</span>
+                                    </div>
                                 </div>
                             </div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 4821</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹78,000</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,00,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">18/02/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">05/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-1">Remove</button>
-                            </div>
                         </article>
 
-                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-slate-900 to-blue-900 text-white"
+                        <article class="relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-slate-900 via-blue-900/80 to-slate-900 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group"
                             data-card-id="card-2" data-card-name="ICICI Amazon Pay" data-outstanding="42000">
-                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">ICICI Bank</p><p class="text-base font-semibold">Amazon Pay</p></div></div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 1960</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹42,000</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,00,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">22/02/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">10/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-2">Remove</button>
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-blue-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                            <div class="relative h-full p-5 flex flex-col justify-between">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-xs text-white/60">ICICI Bank</p>
+                                        <p class="text-base font-semibold mt-0.5">Amazon Pay</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/20 text-amber-300 ring-1 ring-amber-400/30">42%</span>
+                                        <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="card-2">
+                                            <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• 1960</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-end justify-between mb-2">
+                                        <div>
+                                            <p class="text-xs text-white/60">Outstanding</p>
+                                            <p class="text-xl font-bold">₹42,000</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-white/60">Limit</p>
+                                            <p class="text-sm font-semibold text-white/90">₹1,00,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500" style="width: 42%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-white/60">
+                                        <span>Due 22/02/2026</span>
+                                        <span>42% used</span>
+                                    </div>
+                                </div>
                             </div>
                         </article>
 
-                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-zinc-800 to-emerald-900 text-white"
+                        <article class="relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-zinc-900 via-emerald-900/60 to-zinc-900 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group"
                             data-card-id="card-3" data-card-name="SBI Cashback" data-outstanding="18450">
-                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">SBI Card</p><p class="text-base font-semibold">Cashback</p></div></div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 7754</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹18,450</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,00,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">02/03/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">17/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-3">Remove</button>
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-emerald-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-teal-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                            <div class="relative h-full p-5 flex flex-col justify-between">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-xs text-white/60">SBI Card</p>
+                                        <p class="text-base font-semibold mt-0.5">Cashback</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-400/30">18%</span>
+                                        <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="card-3">
+                                            <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• 7754</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-end justify-between mb-2">
+                                        <div>
+                                            <p class="text-xs text-white/60">Outstanding</p>
+                                            <p class="text-xl font-bold">₹18,450</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-white/60">Limit</p>
+                                            <p class="text-sm font-semibold text-white/90">₹1,00,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500" style="width: 18%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-white/60">
+                                        <span>Due 02/03/2026</span>
+                                        <span>18% used</span>
+                                    </div>
+                                </div>
                             </div>
                         </article>
 
-                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-indigo-900 to-violet-900 text-white"
+                        <article class="relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-indigo-950 via-violet-900/70 to-indigo-950 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group"
                             data-card-id="card-4" data-card-name="Axis Magnus" data-outstanding="56300">
-                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">Axis Bank</p><p class="text-base font-semibold">Magnus</p></div></div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 3391</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹56,300</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹2,50,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">24/02/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">11/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-4">Remove</button>
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-violet-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                            <div class="relative h-full p-5 flex flex-col justify-between">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-xs text-white/60">Axis Bank</p>
+                                        <p class="text-base font-semibold mt-0.5">Magnus</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-red-500/20 text-red-300 ring-1 ring-red-400/30">73%</span>
+                                        <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="card-4">
+                                            <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• 3391</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-end justify-between mb-2">
+                                        <div>
+                                            <p class="text-xs text-white/60">Outstanding</p>
+                                            <p class="text-xl font-bold">₹56,300</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-white/60">Limit</p>
+                                            <p class="text-sm font-semibold text-white/90">₹2,50,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-red-400 to-red-500" style="width: 73%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-white/60">
+                                        <span>Due 24/02/2026</span>
+                                        <span>73% used</span>
+                                    </div>
+                                </div>
                             </div>
                         </article>
 
-                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-cyan-900 to-sky-900 text-white"
+                        <article class="relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-cyan-950 via-sky-900/60 to-cyan-950 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group"
                             data-card-id="card-5" data-card-name="Kotak Zen" data-outstanding="22100">
-                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">Kotak</p><p class="text-base font-semibold">Zen</p></div></div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 6184</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹22,100</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹90,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">20/02/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">07/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-5">Remove</button>
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-sky-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-cyan-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                            <div class="relative h-full p-5 flex flex-col justify-between">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-xs text-white/60">Kotak</p>
+                                        <p class="text-base font-semibold mt-0.5">Zen</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/20 text-amber-300 ring-1 ring-amber-400/30">25%</span>
+                                        <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="card-5">
+                                            <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• 6184</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-end justify-between mb-2">
+                                        <div>
+                                            <p class="text-xs text-white/60">Outstanding</p>
+                                            <p class="text-xl font-bold">₹22,100</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-white/60">Limit</p>
+                                            <p class="text-sm font-semibold text-white/90">₹90,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500" style="width: 25%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-white/60">
+                                        <span>Due 20/02/2026</span>
+                                        <span>25% used</span>
+                                    </div>
+                                </div>
                             </div>
                         </article>
 
-                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-amber-900 to-orange-900 text-white"
+                        <article class="relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-amber-950 via-orange-900/60 to-amber-950 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group"
                             data-card-id="card-6" data-card-name="Amex Gold" data-outstanding="30900">
-                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">American Express</p><p class="text-base font-semibold">Gold</p></div></div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 0917</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹30,900</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,50,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">27/02/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">14/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-6">Remove</button>
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-orange-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-amber-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                            <div class="relative h-full p-5 flex flex-col justify-between">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-xs text-white/60">American Express</p>
+                                        <p class="text-base font-semibold mt-0.5">Gold</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-400/30">21%</span>
+                                        <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="card-6">
+                                            <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• 0917</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-end justify-between mb-2">
+                                        <div>
+                                            <p class="text-xs text-white/60">Outstanding</p>
+                                            <p class="text-xl font-bold">₹30,900</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-white/60">Limit</p>
+                                            <p class="text-sm font-semibold text-white/90">₹1,50,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500" style="width: 21%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-white/60">
+                                        <span>Due 27/02/2026</span>
+                                        <span>21% used</span>
+                                    </div>
+                                </div>
                             </div>
                         </article>
 
-                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-lime-900 to-emerald-800 text-white"
+                        <article class="relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-lime-950 via-emerald-900/50 to-lime-950 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group"
                             data-card-id="card-7" data-card-name="IndusInd Legend" data-outstanding="12750">
-                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">IndusInd</p><p class="text-base font-semibold">Legend</p></div></div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 5508</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹12,750</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹80,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">19/02/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">06/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-7">Remove</button>
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-emerald-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-lime-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                            <div class="relative h-full p-5 flex flex-col justify-between">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-xs text-white/60">IndusInd</p>
+                                        <p class="text-base font-semibold mt-0.5">Legend</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-400/30">16%</span>
+                                        <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="card-7">
+                                            <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• 5508</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-end justify-between mb-2">
+                                        <div>
+                                            <p class="text-xs text-white/60">Outstanding</p>
+                                            <p class="text-xl font-bold">₹12,750</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-white/60">Limit</p>
+                                            <p class="text-sm font-semibold text-white/90">₹80,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-emerald-400 to-emerald-500" style="width: 16%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-white/60">
+                                        <span>Due 19/02/2026</span>
+                                        <span>16% used</span>
+                                    </div>
+                                </div>
                             </div>
                         </article>
 
-                        <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-gray-800 to-neutral-950 text-white"
+                        <article class="relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-neutral-950 via-gray-800/70 to-neutral-950 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group"
                             data-card-id="card-8" data-card-name="Yes Prosperity" data-outstanding="40200">
-                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">YES Bank</p><p class="text-base font-semibold">Prosperity</p></div></div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 7305</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹40,200</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹1,20,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">26/02/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">13/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-8">Remove</button>
+                            <div class="absolute top-0 right-0 w-40 h-40 bg-gray-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-slate-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                            <div class="relative h-full p-5 flex flex-col justify-between">
+                                <div class="flex items-start justify-between">
+                                    <div>
+                                        <p class="uppercase tracking-widest text-xs text-white/60">YES Bank</p>
+                                        <p class="text-base font-semibold mt-0.5">Prosperity</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/20 text-amber-300 ring-1 ring-amber-400/30">34%</span>
+                                        <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="card-8">
+                                            <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• 7305</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-end justify-between mb-2">
+                                        <div>
+                                            <p class="text-xs text-white/60">Outstanding</p>
+                                            <p class="text-xl font-bold">₹40,200</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs text-white/60">Limit</p>
+                                            <p class="text-sm font-semibold text-white/90">₹1,20,000</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                                        <div class="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500" style="width: 34%"></div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-white/60">
+                                        <span>Due 26/02/2026</span>
+                                        <span>34% used</span>
+                                    </div>
+                                </div>
                             </div>
                         </article>
 
-                        <!-- <article class="rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-rose-900 to-fuchsia-900 text-white"
-                            data-card-id="card-9" data-card-name="RBL Shoprite" data-outstanding="9800">
-                            <div class="flex items-start justify-between mb-5"><div><p class="text-[10px] uppercase tracking-widest text-white/70">RBL Bank</p><p class="text-base font-semibold">Shoprite</p></div></div>
-                            <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• 8442</p>
-                            <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                                <div><p>Outstanding</p><p class="text-xs font-semibold text-white">₹9,800</p></div>
-                                <div><p>Limit</p><p class="text-xs font-semibold text-white">₹60,000</p></div>
-                                <div><p>Due By</p><p class="text-xs font-semibold text-white">21/02/2026</p></div>
-                                <div><p>Billing</p><p class="text-xs font-semibold text-white">08/02/2026</p></div>
-                            </div>
-                            <div class="mt-3 flex items-center gap-2">
-                                <button class="  text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="card-9">Security</button>
-                                <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="card-9">Remove</button>
-                            </div>
-                        </article> -->
                     </div>
                 </div>
 
@@ -979,6 +1176,25 @@
             scope.querySelectorAll('.remove-btn').forEach((btn) => {
                 btn.addEventListener('click', () => setRemoveContext(btn.dataset.cardId));
             });
+
+            scope.querySelectorAll('.action-menu-btn').forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    document.querySelectorAll('.card-action-dropdown').forEach(d => d.remove());
+                    const cardId = btn.dataset.cardId;
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'card-action-dropdown absolute right-4 top-12 z-10 bg-gray-900/95 backdrop-blur-sm border border-white/10 rounded-lg shadow-2xl py-1 min-w-[140px]';
+                    dropdown.innerHTML = `
+                        <button class="security-action w-full text-left px-4 py-2 text-xs text-white/80 hover:bg-white/10 transition-colors" data-card-id="${cardId}">Security</button>
+                        <button class="remove-action w-full text-left px-4 py-2 text-xs text-red-400 hover:bg-white/10 transition-colors" data-card-id="${cardId}">Remove</button>
+                    `;
+                    btn.closest('.relative').appendChild(dropdown);
+                    dropdown.querySelector('.security-action').addEventListener('click', () => { dropdown.remove(); setSecurityContext(cardId); });
+                    dropdown.querySelector('.remove-action').addEventListener('click', () => { dropdown.remove(); setRemoveContext(cardId); });
+                    const closeDropdown = (ev) => { if (!dropdown.contains(ev.target) && ev.target !== btn) { dropdown.remove(); document.removeEventListener('click', closeDropdown); } };
+                    setTimeout(() => document.addEventListener('click', closeDropdown), 0);
+                });
+            });
         }
 
         function formatMoney(value) {
@@ -1005,40 +1221,55 @@
 
             const cardId = `card-${Date.now()}`;
 
+            const utilPct = limit > 0 ? Math.round((Number(outstanding) / Number(limit)) * 100) : 0;
+            let badgeColor, barColor;
+            if (utilPct > 70) { badgeColor = 'bg-red-500/20 text-red-300 ring-red-400/30'; barColor = 'from-red-400 to-red-500'; }
+            else if (utilPct >= 30) { badgeColor = 'bg-amber-500/20 text-amber-300 ring-amber-400/30'; barColor = 'from-amber-400 to-amber-500'; }
+            else { badgeColor = 'bg-emerald-500/20 text-emerald-300 ring-emerald-400/30'; barColor = 'from-emerald-400 to-emerald-500'; }
+
             const article = document.createElement('article');
-            article.className = 'rounded-xl p-3 max-w-[320px] w-full aspect-[1.58/1] mx-auto bg-gradient-to-br from-zinc-900 to-slate-800 text-white';
+            article.className = 'relative rounded-2xl overflow-hidden aspect-[1.586/1] bg-gradient-to-br from-zinc-900 via-slate-800/70 to-zinc-900 text-white ring-1 ring-white/10 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl group';
             article.setAttribute('data-card-id', cardId);
             article.setAttribute('data-card-name', `${bank} ${type}`);
             article.setAttribute('data-outstanding', String(Number(outstanding)));
             article.innerHTML = `
-                <div class="flex items-start justify-between mb-5">
-                    <div>
-                        <p class="text-[10px] uppercase tracking-widest text-white/70">${bank}</p>
-                        <p class="text-base font-semibold">${type}</p>
-                    </div>
-                </div>
-                <p class="text-lg tracking-[0.18em] mb-3 card-number">•••• •••• •••• ${last4}</p>
-                <div class="grid grid-cols-2 gap-2 text-[11px] text-white/85">
-                    <div>
-                        <p>Outstanding</p>
-                        <p class="text-xs font-semibold text-white">₹${formatMoney(outstanding)}</p>
-                    </div>
-                    <div>
-                        <p>Limit</p>
-                        <p class="text-xs font-semibold text-white">₹${formatMoney(limit)}</p>
-                    </div>
-                    <div>
-                        <p>Due By</p>
-                        <p class="text-xs font-semibold text-white">${formatDueDate(dueDate)}</p>
+                <div class="absolute top-0 right-0 w-40 h-40 bg-slate-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-gray-500/8 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"></div>
+                <div class="relative h-full p-5 flex flex-col justify-between">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="uppercase tracking-widest text-xs text-white/60">${bank}</p>
+                            <p class="text-base font-semibold mt-0.5">${type}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${badgeColor} ring-1">${utilPct}%</span>
+                            <button class="action-menu-btn p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100" data-card-id="${cardId}">
+                                <svg class="w-4 h-4 text-white/60" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="4" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="10" cy="16" r="1.5"/></svg>
+                            </button>
+                        </div>
                     </div>
                     <div>
-                        <p>Billing</p>
-                        <p class="text-xs font-semibold text-white">${formatDueDate(billingDate)}</p>
+                        <p class="tracking-[0.25em] text-sm text-white/80 card-number">•••• •••• •••• ${last4}</p>
                     </div>
-                </div>
-                <div class="mt-3 flex items-center gap-2">
-                    <button class="security-btn text-[11px] px-2.5 py-1 rounded bg-white/15 hover:bg-white/20" data-card-id="${cardId}">Security</button>
-                    <button class="remove-btn text-[11px] px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30" data-card-id="${cardId}">Remove</button>
+                    <div>
+                        <div class="flex items-end justify-between mb-2">
+                            <div>
+                                <p class="text-xs text-white/60">Outstanding</p>
+                                <p class="text-xl font-bold">₹${formatMoney(outstanding)}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-white/60">Limit</p>
+                                <p class="text-sm font-semibold text-white/90">₹${formatMoney(limit)}</p>
+                            </div>
+                        </div>
+                        <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+                            <div class="h-full rounded-full bg-gradient-to-r ${barColor}" style="width: ${utilPct}%"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-white/60">
+                            <span>Due ${formatDueDate(dueDate)}</span>
+                            <span>${utilPct}% used</span>
+                        </div>
+                    </div>
                 </div>
             `;
 

@@ -15,7 +15,7 @@ export interface AppSelectOption {
 interface AppSelectProps {
   value?: string;
   onChange: (value: string) => void;
-  options: AppSelectOption[];
+  options: readonly AppSelectOption[];
   placeholder?: string;
   className?: string;
   disabled?: boolean;

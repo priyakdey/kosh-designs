@@ -1,0 +1,186 @@
+{
+  "summary": {
+    "totalOutstanding": 138450,
+    "totalCreditLimit": 400000,
+    "utilizationPercent": 34.6,
+    "activeCards": 3,
+    "dueIn7Days": 48200,
+    "minDue": 6920
+  },
+  "cards": [
+    {
+      "id": "card-1",
+      "bankName": "HDFC Bank",
+      "cardVariant": "Regalia",
+      "network": "visa",
+      "last4": "4821",
+      "outstanding": 78000,
+      "creditLimit": 100000,
+      "dueDate": "2026-02-18",
+      "billingDate": "2026-02-05",
+      "themeId": "slate-red"
+    },
+    {
+      "id": "card-2",
+      "bankName": "ICICI Bank",
+      "cardVariant": "Amazon Pay",
+      "network": "visa",
+      "last4": "1960",
+      "outstanding": 42000,
+      "creditLimit": 100000,
+      "dueDate": "2026-02-22",
+      "billingDate": "2026-02-10",
+      "themeId": "slate-blue"
+    },
+    {
+      "id": "card-3",
+      "bankName": "SBI Card",
+      "cardVariant": "Cashback",
+      "network": "rupay",
+      "last4": "7754",
+      "outstanding": 18450,
+      "creditLimit": 100000,
+      "dueDate": "2026-03-02",
+      "billingDate": "2026-02-17",
+      "themeId": "zinc-emerald"
+    },
+    {
+      "id": "card-4",
+      "bankName": "Axis Bank",
+      "cardVariant": "Magnus",
+      "network": "visa",
+      "last4": "3391",
+      "outstanding": 56300,
+      "creditLimit": 250000,
+      "dueDate": "2026-02-24",
+      "billingDate": "2026-02-11",
+      "themeId": "indigo-violet"
+    },
+    {
+      "id": "card-5",
+      "bankName": "Kotak",
+      "cardVariant": "Zen",
+      "network": "mastercard",
+      "last4": "6184",
+      "outstanding": 22100,
+      "creditLimit": 90000,
+      "dueDate": "2026-02-20",
+      "billingDate": "2026-02-07",
+      "themeId": "cyan-sky"
+    },
+    {
+      "id": "card-6",
+      "bankName": "American Express",
+      "cardVariant": "Gold",
+      "network": "amex",
+      "last4": "0917",
+      "outstanding": 30900,
+      "creditLimit": 150000,
+      "dueDate": "2026-02-27",
+      "billingDate": "2026-02-14",
+      "themeId": "amber-orange"
+    },
+    {
+      "id": "card-7",
+      "bankName": "IndusInd",
+      "cardVariant": "Legend",
+      "network": "mastercard",
+      "last4": "5508",
+      "outstanding": 12750,
+      "creditLimit": 80000,
+      "dueDate": "2026-02-19",
+      "billingDate": "2026-02-06",
+      "themeId": "lime-emerald"
+    },
+    {
+      "id": "card-8",
+      "bankName": "YES Bank",
+      "cardVariant": "Prosperity",
+      "network": "rupay",
+      "last4": "7305",
+      "outstanding": 40200,
+      "creditLimit": 120000,
+      "dueDate": "2026-02-26",
+      "billingDate": "2026-02-13",
+      "themeId": "neutral-gray"
+    }
+  ],
+  "utilization": [
+    {
+      "cardId": "card-1",
+      "label": "HDFC Regalia \u2022\u2022\u2022\u2022 4821",
+      "percent": 78
+    },
+    {
+      "cardId": "card-2",
+      "label": "ICICI Amazon Pay \u2022\u2022\u2022\u2022 1960",
+      "percent": 42
+    },
+    {
+      "cardId": "card-3",
+      "label": "SBI Cashback \u2022\u2022\u2022\u2022 7754",
+      "percent": 14
+    },
+    {
+      "cardId": "card-3",
+      "label": "SBI Cashback \u2022\u2022\u2022\u2022 7754",
+      "percent": 14
+    },
+    {
+      "cardId": "card-3",
+      "label": "SBI Cashback \u2022\u2022\u2022\u2022 7754",
+      "percent": 14
+    },
+    {
+      "cardId": "card-3",
+      "label": "SBI Cashback \u2022\u2022\u2022\u2022 7754",
+      "percent": 14
+    }
+  ],
+  "timeline": [
+    {
+      "cardId": "card-1",
+      "date": "18/02/2026",
+      "label": "HDFC Regalia due",
+      "amount": 32500,
+      "severity": "high"
+    },
+    {
+      "cardId": "card-2",
+      "date": "22/02/2026",
+      "label": "ICICI Amazon Pay due",
+      "amount": 15700,
+      "severity": "medium"
+    },
+    {
+      "cardId": "card-3",
+      "date": "02/03/2026",
+      "label": "SBI Cashback due",
+      "amount": 8900,
+      "severity": "low"
+    }
+  ],
+  "recentActivity": [
+    {
+      "id": "act-1",
+      "date": "2026-02-14",
+      "cardLabel": "HDFC \u2022\u2022\u2022\u2022 4821",
+      "merchant": "Air India",
+      "amount": 21300
+    },
+    {
+      "id": "act-2",
+      "date": "2026-02-13",
+      "cardLabel": "ICICI \u2022\u2022\u2022\u2022 1960",
+      "merchant": "Amazon India",
+      "amount": 8940
+    },
+    {
+      "id": "act-3",
+      "date": "2026-02-12",
+      "cardLabel": "SBI \u2022\u2022\u2022\u2022 7754",
+      "merchant": "Zomato",
+      "amount": 1260
+    }
+  ]
+}

@@ -167,3 +167,59 @@ export interface MutualFundData {
   fundTypeAllocation: FundTypeAllocation[];
   sectorAllocation: SectorAllocation[];
 }
+
+/* ------------------------------------------------------------------ */
+/* Credit Cards                                                        */
+/* ------------------------------------------------------------------ */
+
+export interface CreditCard {
+  id: string;
+  bankName: string;
+  cardVariant: string;
+  network: string;
+  last4: string;
+  outstanding: number;
+  creditLimit: number;
+  dueDate: string;
+  billingDate: string;
+  themeId: string;
+}
+
+export interface CreditCardSummary {
+  totalOutstanding: number;
+  totalCreditLimit: number;
+  utilizationPercent: number;
+  activeCards: number;
+  dueIn7Days: number;
+  minDue: number;
+}
+
+export interface CreditCardUtilization {
+  cardId: string;
+  label: string;
+  percent: number;
+}
+
+export interface PaymentTimelineEntry {
+  cardId: string;
+  date: string;
+  label: string;
+  amount: number;
+  severity: "high" | "medium" | "low";
+}
+
+export interface CreditCardActivity {
+  id: string;
+  date: string;
+  cardLabel: string;
+  merchant: string;
+  amount: number;
+}
+
+export interface CreditCardData {
+  summary: CreditCardSummary;
+  cards: CreditCard[];
+  utilization: CreditCardUtilization[];
+  timeline: PaymentTimelineEntry[];
+  recentActivity: CreditCardActivity[];
+}

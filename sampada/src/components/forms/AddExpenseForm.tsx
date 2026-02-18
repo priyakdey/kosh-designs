@@ -16,6 +16,7 @@ import {
   RECURRENCE_OPTIONS,
 } from "@/schemas/expenseSchema";
 import { AppSelect } from "@/components/shared/AppSelect";
+import { DatePicker } from "@/components/shared/DatePicker";
 
 interface AddExpenseFormProps {
   onSubmit: (values: ExpenseFormValues) => void;
@@ -105,19 +106,19 @@ export function AddExpenseForm({ onSubmit, onCancel }: AddExpenseFormProps) {
             name="currency"
             render={({ field }) => (
               <FormItem>
-              <FormLabel className="block text-sm font-medium mb-2">
-                Currency
-              </FormLabel>
-              <FormControl>
-                <AppSelect
-                  value={field.value}
-                  onChange={field.onChange}
-                  options={CURRENCY_OPTIONS}
-                  className="h-11"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+                <FormLabel className="block text-sm font-medium mb-2">
+                  Currency
+                </FormLabel>
+                <FormControl>
+                  <AppSelect
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={CURRENCY_OPTIONS}
+                    className="h-11"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
         </div>
@@ -152,7 +153,12 @@ export function AddExpenseForm({ onSubmit, onCancel }: AddExpenseFormProps) {
                 Date <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <input type="date" className={inputClasses} {...field} />
+                <DatePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Select date"
+                  className="h-11"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -222,13 +228,14 @@ export function AddExpenseForm({ onSubmit, onCancel }: AddExpenseFormProps) {
                   <FormItem>
                     <div className="flex items-center gap-2">
                       <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                        Starts ON
+                        Starts On
                       </label>
                       <FormControl>
-                        <input
-                          type="date"
-                          className={`flex-1 ${inputClasses}`}
-                          {...field}
+                        <DatePicker
+                          value={field.value ?? ""}
+                          onChange={field.onChange}
+                          placeholder="Start date"
+                          className="flex-1 h-11"
                         />
                       </FormControl>
                     </div>
@@ -242,12 +249,12 @@ export function AddExpenseForm({ onSubmit, onCancel }: AddExpenseFormProps) {
               starting{" "}
               {form.watch("recurrenceStartDate")
                 ? new Date(
-                    form.watch("recurrenceStartDate")!,
-                  ).toLocaleDateString("en-IN", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })
+                  form.watch("recurrenceStartDate")!,
+                ).toLocaleDateString("en-IN", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })
                 : "..."}
             </p>
           </div>
