@@ -1,14 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  Home,
-  TrendingUp,
   ChartArea,
   PiggyBank,
-  RefreshCw,
   ShieldCheck,
   CreditCard,
-  Banknote,
   Calculator,
   Target,
   BarChart3,
@@ -18,7 +14,15 @@ import {
   BanknoteArrowUp,
   BanknoteArrowDown,
   Vault,
-  ChartNoAxesCombined,
+  LayoutDashboard,
+  LineChart,
+  Coins,
+  HandCoins,
+  PieChart,
+  Repeat,
+  HeartHandshake,
+  Activity,
+  Umbrella,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -26,28 +30,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useUIStore } from "@/stores/uiStore";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ComingSoonBadge } from "@/components/shared/ComingSoonBadge";
-
-function GoldJarIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-      {/* Lid */}
-      <rect x="4.5" y="1.5" width="7" height="1.4" rx="0.4" fill="currentColor" fillOpacity="0.55" />
-      {/* Lid rim */}
-      <rect x="4" y="2.75" width="8" height="0.75" rx="0.3" fill="currentColor" fillOpacity="0.35" />
-      {/* Jar body */}
-      <path d="M4.5 3.5C3.2 3.5 2.5 4.2 2.5 5V12.5C2.5 13.3 3.2 14 4.5 14H11.5C12.8 14 13.5 13.3 13.5 12.5V5C13.5 4.2 12.8 3.5 11.5 3.5Z"
-        fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="0.85" strokeOpacity="0.75" />
-      {/* Jar shine */}
-      <path d="M4.1 5.5Q3.9 7.5 4.1 10" stroke="currentColor" strokeOpacity="0.22" strokeWidth="0.75" strokeLinecap="round" />
-      {/* Coin outer ring */}
-      <circle cx="8" cy="9" r="2.75" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="0.85" strokeOpacity="0.9" />
-      {/* Coin inner ring */}
-      <circle cx="8" cy="9" r="1.6" fill="none" stroke="currentColor" strokeWidth="0.55" strokeOpacity="0.45" />
-      {/* Coin centre */}
-      <circle cx="8" cy="9" r="0.45" fill="currentColor" fillOpacity="0.65" />
-    </svg>
-  );
-}
 
 export function Sidebar() {
   const collapsed = useUIStore((s) => s.sidebarCollapsed);
@@ -142,7 +124,7 @@ export function Sidebar() {
             {/* Dashboard */}
             <NavLink
               to="/"
-              icon={<Home className="w-5 h-5" />}
+              icon={<LayoutDashboard className="w-5 h-5" />}
               label="Dashboard"
               active={isActive("/")}
               collapsed={collapsed}
@@ -186,20 +168,20 @@ export function Sidebar() {
                 <SubNavLink
                   to="/investments/mutual-funds"
                   label="Mutual Funds"
-                  icon={<ChartNoAxesCombined className="w-4 h-4" />}
+                  icon={<PieChart className="w-4 h-4" />}
                   active={isActive("/investments/mutual-funds")}
                   collapsed={collapsed}
                 />
                 <SubNavLink
                   to="/investments/stocks"
                   label="Stocks"
-                  icon={<TrendingUp className="w-4 h-4" />}
+                  icon={<LineChart className="w-4 h-4" />}
                   active={isActive("/investments/stocks")}
                   collapsed={collapsed}
                 />
                 <SubNavLink
                   label="SGB"
-                  icon={<GoldJarIcon className="w-4 h-4" />}
+                  icon={<Coins className="w-4 h-4" />}
                   collapsed={collapsed}
                   comingSoon
                 />
@@ -219,7 +201,7 @@ export function Sidebar() {
                 <SubNavLink
                   to="/investments/recurring-deposits"
                   label="Recurring Deposits"
-                  icon={<RefreshCw className="w-4 h-4" />}
+                  icon={<Repeat className="w-4 h-4" />}
                   active={isActive("/investments/recurring-deposits")}
                   collapsed={collapsed}
                 />
@@ -258,14 +240,60 @@ export function Sidebar() {
                 />
                 <SubNavLink
                   label="Loans"
-                  icon={<Banknote className="w-4 h-4" />}
+                  icon={<HandCoins className="w-4 h-4" />}
                   collapsed={collapsed}
                   comingSoon
                 />
               </div>
             </div>
 
-            {/* Divider */}
+
+            {/* Protection Section */}
+            <div className="pt-3">
+              <div className="border-t border-gray-200 dark:border-gray-800 mb-3" />
+              <div
+                className={cn(
+                  "flex items-center text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1",
+                  collapsed ? "justify-center px-0 py-1" : "px-3 py-1",
+                )}
+              >
+                {collapsed ? (
+                  <ShieldCheck className="w-4 h-4" />
+                ) : (
+                  <span>Protection</span>
+                )}
+              </div>
+
+              <div className="space-y-0.5">
+                <SubNavLink
+                  to="/protection/life-insurance"
+                  label="Life Insurance"
+                  icon={<HeartHandshake className="w-4 h-4" />}
+                  active={isActive("/protection/life-insurance")}
+                  collapsed={collapsed}
+                  comingSoon
+                />
+                <SubNavLink
+                  to="/protection/health-insurance"
+                  label="Health Insurance"
+                  icon={<Activity className="w-4 h-4" />}
+                  active={isActive("/protection/health-insurance")}
+                  collapsed={collapsed}
+                  comingSoon
+                />
+                <SubNavLink
+                  to="/protection/general-insurance"
+                  label="General Insurance"
+                  icon={<Umbrella className="w-4 h-4" />}
+                  active={isActive("/protection/general-insurance")}
+                  collapsed={collapsed}
+                  comingSoon
+                />
+              </div>
+            </div>
+
+
+            {/* Goals and Reports */}
             <div className="pt-3">
               <div className="border-t border-gray-200 dark:border-gray-800 mb-3" />
               <NavLink
