@@ -5,8 +5,8 @@ import type { ExpenseData } from "@/types";
 export function useExpenses() {
   return useQuery({
     queryKey: ["expenses"],
-    queryFn: async () => {
-      const res = await backendApi.get<ExpenseData>("/expenses");
+    queryFn: async ({ signal }) => {
+      const res = await backendApi.get<ExpenseData>("/expenses", { signal });
       return res.data;
     },
   });

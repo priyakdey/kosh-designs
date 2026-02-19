@@ -112,7 +112,7 @@ export function Landing() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto"
             >
-              Track income, expenses, investments, and goals — all in one place.
+              Track income, expenses, investments, and goals - all in one place.
               Built for modern Indian families.
             </motion.p>
 
@@ -185,7 +185,7 @@ export function Landing() {
             {[
               {
                 title: "Complete Financial Tracking",
-                desc: "Track income, expenses, mutual funds, stocks, FDs, PPF, and more — all in one unified dashboard.",
+                desc: "Track income, expenses, mutual funds, stocks, FDs, PPF, and more - all in one unified dashboard.",
                 icon: (
                   <path
                     strokeLinecap="round"

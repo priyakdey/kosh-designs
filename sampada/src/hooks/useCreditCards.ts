@@ -4,6 +4,6 @@ import { getCreditCards } from "@/services/creditCardsApi";
 export function useCreditCards() {
   return useQuery({
     queryKey: ["creditCards"],
-    queryFn: getCreditCards,
+    queryFn: ({ signal }) => getCreditCards(signal),
   });
 }

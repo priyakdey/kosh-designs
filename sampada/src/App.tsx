@@ -1,11 +1,40 @@
 import { RouterProvider } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster, toast } from "sonner";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { router } from "@/router";
 import { ProfileSetupModal } from "@/components/forms/ProfileSetupModal";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 30_000,
+      throwOnError: false,
+      queryFn: undefined,
+    },
+    mutations: {
+      onError: () => {
+        toast.error("Something went wrong. Please try again.");
+      },
+    },
+  },
+});
+
+// Global query error handler
+queryClient.getQueryCache().subscribe((event) => {
+  if (event.type === "updated" && event.query.state.status === "error") {
+    const err = event.query.state.error as { code?: string; message?: string } | null;
+    const isTimeout = err?.code === "ECONNABORTED" || err?.message?.includes("timeout");
+    toast.error(
+      isTimeout
+        ? "Request timed out. The server took too long to respond."
+        : "Failed to load data. Please check your connection and try again.",
+      { id: String(event.query.queryHash) },
+    );
+  }
+});
 
 function InnerApp() {
   const auth = useAuth();
@@ -77,6 +106,18 @@ export default function App() {
       <ThemeProvider>
         <AuthProvider>
           <InnerApp />
+          <Toaster
+            position="bottom-right"
+            dir="ltr"
+            richColors
+            closeButton
+            toastOptions={{
+              duration: 3000,
+              classNames: {
+                error: "border border-red-200 dark:border-red-800",
+              },
+            }}
+          />
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

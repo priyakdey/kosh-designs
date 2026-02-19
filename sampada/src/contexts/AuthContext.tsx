@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const profileQuery = useProfile();
 
-  // Initial session-hint delay — only runs when hint is present.
+  // Initial session-hint delay - only runs when hint is present.
   useEffect(() => {
     if (!hasSessionHint()) return;
     const id = window.setTimeout(() => setMinDelayDone(true), BOOTSTRAP_MIN_DELAY_MS);
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   //   (b) we are in the post-setup completion phase.
   const isLoading = !(isProfileSettled && minDelayDone) || isCompletingSetup;
 
-  // Progress bar animation — runs whenever isLoading is true.
+  // Progress bar animation - runs whenever isLoading is true.
   useEffect(() => {
     if (!isLoading) {
       setBootstrapProgress(100);
@@ -171,7 +171,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const completeProfileSetup = useCallback(
     async ({ displayName, timezone, currency }: ProfileSetupInput) => {
-      // Immediately engage the overlay — modal can unmount cleanly behind it.
+      // Immediately engage the overlay - modal can unmount cleanly behind it.
       setRequiresProfileSetup(false);
       setIsCompletingSetup(true);
 

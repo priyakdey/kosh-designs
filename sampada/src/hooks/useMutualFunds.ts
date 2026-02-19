@@ -5,8 +5,8 @@ import type { MutualFundData } from "@/types";
 export function useMutualFunds() {
   return useQuery({
     queryKey: ["mutualFunds"],
-    queryFn: async () => {
-      const res = await backendApi.get<MutualFundData>("/mutual-funds");
+    queryFn: async ({ signal }) => {
+      const res = await backendApi.get<MutualFundData>("/mutual-funds", { signal });
       return res.data;
     },
   });

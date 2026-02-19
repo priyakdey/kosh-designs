@@ -1,4 +1,4 @@
-// NOTE: remove `consumes` from @RequestMapping — GET has no request body,
+// NOTE: remove `consumes` from @RequestMapping - GET has no request body,
 // so Spring rejects requests that don't send Content-Type: application/json,
 // which is what was causing the application/problem+json error response.
 

@@ -9,6 +9,8 @@ import {
 } from "recharts";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useExpenses } from "@/hooks/useExpenses";
+import { PageLoader } from "@/components/shared/PageLoader";
+import { ServiceDownPage } from "@/components/shared/ServiceDownPage";
 import { useUIStore } from "@/stores/uiStore";
 import { formatCurrency } from "@/lib/utils";
 import { InteractiveDonutChart } from "@/components/charts/InteractiveDonutChart";
@@ -64,20 +66,15 @@ function formatDate(dateStr: string): string {
 }
 
 export function Expenses() {
-  const { data, isLoading } = useExpenses();
+  const { data, isLoading, isError, refetch } = useExpenses();
   const { activeModal, openModal, closeModal } = useUIStore();
   const modalOpen = activeModal === "add-expense";
   const [selectedMonth, setSelectedMonth] = useState("February 2026");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  if (isLoading || !data) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
-      </div>
-    );
-  }
+  if (isError) return <ServiceDownPage onRetry={refetch} />;
+  if (isLoading || !data) return <PageLoader />;
 
   const { summary, allocation, entries, months } = data;
   const recurringTotal = entries

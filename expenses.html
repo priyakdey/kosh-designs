@@ -145,7 +145,8 @@
                                 <span class="w-2 h-2 rounded-full bg-purple-500"></span>
                                 <span class="sidebar-text">Mutual Funds</span>
                             </a>
-                            <a href="investments/stocks.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                            <a href="investments/stocks.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
                                 <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
                                 <span class="sidebar-text">Stocks</span>
                             </a>
@@ -157,11 +158,13 @@
                                 <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                                 <span class="sidebar-text">PPF</span>
                             </a>
-                            <a href="investments/fixed-deposits.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                            <a href="investments/fixed-deposits.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
                                 <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
                                 <span class="sidebar-text">Fixed Deposits</span>
                             </a>
-                            <a href="investments/recurring-deposits.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
+                            <a href="investments/recurring-deposits.html"
+                                class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm">
                                 <span class="w-2 h-2 rounded-full bg-sky-500"></span>
                                 <span class="sidebar-text">Recurring Deposits</span>
                             </a>
@@ -322,7 +325,9 @@
                         class="px-4 py-2 border-b-2 border-transparent text-gray-400 dark:text-gray-600 font-semibold cursor-not-allowed"
                         disabled>
                         Family
-                        <span class="ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md">Coming Soon</span>
+                        <span
+                            class="ml-2 inline-flex items-center whitespace-nowrap text-[10px] font-medium text-gray-600 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 px-1.5 py-0.5 rounded-md">Coming
+                            Soon</span>
                     </button>
                 </div>
             </div>
@@ -354,8 +359,10 @@
                             <h2 class="text-4xl font-bold" id="total-expense">₹42,500</h2>
                             <div class="flex items-center gap-1 mb-1 bg-white/20 px-2 py-0.5 rounded-full">
                                 <!-- Down arrow = good for expenses -->
-                                <svg class="w-3.5 h-3.5 text-green-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                                <svg class="w-3.5 h-3.5 text-green-200" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                                 </svg>
                                 <span class="text-green-200 font-semibold text-sm">-3.1%</span>
                                 <span class="text-red-200 text-xs">vs last month</span>
@@ -386,12 +393,16 @@
                 <!-- Family breakdown (inline, hidden by default) -->
                 <div id="family-breakdown" class="hidden mt-4 pt-4 border-t border-white/20 flex gap-4 flex-wrap">
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center text-white text-xs font-bold">P</div>
+                        <div
+                            class="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center text-white text-xs font-bold">
+                            P</div>
                         <span class="text-red-100 text-sm">Priyak</span>
                         <span class="font-semibold">₹42,500</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center text-white text-xs font-bold">S</div>
+                        <div
+                            class="w-6 h-6 rounded-full bg-white/30 flex items-center justify-center text-white text-xs font-bold">
+                            S</div>
                         <span class="text-red-100 text-sm">Spouse</span>
                         <span class="font-semibold">₹38,200</span>
                     </div>
@@ -402,31 +413,36 @@
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
 
                 <!-- Expense Trend Sparkline (2/5) -->
-                <div class="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                <div
+                    class="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
                     <div class="flex items-center justify-between mb-3">
                         <div>
                             <h3 class="text-sm font-semibold">Expense Trend</h3>
                             <p class="text-xs text-gray-500 dark:text-gray-400">Last 6 months</p>
                         </div>
-                        <span class="text-xs text-green-600 dark:text-green-400 font-semibold bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">↓ Improving</span>
+                        <span
+                            class="text-xs text-green-600 dark:text-green-400 font-semibold bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full">↓
+                            Improving</span>
                     </div>
                     <svg class="w-full h-28" viewBox="0 0 400 120" preserveAspectRatio="none">
                         <defs>
                             <linearGradient id="expenseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.25"/>
-                                <stop offset="100%" style="stop-color:#ef4444;stop-opacity:0.02"/>
+                                <stop offset="0%" style="stop-color:#ef4444;stop-opacity:0.25" />
+                                <stop offset="100%" style="stop-color:#ef4444;stop-opacity:0.02" />
                             </linearGradient>
                         </defs>
                         <!-- Line goes DOWN = good (expenses reducing) -->
-                        <polygon points="0,120 0,38 80,45 160,52 240,60 320,65 400,75 400,120" fill="url(#expenseGrad)"/>
-                        <polyline points="0,38 80,45 160,52 240,60 320,65 400,75" fill="none" stroke="#ef4444" stroke-width="2.5"/>
-                        <circle cx="0"   cy="38" r="3" fill="#ef4444"/>
-                        <circle cx="160" cy="52" r="3" fill="#ef4444"/>
-                        <circle cx="320" cy="65" r="3" fill="#ef4444"/>
-                        <circle cx="400" cy="75" r="4" fill="#ef4444" stroke="white" stroke-width="2"/>
+                        <polygon points="0,120 0,38 80,45 160,52 240,60 320,65 400,75 400,120"
+                            fill="url(#expenseGrad)" />
+                        <polyline points="0,38 80,45 160,52 240,60 320,65 400,75" fill="none" stroke="#ef4444"
+                            stroke-width="2.5" />
+                        <circle cx="0" cy="38" r="3" fill="#ef4444" />
+                        <circle cx="160" cy="52" r="3" fill="#ef4444" />
+                        <circle cx="320" cy="65" r="3" fill="#ef4444" />
+                        <circle cx="400" cy="75" r="4" fill="#ef4444" stroke="white" stroke-width="2" />
                         <g fill="#9ca3af" font-size="11">
-                            <text x="0"   y="115">Sep</text>
-                            <text x="72"  y="115">Oct</text>
+                            <text x="0" y="115">Sep</text>
+                            <text x="72" y="115">Oct</text>
                             <text x="150" y="115">Nov</text>
                             <text x="225" y="115">Dec</text>
                             <text x="308" y="115">Jan</text>
@@ -443,12 +459,14 @@
                     </div>
                 </div>
 
-                <!-- By Category — scrollable horizontal bars (2/5) -->
-                <div class="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
+                <!-- By Category - scrollable horizontal bars (2/5) -->
+                <div
+                    class="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5">
                     <div class="flex items-center justify-between mb-3">
                         <div>
                             <h3 class="text-sm font-semibold">By Category</h3>
-                            <p class="text-xs text-gray-500 dark:text-gray-400" id="category-subtitle">Your distribution</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" id="category-subtitle">Your distribution
+                            </p>
                         </div>
                         <span class="text-xs text-gray-500 dark:text-gray-400">Feb 2026</span>
                     </div>
@@ -460,7 +478,7 @@
                         <div class="bg-purple-500 h-full" style="width:10%"></div>
                         <div class="bg-teal-500  h-full" style="width:10%"></div>
                     </div>
-                    <!-- Scrollable category rows — fixed height, never grows card -->
+                    <!-- Scrollable category rows - fixed height, never grows card -->
                     <div class="space-y-3 overflow-y-auto" style="max-height:148px;" id="category-legend">
                         <div class="flex items-center gap-3">
                             <div class="w-2.5 h-2.5 rounded-full bg-red-500 flex-shrink-0"></div>
@@ -537,7 +555,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Add more categories — they scroll inside the fixed-height box -->
+                        <!-- Add more categories - they scroll inside the fixed-height box -->
                         <div class="flex items-center gap-3">
                             <div class="w-2.5 h-2.5 rounded-full bg-pink-500 flex-shrink-0"></div>
                             <div class="flex-1">
@@ -557,19 +575,23 @@
                 </div>
 
                 <!-- Highlights (1/5) -->
-                <div class="lg:col-span-1 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-3">
+                <div
+                    class="lg:col-span-1 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-5 flex flex-col gap-3">
                     <h3 class="text-sm font-semibold">Highlights</h3>
-                    <div class="p-3 rounded-lg bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30">
+                    <div
+                        class="p-3 rounded-lg bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30">
                         <p class="text-xs text-gray-500 dark:text-gray-400">Top Category</p>
                         <p class="text-sm font-semibold text-red-700 dark:text-red-400 mt-0.5">Rent</p>
                         <p class="text-xs text-gray-400">₹17,000 • 40%</p>
                     </div>
-                    <div class="p-3 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30">
+                    <div
+                        class="p-3 rounded-lg bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30">
                         <p class="text-xs text-gray-500 dark:text-gray-400">vs Last Month</p>
                         <p class="text-sm font-semibold text-green-700 dark:text-green-400 mt-0.5">Saved ₹1,363</p>
                         <p class="text-xs text-gray-400">Down from ₹43,863</p>
                     </div>
-                    <div class="p-3 rounded-lg bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30">
+                    <div
+                        class="p-3 rounded-lg bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30">
                         <p class="text-xs text-gray-500 dark:text-gray-400">6M Average</p>
                         <p class="text-sm font-semibold text-amber-700 dark:text-amber-400 mt-0.5">₹47,833</p>
                         <p class="text-xs text-gray-400">Per month</p>
@@ -578,7 +600,8 @@
             </div>
 
             <!-- Expense Table with Pagination -->
-            <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+            <div
+                class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
                 <div class="p-5 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
                     <div>
                         <h3 class="text-base font-semibold">Expense Entries</h3>
@@ -599,13 +622,27 @@
                     <table class="w-full">
                         <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider member-column hidden">Member</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Category</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Description</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Recurring</th>
-                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Date</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider member-column hidden">
+                                    Member</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Category</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Description</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Amount</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Recurring</th>
+                                <th
+                                    class="px-6 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                    Actions</th>
                             </tr>
                         </thead>
                         <tbody id="expense-table-body" class="divide-y divide-gray-200 dark:divide-gray-800">
@@ -616,19 +653,22 @@
 
                 <!-- Pagination Footer -->
                 <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
-                    <span class="text-sm text-gray-500 dark:text-gray-400" id="pagination-info">Showing 1–5 of 14 entries</span>
+                    <span class="text-sm text-gray-500 dark:text-gray-400" id="pagination-info">Showing 1–5 of 14
+                        entries</span>
                     <div class="flex items-center gap-1">
                         <button onclick="goToPage(currentPage - 1)" id="prev-btn"
                             class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
                         <div id="page-buttons" class="flex items-center gap-1"></div>
                         <button onclick="goToPage(currentPage + 1)" id="next-btn"
                             class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
                     </div>
@@ -912,34 +952,34 @@
 
         // ─── PAGINATION ───────────────────────────────────────────
         const allRows = [
-            { date: 'Feb 01, 2026', cat: 'Rent',          catColor: 'red',    desc: 'Monthly Rent - Apartment',       amount: '₹17,000', rec: 'Every month on 1st',   recColor: 'purple', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Feb 12, 2026', cat: 'Food',           catColor: 'amber',  desc: 'Groceries - BigBasket',          amount: '₹4,500',  rec: null,                    recColor: null,     member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Feb 08, 2026', cat: 'Transport',      catColor: 'blue',   desc: 'Uber rides',                     amount: '₹1,250',  rec: null,                    recColor: null,     member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Feb 14, 2026', cat: 'Food',           catColor: 'amber',  desc: 'Swiggy - Dinner',                amount: '₹850',    rec: null,                    recColor: null,     member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Feb 05, 2026', cat: 'Utilities',      catColor: 'teal',   desc: 'Electricity - BESCOM',           amount: '₹2,100',  rec: 'Every month on 5th',    recColor: 'purple', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Feb 10, 2026', cat: 'Shopping',       catColor: 'purple', desc: 'Amazon - Electronics',           amount: '₹12,500', rec: null,                    recColor: null,     member: 'S', memberGrad: 'from-pink-500 to-rose-600',     memberLabel: 'Spouse', editable: false },
-            { date: 'Feb 03, 2026', cat: 'Transport',      catColor: 'blue',   desc: 'Petrol - Shell',                 amount: '₹2,400',  rec: null,                    recColor: null,     member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Feb 16, 2026', cat: 'Food',           catColor: 'amber',  desc: 'Restaurant - Mainland China',    amount: '₹3,200',  rec: null,                    recColor: null,     member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Feb 01, 2026', cat: 'Utilities',      catColor: 'teal',   desc: 'WiFi - Airtel',                  amount: '₹999',    rec: 'Every month on 1st',    recColor: 'purple', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Feb 17, 2026', cat: 'Entertainment',  catColor: 'pink',   desc: 'Netflix Subscription',           amount: '₹649',    rec: 'Every month on 17th',   recColor: 'blue',   member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Jan 01, 2026', cat: 'Rent',           catColor: 'red',    desc: 'Monthly Rent - Apartment',       amount: '₹17,000', rec: 'Every month on 1st',    recColor: 'purple', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Jan 15, 2026', cat: 'Food',           catColor: 'amber',  desc: 'Groceries - DMart',              amount: '₹3,800',  rec: null,                    recColor: null,     member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Jan 10, 2026', cat: 'Healthcare',     catColor: 'green',  desc: 'Apollo Pharmacy',                amount: '₹1,500',  rec: null,                    recColor: null,     member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
-            { date: 'Jan 08, 2026', cat: 'Transport',      catColor: 'blue',   desc: 'Monthly Metro Pass',             amount: '₹500',    rec: 'Every month on 8th',    recColor: 'blue',   member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You',    editable: true },
+            { date: 'Feb 01, 2026', cat: 'Rent', catColor: 'red', desc: 'Monthly Rent - Apartment', amount: '₹17,000', rec: 'Every month on 1st', recColor: 'purple', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Feb 12, 2026', cat: 'Food', catColor: 'amber', desc: 'Groceries - BigBasket', amount: '₹4,500', rec: null, recColor: null, member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Feb 08, 2026', cat: 'Transport', catColor: 'blue', desc: 'Uber rides', amount: '₹1,250', rec: null, recColor: null, member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Feb 14, 2026', cat: 'Food', catColor: 'amber', desc: 'Swiggy - Dinner', amount: '₹850', rec: null, recColor: null, member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Feb 05, 2026', cat: 'Utilities', catColor: 'teal', desc: 'Electricity - BESCOM', amount: '₹2,100', rec: 'Every month on 5th', recColor: 'purple', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Feb 10, 2026', cat: 'Shopping', catColor: 'purple', desc: 'Amazon - Electronics', amount: '₹12,500', rec: null, recColor: null, member: 'S', memberGrad: 'from-pink-500 to-rose-600', memberLabel: 'Spouse', editable: false },
+            { date: 'Feb 03, 2026', cat: 'Transport', catColor: 'blue', desc: 'Petrol - Shell', amount: '₹2,400', rec: null, recColor: null, member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Feb 16, 2026', cat: 'Food', catColor: 'amber', desc: 'Restaurant - Mainland China', amount: '₹3,200', rec: null, recColor: null, member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Feb 01, 2026', cat: 'Utilities', catColor: 'teal', desc: 'WiFi - Airtel', amount: '₹999', rec: 'Every month on 1st', recColor: 'purple', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Feb 17, 2026', cat: 'Entertainment', catColor: 'pink', desc: 'Netflix Subscription', amount: '₹649', rec: 'Every month on 17th', recColor: 'blue', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Jan 01, 2026', cat: 'Rent', catColor: 'red', desc: 'Monthly Rent - Apartment', amount: '₹17,000', rec: 'Every month on 1st', recColor: 'purple', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Jan 15, 2026', cat: 'Food', catColor: 'amber', desc: 'Groceries - DMart', amount: '₹3,800', rec: null, recColor: null, member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Jan 10, 2026', cat: 'Healthcare', catColor: 'green', desc: 'Apollo Pharmacy', amount: '₹1,500', rec: null, recColor: null, member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
+            { date: 'Jan 08, 2026', cat: 'Transport', catColor: 'blue', desc: 'Monthly Metro Pass', amount: '₹500', rec: 'Every month on 8th', recColor: 'blue', member: 'P', memberGrad: 'from-purple-500 to-indigo-600', memberLabel: 'You', editable: true },
         ];
 
         const catColorMap = {
-            red:    'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
-            amber:  'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300',
-            blue:   'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
+            red: 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+            amber: 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300',
+            blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300',
             purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300',
-            teal:   'bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300',
-            pink:   'bg-pink-100 dark:bg-pink-900/30 text-pink-800 dark:text-pink-300',
-            green:  'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+            teal: 'bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300',
+            pink: 'bg-pink-100 dark:bg-pink-900/30 text-pink-800 dark:text-pink-300',
+            green: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
         };
         const recColorMap = {
             purple: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
-            blue:   'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
+            blue: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
         };
 
         let currentPage = 1;
@@ -969,14 +1009,14 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold">${r.amount}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                         ${r.rec && r.recColor
-                            ? `<span class="text-xs ${recColorMap[r.recColor]} px-2 py-1 rounded">${r.rec}</span>`
-                            : `<span class="text-xs text-gray-400">—</span>`}
+                    ? `<span class="text-xs ${recColorMap[r.recColor]} px-2 py-1 rounded">${r.rec}</span>`
+                    : `<span class="text-xs text-gray-400">-</span>`}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                         ${r.editable
-                            ? `<button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 mr-3 font-medium">Edit</button>
+                    ? `<button class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 mr-3 font-medium">Edit</button>
                                <button class="text-red-600 dark:text-red-400 hover:text-red-900 font-medium">Delete</button>`
-                            : `<span class="inline-flex items-center gap-1 text-xs text-gray-400">
+                    : `<span class="inline-flex items-center gap-1 text-xs text-gray-400">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                 View Only</span>`}
                     </td>

@@ -22,8 +22,9 @@ export const PROFILE_QUERY_KEY = ["profile"] as const;
 export function useProfile() {
   return useQuery({
     queryKey: PROFILE_QUERY_KEY,
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       const res = await backendApi.get<ProfileDetailsResponse>("/profile", {
+        signal,
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

@@ -9,6 +9,8 @@ import {
 } from "recharts";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIncome } from "@/hooks/useIncome";
+import { PageLoader } from "@/components/shared/PageLoader";
+import { ServiceDownPage } from "@/components/shared/ServiceDownPage";
 import { useUIStore } from "@/stores/uiStore";
 import { formatCurrency } from "@/lib/utils";
 import { InteractiveDonutChart } from "@/components/charts/InteractiveDonutChart";
@@ -65,20 +67,15 @@ function formatDate(dateStr: string): string {
 }
 
 export function Income() {
-  const { data, isLoading } = useIncome();
+  const { data, isLoading, isError, refetch } = useIncome();
   const { activeModal, openModal, closeModal } = useUIStore();
   const modalOpen = activeModal === "add-income";
   const [selectedMonth, setSelectedMonth] = useState("February 2026");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  if (isLoading || !data) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
-      </div>
-    );
-  }
+  if (isError) return <ServiceDownPage onRetry={refetch} />;
+  if (isLoading || !data) return <PageLoader />;
 
   const { summary, trend, highlights, allocation, entries, months } = data;
 

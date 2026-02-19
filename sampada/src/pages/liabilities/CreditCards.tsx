@@ -1,4 +1,6 @@
 import { useCreditCards } from "@/hooks/useCreditCards";
+import { PageLoader } from "@/components/shared/PageLoader";
+import { ServiceDownPage } from "@/components/shared/ServiceDownPage";
 import { useUIStore } from "@/stores/uiStore";
 import { formatCurrency } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -42,16 +44,11 @@ function formatDate(dateStr: string): string {
 }
 
 export function CreditCards() {
-  const { data, isLoading } = useCreditCards();
+  const { data, isLoading, isError, refetch } = useCreditCards();
   const { activeModal, openModal, closeModal } = useUIStore();
 
-  if (isLoading || !data) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
-      </div>
-    );
-  }
+  if (isError) return <ServiceDownPage onRetry={refetch} />;
+  if (isLoading || !data) return <PageLoader />;
 
   const { summary, cards, utilization, timeline, recentActivity } = data;
 

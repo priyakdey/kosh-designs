@@ -6,6 +6,8 @@ import {
   Clock,
 } from "lucide-react";
 import { useMutualFunds } from "@/hooks/useMutualFunds";
+import { PageLoader } from "@/components/shared/PageLoader";
+import { ServiceDownPage } from "@/components/shared/ServiceDownPage";
 import { DonutChart } from "@/components/charts/DonutChart";
 import { PortfolioGrowthChart } from "@/components/charts/PortfolioGrowthChart";
 import { SectorAllocationChart } from "@/components/charts/SectorAllocationChart";
@@ -28,17 +30,12 @@ function formatCompactCurrency(value: number): string {
 }
 
 export function MutualFunds() {
-  const { data, isLoading } = useMutualFunds();
+  const { data, isLoading, isError, refetch } = useMutualFunds();
   const [modalOpen, setModalOpen] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState("5");
 
-  if (isLoading || !data) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
-      </div>
-    );
-  }
+  if (isError) return <ServiceDownPage onRetry={refetch} />;
+  if (isLoading || !data) return <PageLoader />;
 
   const {
     summary,

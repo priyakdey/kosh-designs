@@ -66,8 +66,8 @@ src/components/forms/ → Form components (UI + hook wiring)
 ```
 
 Each form:
-1. Zod schema in `src/schemas/<domain>Schema.ts` — single source of truth for validation + inferred types
-2. Form component in `src/components/forms/` — uses `useForm()` + `zodResolver` + shadcn `<Form>` / `<FormField>` / `<FormItem>` / `<FormLabel>` / `<FormControl>` / `<FormMessage>`
+1. Zod schema in `src/schemas/<domain>Schema.ts` - single source of truth for validation + inferred types
+2. Form component in `src/components/forms/` - uses `useForm()` + `zodResolver` + shadcn `<Form>` / `<FormField>` / `<FormItem>` / `<FormLabel>` / `<FormControl>` / `<FormMessage>`
 3. Page renders form inside `<FormModal>` and passes `onSubmit` + `onCancel` callbacks
 
 ## Logo SVG
@@ -184,7 +184,7 @@ sampada/
 
 ### Component Patterns:
 - **Widget Cards**: Rounded-xl, border, hover lift effect
-- **Stats**: Large numbers with trend indicators (↑ ↓ —)
+- **Stats**: Large numbers with trend indicators (↑ ↓ -)
 - **Charts**: Clean, with legends, responsive
 - **Tables**: Sortable, paginated (5/10/20 rows)
 - **Modals**: Centered, backdrop blur
