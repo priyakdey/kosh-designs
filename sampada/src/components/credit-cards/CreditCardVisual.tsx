@@ -48,8 +48,7 @@ function formatDueDate(dateStr: string): string {
 export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const theme = getCardTheme(card.themeId);
   const utilization = getUtilization(card.outstanding, card.creditLimit);
@@ -67,40 +66,42 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
   }, [menuOpen]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const el = cardRef.current;
+    if (!el) return;
     const rect = e.currentTarget.getBoundingClientRect();
-
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
-
-    const skew = 0.5;
-    const tilt = 10;
-
-    const rotateY = (px - skew) * tilt; // left-right tilt
-    const rotateX = (skew - py) * tilt; // up-down tilt
-
-    setTilt({ x: rotateX, y: rotateY });
+    const rotateY = (px - 0.5) * 10;
+    const rotateX = (0.5 - py) * 10;
+    el.style.setProperty("--rx", `${rotateX}deg`);
+    el.style.setProperty("--ry", `${rotateY}deg`);
+    el.style.setProperty("--sx", `${rotateY * 2}px`);
+    el.style.setProperty("--sy", `${rotateX * 2}px`);
   }
 
   function handleMouseLeave() {
-    setTilt({ x: 0, y: 0 });
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.setProperty("--rx", "0deg");
+    el.style.setProperty("--ry", "0deg");
+    el.style.setProperty("--sx", "0px");
+    el.style.setProperty("--sy", "0px");
   }
 
   return (
     <div
+      ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        transform: `
-      perspective(900px)
-      rotateX(${tilt.x}deg)
-      rotateY(${tilt.y}deg)
-      translateZ(0)
-    `,
+        transform:
+          "perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0)",
+        willChange: "transform",
       }}
       className={cn(
         "relative rounded-2xl overflow-hidden aspect-[1.586/1]",
         "text-white ring-1 ring-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.45),0_2px_8px_rgba(0,0,0,0.25)]",
-        "transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1.5 hover:shadow-[0_18px_60px_rgba(0,0,0,0.6),0_4px_12px_rgba(0,0,0,0.35)] [transform-style:preserve-3d]",
+        "transition-[box-shadow,scale,translate] duration-300 hover:scale-[1.02] hover:-translate-y-1.5 hover:shadow-[0_18px_60px_rgba(0,0,0,0.6),0_4px_12px_rgba(0,0,0,0.35)] [transform-style:preserve-3d]",
         "group",
         theme.base,
       )}
@@ -140,7 +141,7 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
       {/* Specular light reflection */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ transform: `translateX(${tilt.y * 2}px) translateY(${tilt.x * 2}px)`, }}
+        style={{ transform: "translateX(var(--sx,0px)) translateY(var(--sy,0px))" }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-white/14 via-transparent to-transparent opacity-35" />
       </div>
