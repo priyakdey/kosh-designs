@@ -5,6 +5,7 @@ import { formatCurrency } from "@/lib/utils";
 import type { CreditCard } from "@/types";
 import { getCardTheme } from "./cardThemes";
 import { NetworkLogo } from "./NetworkLogo";
+import { CardChip } from "./CardChip";
 
 interface CreditCardVisualProps {
   card: CreditCard;
@@ -43,9 +44,12 @@ function formatDueDate(dateStr: string): string {
   return `${dd}/${mm}/${yyyy}`;
 }
 
+
 export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   const theme = getCardTheme(card.themeId);
   const utilization = getUtilization(card.outstanding, card.creditLimit);
@@ -62,18 +66,60 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+
+    const skew = 0.5;
+    const tilt = 10;
+
+    const rotateY = (px - skew) * tilt; // left-right tilt
+    const rotateX = (skew - py) * tilt; // up-down tilt
+
+    setTilt({ x: rotateX, y: rotateY });
+  }
+
+  function handleMouseLeave() {
+    setTilt({ x: 0, y: 0 });
+  }
+
   return (
     <div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `
+      perspective(900px)
+      rotateX(${tilt.x}deg)
+      rotateY(${tilt.y}deg)
+      translateZ(0)
+    `,
+      }}
       className={cn(
         "relative rounded-2xl overflow-hidden aspect-[1.586/1]",
-        "text-white ring-1 ring-white/10 shadow-xl",
-        "transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl",
+        "text-white ring-1 ring-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.45),0_2px_8px_rgba(0,0,0,0.25)]",
+        "transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1.5 hover:shadow-[0_18px_60px_rgba(0,0,0,0.6),0_4px_12px_rgba(0,0,0,0.35)] [transform-style:preserve-3d]",
         "group",
         theme.base,
       )}
     >
       {/* Accent overlay */}
       <div className={cn("absolute inset-0 pointer-events-none", theme.accent)} />
+
+      {/* Material surface texture */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay"
+        style={{
+          backgroundImage: `
+      radial-gradient(circle at 25% 25%, rgba(255,255,255,0.05) 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, rgba(0,0,0,0.05) 1px, transparent 1px)
+      `,
+          backgroundSize: "4px 4px",
+        }}
+      />
+
 
       {/* Radial glow top-right */}
       <div
@@ -90,6 +136,20 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
           theme.glowBottom,
         )}
       />
+
+      {/* Specular light reflection */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ transform: `translateX(${tilt.y * 2}px) translateY(${tilt.x * 2}px)`, }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-white/14 via-transparent to-transparent opacity-35" />
+      </div>
+
+      {/* Subsurface edge lighting */}
+      <div className="absolute inset-0 pointer-events-none rounded-2xl">
+        <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_25px_rgba(255,255,255,0.06)]" />
+      </div>
+
 
       {/* Card content */}
       <div className="relative z-10 h-full p-5 flex flex-col justify-between">
@@ -126,13 +186,26 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
           </div>
         </div>
 
-        {/* Middle: masked number + network */}
+        {/* Chip + number + network */}
         <div className="flex items-center justify-between">
-          <p className="tracking-[0.25em] text-sm text-white/80">
-            &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; {card.last4}
-          </p>
+          <div
+            className="flex items-center gap-4"
+            style={{ transform: `translateZ(30px)` }}
+          >
+            <CardChip className="w-10 h-auto opacity-90" />
+            <p
+              className="tracking-[0.18em] text-sm text-white/90 font-medium"
+              style={{
+                textShadow: "0 1px 0 rgba(255,255,255,0.25),0 -1px 0 rgba(0,0,0,0.6)",
+              }}
+            >
+              &#42;&#42;&#42;&#42; &#42;&#42;&#42;&#42; &#42;&#42;&#42;&#42; {card.last4}
+            </p>
+          </div>
+
           <NetworkLogo network={card.network} className="h-8 w-auto" />
         </div>
+
 
         {/* Bottom: financials + utilization bar */}
         <div>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
   Home,
@@ -8,8 +9,10 @@ import {
   Target,
   BarChart3,
   PanelLeftClose,
-  Settings,
+  PanelLeftOpen,
+  Settings
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUIStore } from "@/stores/uiStore";
@@ -21,6 +24,7 @@ export function Sidebar() {
   const onToggle = useUIStore((s) => s.toggleSidebar);
   const location = useLocation();
   const { user } = useAuth();
+  const [logoHovered, setLogoHovered] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -41,22 +45,30 @@ export function Sidebar() {
         {collapsed ? (
           <button
             onClick={onToggle}
-            className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg text-white hover:shadow-lg transition-shadow"
+            onMouseEnter={() => setLogoHovered(true)}
+            onMouseLeave={() => setLogoHovered(false)}
+            className="bg-gradient-to-br from-purple-500 to-indigo-600 p-2 rounded-lg text-white hover:shadow-lg transition-shadow relative w-10 h-10 flex items-center justify-center overflow-hidden"
             aria-label="Expand sidebar"
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+            {/* Sampada logo — fades out on hover */}
+            <motion.span
+              className="absolute inset-0 flex items-center justify-center"
+              animate={{ opacity: logoHovered ? 0 : 1, scale: logoHovered ? 0.7 : 1 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-              />
-            </svg>
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+            </motion.span>
+            {/* PanelLeftOpen — fades in on hover */}
+            <motion.span
+              className="absolute inset-0 flex items-center justify-center"
+              animate={{ opacity: logoHovered ? 1 : 0, scale: logoHovered ? 1 : 0.7 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <PanelLeftOpen className="w-5 h-5" />
+            </motion.span>
           </button>
         ) : (
           <>
@@ -99,144 +111,144 @@ export function Sidebar() {
           <div className="space-y-1">
             {/* Dashboard */}
             <NavLink
-            to="/"
-            icon={<Home className="w-5 h-5" />}
-            label="Dashboard"
-            active={isActive("/")}
-            collapsed={collapsed}
-          />
-
-          {/* Income */}
-          <NavLink
-            to="/income"
-            icon={<DollarSign className="w-5 h-5" />}
-            label="Income"
-            active={isActive("/income")}
-            collapsed={collapsed}
-          />
-
-          {/* Expenses */}
-          <NavLink
-            to="/expenses"
-            icon={<Wallet className="w-5 h-5" />}
-            label="Expenses"
-            active={isActive("/expenses")}
-            collapsed={collapsed}
-          />
-
-          {/* Investments Section */}
-          <div className="pt-3">
-            <div
-              className={cn(
-                "flex items-center text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1",
-                collapsed ? "justify-center px-0 py-1" : "px-3 py-1",
-              )}
-            >
-              {collapsed ? (
-                <TrendingUp className="w-4 h-4" />
-              ) : (
-                <span>Investments</span>
-              )}
-            </div>
-
-            <div className={cn("space-y-0.5", !collapsed && "ml-0")}>
-              <SubNavLink
-                to="/investments/mutual-funds"
-                label="Mutual Funds"
-                dotColor="bg-purple-500"
-                active={isActive("/investments/mutual-funds")}
-                collapsed={collapsed}
-              />
-              <SubNavLink
-                to="/investments/stocks"
-                label="Stocks"
-                dotColor="bg-indigo-500"
-                active={isActive("/investments/stocks")}
-                collapsed={collapsed}
-              />
-              <SubNavLink
-                label="SGB"
-                dotColor="bg-yellow-500"
-                collapsed={collapsed}
-                comingSoon
-              />
-              <SubNavLink
-                label="PPF"
-                dotColor="bg-blue-500"
-                collapsed={collapsed}
-                comingSoon
-              />
-              <SubNavLink
-                to="/investments/fixed-deposits"
-                label="Fixed Deposits"
-                dotColor="bg-cyan-500"
-                active={isActive("/investments/fixed-deposits")}
-                collapsed={collapsed}
-              />
-              <SubNavLink
-                to="/investments/recurring-deposits"
-                label="Recurring Deposits"
-                dotColor="bg-sky-500"
-                active={isActive("/investments/recurring-deposits")}
-                collapsed={collapsed}
-              />
-              <SubNavLink
-                label="NPS"
-                dotColor="bg-teal-500"
-                collapsed={collapsed}
-                comingSoon
-              />
-            </div>
-          </div>
-
-          {/* Liabilities Section */}
-          <div className="pt-3">
-            <div
-              className={cn(
-                "flex items-center text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1",
-                collapsed ? "justify-center px-0 py-1" : "px-3 py-1",
-              )}
-            >
-              {collapsed ? (
-                <Calculator className="w-4 h-4" />
-              ) : (
-                <span>Liabilities</span>
-              )}
-            </div>
-
-            <div className="space-y-0.5">
-              <SubNavLink
-                to="/liabilities/credit-cards"
-                label="Credit Cards"
-                dotColor="bg-orange-500"
-                active={isActive("/liabilities/credit-cards")}
-                collapsed={collapsed}
-              />
-              <SubNavLink
-                label="Loans"
-                dotColor="bg-red-500"
-                collapsed={collapsed}
-                comingSoon
-              />
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="pt-3">
-            <div className="border-t border-gray-200 dark:border-gray-800 mb-3" />
-            <NavLink
-              icon={<Target className="w-5 h-5" />}
-              label="Goals"
+              to="/"
+              icon={<Home className="w-5 h-5" />}
+              label="Dashboard"
+              active={isActive("/")}
               collapsed={collapsed}
-              comingSoon
             />
+
+            {/* Income */}
             <NavLink
-              icon={<BarChart3 className="w-5 h-5" />}
-              label="Reports"
+              to="/income"
+              icon={<DollarSign className="w-5 h-5" />}
+              label="Income"
+              active={isActive("/income")}
               collapsed={collapsed}
-              comingSoon
             />
-          </div>
+
+            {/* Expenses */}
+            <NavLink
+              to="/expenses"
+              icon={<Wallet className="w-5 h-5" />}
+              label="Expenses"
+              active={isActive("/expenses")}
+              collapsed={collapsed}
+            />
+
+            {/* Investments Section */}
+            <div className="pt-3">
+              <div
+                className={cn(
+                  "flex items-center text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1",
+                  collapsed ? "justify-center px-0 py-1" : "px-3 py-1",
+                )}
+              >
+                {collapsed ? (
+                  <TrendingUp className="w-4 h-4" />
+                ) : (
+                  <span>Investments</span>
+                )}
+              </div>
+
+              <div className={cn("space-y-0.5", !collapsed && "ml-0")}>
+                <SubNavLink
+                  to="/investments/mutual-funds"
+                  label="Mutual Funds"
+                  dotColor="bg-purple-500"
+                  active={isActive("/investments/mutual-funds")}
+                  collapsed={collapsed}
+                />
+                <SubNavLink
+                  to="/investments/stocks"
+                  label="Stocks"
+                  dotColor="bg-indigo-500"
+                  active={isActive("/investments/stocks")}
+                  collapsed={collapsed}
+                />
+                <SubNavLink
+                  label="SGB"
+                  dotColor="bg-yellow-500"
+                  collapsed={collapsed}
+                  comingSoon
+                />
+                <SubNavLink
+                  label="PPF"
+                  dotColor="bg-blue-500"
+                  collapsed={collapsed}
+                  comingSoon
+                />
+                <SubNavLink
+                  to="/investments/fixed-deposits"
+                  label="Fixed Deposits"
+                  dotColor="bg-cyan-500"
+                  active={isActive("/investments/fixed-deposits")}
+                  collapsed={collapsed}
+                />
+                <SubNavLink
+                  to="/investments/recurring-deposits"
+                  label="Recurring Deposits"
+                  dotColor="bg-sky-500"
+                  active={isActive("/investments/recurring-deposits")}
+                  collapsed={collapsed}
+                />
+                <SubNavLink
+                  label="NPS"
+                  dotColor="bg-teal-500"
+                  collapsed={collapsed}
+                  comingSoon
+                />
+              </div>
+            </div>
+
+            {/* Liabilities Section */}
+            <div className="pt-3">
+              <div
+                className={cn(
+                  "flex items-center text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1",
+                  collapsed ? "justify-center px-0 py-1" : "px-3 py-1",
+                )}
+              >
+                {collapsed ? (
+                  <Calculator className="w-4 h-4" />
+                ) : (
+                  <span>Liabilities</span>
+                )}
+              </div>
+
+              <div className="space-y-0.5">
+                <SubNavLink
+                  to="/liabilities/credit-cards"
+                  label="Credit Cards"
+                  dotColor="bg-orange-500"
+                  active={isActive("/liabilities/credit-cards")}
+                  collapsed={collapsed}
+                />
+                <SubNavLink
+                  label="Loans"
+                  dotColor="bg-red-500"
+                  collapsed={collapsed}
+                  comingSoon
+                />
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="pt-3">
+              <div className="border-t border-gray-200 dark:border-gray-800 mb-3" />
+              <NavLink
+                icon={<Target className="w-5 h-5" />}
+                label="Goals"
+                collapsed={collapsed}
+                comingSoon
+              />
+              <NavLink
+                icon={<BarChart3 className="w-5 h-5" />}
+                label="Reports"
+                collapsed={collapsed}
+                comingSoon
+              />
+            </div>
           </div>
         </nav>
       </ScrollArea>

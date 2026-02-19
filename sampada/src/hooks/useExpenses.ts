@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "@/services/api";
+import backendApi from "@/services/backendApi";
 import type { ExpenseData } from "@/types";
 
 export function useExpenses() {
   return useQuery({
     queryKey: ["expenses"],
     queryFn: async () => {
-      const res = await api.get<ExpenseData>("/expenses.json");
+      const res = await backendApi.get<ExpenseData>("/expenses");
       return res.data;
     },
   });

@@ -1,7 +1,7 @@
-import api from "./api";
+import backendApi from "./backendApi";
 import type { CreditCardData } from "@/types";
 
 export async function getCreditCards(): Promise<CreditCardData> {
-  const res = await api.get<CreditCardData>("/credit-cards.json");
+  const res = await backendApi.get<CreditCardData>("/credit-cards");
   return res.data;
 }

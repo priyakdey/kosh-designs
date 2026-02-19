@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "@/services/api";
+import backendApi from "@/services/backendApi";
 import type { MutualFundData } from "@/types";
 
 export function useMutualFunds() {
   return useQuery({
     queryKey: ["mutualFunds"],
     queryFn: async () => {
-      const res = await api.get<MutualFundData>("/mutual-funds.json");
+      const res = await backendApi.get<MutualFundData>("/mutual-funds");
       return res.data;
     },
   });
