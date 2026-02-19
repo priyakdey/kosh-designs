@@ -17,6 +17,7 @@ import { Stocks } from "@/pages/investments/Stocks";
 import { FixedDeposits } from "@/pages/investments/FixedDeposits";
 import { RecurringDeposits } from "@/pages/investments/RecurringDeposits";
 import { CreditCards } from "@/pages/liabilities/CreditCards";
+import { NotFoundPage } from "./pages/404";
 
 interface RouterContext {
   auth: {
@@ -27,6 +28,7 @@ interface RouterContext {
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: Outlet,
+  notFoundComponent: NotFoundPage,
 });
 
 function HomePage() {
@@ -114,16 +116,7 @@ const creditCardsRoute = createRoute({
 const notFoundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "*",
-  component: () => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-      <div className="text-center">
-        <h1 className="text-6xl font-bold gradient-text mb-4">404</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400">
-          Page not found
-        </p>
-      </div>
-    </div>
-  ),
+  component: () => <NotFoundPage />,
 });
 
 const routeTree = rootRoute.addChildren([
@@ -149,6 +142,7 @@ export const router = createRouter({
       isLoading: true,
     },
   },
+  defaultNotFoundComponent: () => <NotFoundPage />
 });
 
 declare module "@tanstack/react-router" {

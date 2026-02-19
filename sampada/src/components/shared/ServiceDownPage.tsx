@@ -26,7 +26,7 @@ export function ServiceDownPage({ onRetry }: { onRetry?: () => void }) {
             <rect x="106" y={y + 5} width="6" height="6" rx="1.5"
               fill="currentColor" className="text-gray-400 dark:text-gray-500" />
             {/* Status light - red for down */}
-            <circle className="animate-pulse animate-[flicker_1.5s_infinite]"
+            <circle className="animate-[opacity_1.5s_ease-in-out_infinite] [animation-name:flicker]"
               cx="208" cy={y + 8} r="3"
               fill="#ef4444" opacity="0.85" />
           </g>

@@ -8,7 +8,7 @@ const backendApi = axios.create({
     "Accept": "application/json",
   },
   withCredentials: true,
-  timeout: API_TIMEOUT_IN_MS, // 120 seconds
+  timeout: API_TIMEOUT_IN_MS,
 });
 
 export default backendApi;
