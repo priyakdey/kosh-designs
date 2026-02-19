@@ -42,10 +42,7 @@ const CURRENCY_OPTIONS = [
 
 export function ProfileSetupModal() {
   const auth = useAuth();
-  const [setupError, setSetupError] = useState("");
-  const [setupProgress, setSetupProgress] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [keepModalOpen, setKeepModalOpen] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const form = useForm<ProfileSetupFormValues>({
     resolver: zodResolver(profileSetupSchema),
@@ -67,51 +64,26 @@ export function ProfileSetupModal() {
     });
   }, [auth.requiresProfileSetup, auth.user, form]);
 
-  useEffect(() => {
-    if (!isSubmitting) {
-      setSetupProgress(0);
-      return;
-    }
-
-    const id = window.setInterval(() => {
-      setSetupProgress((value) => Math.min(95, value + 4));
-    }, 50);
-
-    return () => window.clearInterval(id);
-  }, [isSubmitting]);
+  if (auth.isLoading || !auth.requiresProfileSetup) {
+    return null;
+  }
 
   const onSubmit = async (data: ProfileSetupFormValues) => {
-    setSetupError("");
-    setIsSubmitting(true);
-    setKeepModalOpen(true);
-
-    const startTime = Date.now();
-
+    setSubmitError("");
     try {
       await auth.completeProfileSetup({
         displayName: data.displayName,
         timezone: data.timezone,
         currency: data.currency,
       });
-
-      setSetupProgress(100);
-      setIsSubmitting(false);
-
-      const elapsed = Date.now() - startTime;
-      const remaining = Math.max(300, 500 - elapsed);
-      await new Promise((resolve) => setTimeout(resolve, remaining));
-
-      setKeepModalOpen(false);
-    } catch {
-      setIsSubmitting(false);
-      setKeepModalOpen(false);
-      setSetupError("Could not save profile yet. Please try again.");
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Could not save profile yet. Please try again.";
+      setSubmitError(message);
     }
   };
-
-  if (auth.isLoading || (!auth.requiresProfileSetup && !keepModalOpen)) {
-    return null;
-  }
 
   return (
     <div className="fixed inset-0 z-[60] bg-gray-950/45 backdrop-blur-sm flex items-center justify-center px-6">
@@ -195,30 +167,16 @@ export function ProfileSetupModal() {
           )}
         </div>
 
-        {(isSubmitting || setupProgress === 100) && (
-          <div className="space-y-2">
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Setting up profile...
-            </p>
-            <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-purple-500 to-indigo-600 transition-all duration-200"
-                style={{ width: `${setupProgress}%` }}
-              />
-            </div>
-          </div>
-        )}
-
-        {setupError && (
-          <p className="text-sm text-red-600 dark:text-red-400">{setupError}</p>
+        {submitError && (
+          <p className="text-sm text-red-600 dark:text-red-400">{submitError}</p>
         )}
 
         <button
           type="submit"
-          disabled={isSubmitting || setupProgress === 100}
+          disabled={auth.isSettingUpProfile}
           className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold disabled:opacity-70"
         >
-          {isSubmitting || setupProgress === 100 ? "Setting up profile..." : "Continue"}
+          Continue
         </button>
       </form>
     </div>

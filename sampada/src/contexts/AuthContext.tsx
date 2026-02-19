@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
   type ReactNode,
 } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -15,6 +16,10 @@ import {
   type ProfileSetupInput,
 } from "@/hooks/useProfile";
 import type { User } from "@/types";
+import {
+  BOOTSTRAP_MIN_DELAY_MS,
+  SETUP_COMPLETE_MIN_DELAY_MS,
+} from "@/lib/constants";
 
 interface AuthContextValue {
   user: User | null;
@@ -29,6 +34,9 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+const SESSION_HINT_KEY = "sampada_session";
+const hasSessionHint = () => localStorage.getItem(SESSION_HINT_KEY) === "1";
 
 const getInitials = (name: string, email: string) => {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -51,20 +59,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [bootstrapProgress, setBootstrapProgress] = useState(0);
   const [requiresProfileSetup, setRequiresProfileSetup] = useState(false);
-  const [minDelayDone, setMinDelayDone] = useState(false);
+
+  // If no session hint, skip the initial overlay entirely.
+  const [minDelayDone, setMinDelayDone] = useState(() => !hasSessionHint());
+
+  // True while we are running the post-setup completion overlay.
+  const [isCompletingSetup, setIsCompletingSetup] = useState(false);
+  // Resolves when the post-setup min-delay + POST are both done.
+  const setupDoneResolveRef = useRef<(() => void) | null>(null);
 
   const profileQuery = useProfile();
 
+  // Initial session-hint delay — only runs when hint is present.
   useEffect(() => {
-    const id = window.setTimeout(() => {
-      setMinDelayDone(true);
-    }, 700);
+    if (!hasSessionHint()) return;
+    const id = window.setTimeout(() => setMinDelayDone(true), BOOTSTRAP_MIN_DELAY_MS);
     return () => window.clearTimeout(id);
   }, []);
 
   const isProfileSettled = profileQuery.isSuccess || profileQuery.isError;
-  const isLoading = !(isProfileSettled && minDelayDone);
 
+  // isLoading is true while either:
+  //   (a) the initial bootstrap hasn't resolved yet, OR
+  //   (b) we are in the post-setup completion phase.
+  const isLoading = !(isProfileSettled && minDelayDone) || isCompletingSetup;
+
+  // Progress bar animation — runs whenever isLoading is true.
   useEffect(() => {
     if (!isLoading) {
       setBootstrapProgress(100);
@@ -78,10 +98,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => window.clearInterval(id);
   }, [isLoading]);
 
+  // Post-setup completion phase: enforce min delay, then resolve.
+  useEffect(() => {
+    if (!isCompletingSetup) return;
+
+    let resolved = false;
+    let minDelayDone = false;
+    let postDone = false;
+
+    const tryResolve = () => {
+      if (!resolved && minDelayDone && postDone) {
+        resolved = true;
+        setBootstrapProgress(100);
+        // Small tick to let the 100% render before unmounting overlay.
+        window.setTimeout(() => {
+          setIsCompletingSetup(false);
+        }, 80);
+      }
+    };
+
+    const timerId = window.setTimeout(() => {
+      minDelayDone = true;
+      tryResolve();
+    }, SETUP_COMPLETE_MIN_DELAY_MS);
+
+    // Expose a callback so completeProfileSetup can signal POST is done.
+    setupDoneResolveRef.current = () => {
+      postDone = true;
+      tryResolve();
+    };
+
+    return () => {
+      window.clearTimeout(timerId);
+      setupDoneResolveRef.current = null;
+    };
+  }, [isCompletingSetup]);
+
   useEffect(() => {
     if (!isProfileSettled) return;
 
     if (profileQuery.isSuccess && profileQuery.data) {
+      localStorage.setItem(SESSION_HINT_KEY, "1");
       const profile = profileQuery.data;
       const firstTimeLogin = profile.isFirstTimeLogin ?? false;
       setUser(mapProfileToUser(profile));
@@ -89,6 +146,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    localStorage.removeItem(SESSION_HINT_KEY);
     setUser(null);
     setRequiresProfileSetup(false);
   }, [
@@ -105,6 +163,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
+    localStorage.removeItem(SESSION_HINT_KEY);
     setUser(null);
     setRequiresProfileSetup(false);
     void queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
@@ -112,34 +171,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const completeProfileSetup = useCallback(
     async ({ displayName, timezone, currency }: ProfileSetupInput) => {
-      await profileSetupMutation.mutateAsync({ displayName, timezone, currency });
-
-      setUser((existing) => {
-        if (!existing) return existing;
-        return {
-          ...existing,
-          name: displayName,
-          initials: getInitials(displayName, existing.email),
-          timezone,
-          currency,
-        };
-      });
+      // Immediately engage the overlay — modal can unmount cleanly behind it.
       setRequiresProfileSetup(false);
+      setIsCompletingSetup(true);
 
-      queryClient.setQueryData<ProfileDetailsResponse>(
-        PROFILE_QUERY_KEY,
-        (existing) => {
+      try {
+        await profileSetupMutation.mutateAsync({ displayName, timezone, currency });
+
+        setUser((existing) => {
           if (!existing) return existing;
           return {
             ...existing,
             name: displayName,
+            initials: getInitials(displayName, existing.email),
             timezone,
             currency,
-            isFirstTimeLogin: false,
-            firstTimeLogin: false,
           };
-        },
-      );
+        });
+
+        queryClient.setQueryData<ProfileDetailsResponse>(
+          PROFILE_QUERY_KEY,
+          (existing) => {
+            if (!existing) return existing;
+            return {
+              ...existing,
+              name: displayName,
+              timezone,
+              currency,
+              isFirstTimeLogin: false,
+              firstTimeLogin: false,
+            };
+          },
+        );
+
+        // Signal that the POST is done; effect handles the min-delay.
+        setupDoneResolveRef.current?.();
+      } catch {
+        // On error: dismiss overlay immediately and surface the error.
+        setIsCompletingSetup(false);
+        setRequiresProfileSetup(true);
+        throw new Error("Could not save profile yet. Please try again.");
+      }
     },
     [profileSetupMutation, queryClient],
   );
