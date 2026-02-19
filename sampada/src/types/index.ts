@@ -178,6 +178,7 @@ export interface CreditCard {
   cardVariant: string;
   network: string;
   last4: string;
+  holderName: string;
   outstanding: number;
   creditLimit: number;
   dueDate: string;

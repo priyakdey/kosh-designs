@@ -15,7 +15,7 @@ export function MainLayout({ children }: { children?: ReactNode }) {
         style={{ marginLeft: sidebarCollapsed ? "4.5rem" : "18rem" }}
       >
         <Header />
-        <main className="p-6">
+        <main className="p-6 max-w-screen-2xl mx-auto">
           {children ?? <Outlet />}
         </main>
       </div>

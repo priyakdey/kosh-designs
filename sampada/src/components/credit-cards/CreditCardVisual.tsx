@@ -125,7 +125,7 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
       {/* Radial glow top-right */}
       <div
         className={cn(
-          "absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none",
+          "absolute top-0 right-0 w-28 h-28 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4 pointer-events-none",
           theme.glow,
         )}
       />
@@ -133,7 +133,7 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
       {/* Radial glow bottom-left */}
       <div
         className={cn(
-          "absolute bottom-0 left-0 w-32 h-32 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4 pointer-events-none",
+          "absolute bottom-0 left-0 w-24 h-24 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4 pointer-events-none",
           theme.glowBottom,
         )}
       />
@@ -153,31 +153,34 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
 
 
       {/* Card content */}
-      <div className="relative z-10 h-full p-5 flex flex-col justify-between">
-        {/* Top row: bank + badge + menu */}
+      <div className="relative z-10 h-full p-4 flex flex-col justify-between">
+        {/* Top row: bank + holder name + menu */}
         <div className="flex items-start justify-between">
           <div>
-            <p className="uppercase tracking-widest text-xs text-white/60">
+            <p className="uppercase tracking-widest text-[10px] text-white/60">
               {card.bankName}
             </p>
-            <p className="text-base font-semibold mt-0.5">{card.cardVariant}</p>
+            <p className="text-sm font-semibold mt-0.5">{card.cardVariant}</p>
           </div>
-          <div className="flex items-center gap-2" ref={menuRef}>
+          <div className="flex items-start gap-2" ref={menuRef}>
+            <p className="uppercase tracking-widest text-[10px] text-white/50 text-right leading-tight mt-0.5">
+              {card.holderName}
+            </p>
             <div className="relative">
               <button
                 onClick={() => setMenuOpen((prev) => !prev)}
                 className="p-1 rounded-lg hover:bg-white/10 transition-colors opacity-0 group-hover:opacity-100"
               >
-                <MoreVertical className="w-4 h-4 text-white/60" />
+                <MoreVertical className="w-3.5 h-3.5 text-white/60" />
               </button>
               {menuOpen && (
-                <div className="absolute right-0 top-8 z-20 bg-gray-900/95 backdrop-blur-sm border border-white/10 rounded-lg shadow-2xl py-1 min-w-[140px]">
+                <div className="absolute right-0 top-7 z-20 bg-gray-900/95 backdrop-blur-sm border border-white/10 rounded-lg shadow-2xl py-1 min-w-[130px]">
                   <button
                     onClick={() => {
                       setMenuOpen(false);
                       onRemove(card.id);
                     }}
-                    className="w-full text-left px-4 py-2 text-xs text-red-400 hover:bg-white/10 transition-colors"
+                    className="w-full text-left px-3 py-1.5 text-xs text-red-400 hover:bg-white/10 transition-colors"
                   >
                     Remove
                   </button>
@@ -190,12 +193,12 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
         {/* Chip + number + network */}
         <div className="flex items-center justify-between">
           <div
-            className="flex items-center gap-4"
+            className="flex items-center gap-3"
             style={{ transform: `translateZ(30px)` }}
           >
-            <CardChip className="w-10 h-auto opacity-90" />
+            <CardChip className="w-8 h-auto opacity-90" />
             <p
-              className="tracking-[0.18em] text-sm text-white/90 font-medium"
+              className="tracking-[0.15em] text-xs text-white/90 font-medium"
               style={{
                 textShadow: "0 1px 0 rgba(255,255,255,0.25),0 -1px 0 rgba(0,0,0,0.6)",
               }}
@@ -204,31 +207,30 @@ export function CreditCardVisual({ card, onRemove }: CreditCardVisualProps) {
             </p>
           </div>
 
-          <NetworkLogo network={card.network} className="h-8 w-auto" />
+          {/* <NetworkLogo network={card.network} className="h-6 w-auto" /> */}
         </div>
-
 
         {/* Bottom: financials + utilization bar */}
         <div>
-          <div className="flex items-end justify-between mb-2">
+          <div className="flex items-end justify-between mb-1.5">
             <div>
-              <p className="text-xs text-white/60">Outstanding</p>
-              <p className="text-xl font-bold">{formatCurrency(card.outstanding)}</p>
+              <p className="text-[10px] text-white/60">Outstanding</p>
+              <p className="text-base font-bold">{formatCurrency(card.outstanding)}</p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-white/60">Limit</p>
-              <p className="text-sm font-semibold text-white/90">
+              <p className="text-[10px] text-white/60">Limit</p>
+              <p className="text-xs font-semibold text-white/90">
                 {formatCurrency(card.creditLimit)}
               </p>
             </div>
           </div>
-          <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mb-2.5">
+          <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mb-2">
             <div
               className={cn("h-full rounded-full bg-gradient-to-r", badge.bar)}
               style={{ width: `${utilization}%` }}
             />
           </div>
-          <div className="flex items-center justify-between text-xs text-white/60">
+          <div className="flex items-center justify-between text-[10px] text-white/60">
             <span>Due {formatDueDate(card.dueDate)}</span>
             <span>{utilization}% used</span>
           </div>

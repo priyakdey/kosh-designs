@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sampada – Card Preview</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #1AABCB;
+            font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: -16px;
+        }
+
+        /* ── Card shell ─────────────────────────────── */
+        .card {
+            position: relative;
+            width: 340px;
+            aspect-ratio: 1.586;
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 20px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.25);
+            user-select: none;
+        }
+
+        /* ── Rows ───────────────────────────────────── */
+        .row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 2;
+        }
+
+        .row-network {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .row-chip {
+            position: relative;
+            z-index: 2;
+        }
+
+        .row-name {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ── Amount typography ──────────────────────── */
+        .amount-wrap {
+            text-align: right;
+        }
+
+        .amount-main {
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-end;
+            gap: 1px;
+        }
+
+        .amount-big {
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .amount-dec {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .amount-sub {
+            font-size: 9.5px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            margin-top: 3px;
+            opacity: 0.75;
+        }
+
+        /* ── Last 4 ─────────────────────────────────── */
+        .last4 {
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            letter-spacing: 0.1em;
+        }
+
+        /* ── Holder name ─────────────────────────────── */
+        .holder {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            opacity: 0.9;
+        }
+
+        /* ── Chip SVG inline ─────────────────────────── */
+        .chip {
+            width: 40px;
+            height: 30px;
+        }
+
+        /* ── Issuer badge fallback ───────────────────── */
+        .issuer-badge {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.05em;
+        }
+
+        /* ════════════════════════════════════════════════
+     CARD SKINS
+  ════════════════════════════════════════════════ */
+
+        /* Card 1 – HDFC Millennia (dark sci-fi purple, like your CRED screenshot) */
+        .skin-hdfc-millennia {
+            background: radial-gradient(ellipse at 72% 65%, #6b21a8 0%, #1e1b4b 45%, #0f0e1a 100%);
+        }
+
+        .skin-hdfc-millennia .amount-big,
+        .skin-hdfc-millennia .amount-dec {
+            color: #ffffff;
+        }
+
+        .skin-hdfc-millennia .amount-sub {
+            color: #a5b4fc;
+        }
+
+        .skin-hdfc-millennia .last4 {
+            color: #a5b4fc;
+        }
+
+        .skin-hdfc-millennia .holder {
+            color: #ffffff;
+        }
+
+        /* Card 2 – Amazon Pay ICICI (brushed black) */
+        .skin-amazon-pay {
+            background:
+                repeating-linear-gradient(92deg,
+                    rgba(255, 255, 255, 0.015) 0px,
+                    rgba(255, 255, 255, 0.015) 1px,
+                    transparent 1px, transparent 3px),
+                linear-gradient(160deg, #1a1a1a 0%, #2d2d2d 40%, #111111 100%);
+        }
+
+        .skin-amazon-pay .amount-big,
+        .skin-amazon-pay .amount-dec {
+            color: #ffffff;
+        }
+
+        .skin-amazon-pay .amount-sub {
+            color: #9CA3AF;
+        }
+
+        .skin-amazon-pay .last4 {
+            color: #9CA3AF;
+        }
+
+        .skin-amazon-pay .holder {
+            color: #ffffff;
+        }
+
+        /* Card 3 – HDFC Regalia (dark brown + gold chevron) */
+        .skin-hdfc-regalia {
+            background: linear-gradient(135deg, #2C1810 0%, #3D2314 60%, #2C1810 100%);
+        }
+
+        .skin-hdfc-regalia .amount-big,
+        .skin-hdfc-regalia .amount-dec {
+            color: #ffffff;
+        }
+
+        .skin-hdfc-regalia .amount-sub {
+            color: #D4B896;
+        }
+
+        .skin-hdfc-regalia .last4 {
+            color: #D4B896;
+        }
+
+        .skin-hdfc-regalia .holder {
+            color: #ffffff;
+        }
+
+        /* Gold chevron overlay on Regalia */
+        .regalia-chevron {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 42%;
+            z-index: 1;
+            clip-path: polygon(40% 0%, 100% 0%, 100% 100%, 40% 100%, 80% 50%);
+            background: linear-gradient(155deg, #F5D680 0%, #C9A84C 40%, #A07830 100%);
+        }
+
+        /* ── Paid status checkmark ───────────────────── */
+        .paid-icon {
+            color: #34D399;
+            margin-right: 2px;
+        }
+
+        .overdue-icon {
+            color: #F87171;
+            margin-right: 2px;
+        }
+
+        /* Amazon Pay logo custom */
+        .amazon-pay-logo {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .amazon-pay-logo .ap-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            font-family: 'Amazon Ember', Arial, sans-serif;
+        }
+
+        .amazon-arrow {
+            color: #FF9900;
+            font-size: 18px;
+            line-height: 0;
+            margin-top: 4px;
+        }
+
+        /* HDFC logo custom */
+        .hdfc-logo {
+            display: flex;
+            align-items: center;
+            background: #004C8F;
+            border: 1.5px solid #D32F2F;
+            border-radius: 3px;
+            padding: 2px 6px;
+            gap: 4px;
+        }
+
+        .hdfc-logo .hdfc-icon {
+            width: 12px;
+            height: 12px;
+            border: 2px solid #D32F2F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hdfc-logo .hdfc-text {
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Sampada · Card Layout Preview</h1>
+
+    <!-- ══════════════════════════════════
+     CARD 1: HDFC Millennia (RuPay)
+     Matches your CRED screenshot #1
+══════════════════════════════════ -->
+    <div class="card skin-hdfc-millennia">
+        <!-- Row 1: Issuer | Amount -->
+        <div class="row-top">
+            <!-- HDFC Logo -->
+            <div class="hdfc-logo">
+                <div class="hdfc-icon">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                        <path d="M0 0h8v8H0z" fill="none" />
+                        <path d="M1 1h2.5v2.5H1V1zm3.5 0H7v2.5H4.5V1zM1 4.5h2.5V7H1V4.5zm3.5 0H7V7H4.5V4.5z"
+                            fill="#D32F2F" />
+                    </svg>
+                </div>
+                <span class="hdfc-text">HDFC BANK</span>
+            </div>
+            <!-- Amount -->
+            <div class="amount-wrap">
+                <div class="amount-main">
+                    <span class="amount-big">₹57,267</span><span class="amount-dec">.00</span>
+                </div>
+                <div class="amount-sub">DUE ON 5 MAR</div>
+            </div>
+        </div>
+
+        <!-- Row 2: Network + last 4 -->
+        <div class="row-network">
+            <!-- RuPay SVG -->
+            <svg width="44" height="18" viewBox="0 0 44 18" fill="none">
+                <rect width="44" height="18" rx="2" fill="#1B4E9B" />
+                <text x="5" y="13" font-family="Arial" font-size="9" font-weight="bold" fill="white">RuPay</text>
+            </svg>
+            <span class="last4">&bull;&bull;&nbsp;2263</span>
+        </div>
+
+        <!-- Row 3: Chip -->
+        <div class="row-chip">
+            <svg class="chip" viewBox="0 0 40 30" fill="none">
+                <rect x="1" y="1" width="38" height="28" rx="4" fill="#C9A84C" stroke="#A07830" stroke-width="0.8" />
+                <line x1="1" y1="10" x2="39" y2="10" stroke="#A07830" stroke-width="0.6" />
+                <line x1="1" y1="20" x2="39" y2="20" stroke="#A07830" stroke-width="0.6" />
+                <line x1="13" y1="1" x2="13" y2="29" stroke="#A07830" stroke-width="0.6" />
+                <line x1="27" y1="1" x2="27" y2="29" stroke="#A07830" stroke-width="0.6" />
+                <rect x="13" y="10" width="14" height="10" rx="1" fill="#E8C96A" stroke="#A07830" stroke-width="0.4" />
+                <rect x="2" y="2" width="36" height="4" rx="2" fill="#E8C96A" opacity="0.3" />
+            </svg>
+        </div>
+
+        <!-- Row 4: Name -->
+        <div class="row-name">
+            <span class="holder">PRIYAK DEY</span>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════
+     CARD 2: Amazon Pay ICICI (Visa)
+     Matches your CRED screenshot #2
+══════════════════════════════════ -->
+    <div class="card skin-amazon-pay">
+        <div class="row-top">
+            <!-- Amazon Pay Logo -->
+            <div class="amazon-pay-logo">
+                <svg width="90" height="20" viewBox="0 0 90 20" fill="none">
+                    <!-- "amazon" text -->
+                    <text x="0" y="14" font-family="'Amazon Ember', Arial" font-size="13" font-weight="600"
+                        fill="white">amazon</text>
+                    <!-- arrow underline -->
+                    <path d="M2 17 Q22 21 40 17" stroke="#FF9900" stroke-width="1.8" fill="none"
+                        stroke-linecap="round" />
+                    <!-- "pay" -->
+                    <text x="44" y="14" font-family="'Amazon Ember', Arial" font-size="11" font-weight="400"
+                        fill="white">pay</text>
+                </svg>
+            </div>
+            <!-- Amount - FULLY PAID -->
+            <div class="amount-wrap">
+                <div class="amount-main">
+                    <span class="amount-big">₹1,128</span><span class="amount-dec">.42</span>
+                </div>
+                <div class="amount-sub"><span class="paid-icon">✓</span> FULLY PAID</div>
+            </div>
+        </div>
+
+        <div class="row-network">
+            <!-- Visa SVG -->
+            <svg width="40" height="14" viewBox="0 0 40 14" fill="none">
+                <text x="0" y="12" font-family="'Times New Roman', serif" font-size="14" font-weight="bold"
+                    font-style="italic" fill="#1A1F71" letter-spacing="-0.5">VISA</text>
+            </svg>
+            <span class="last4">&bull;&bull;&nbsp;8009</span>
+        </div>
+
+        <div class="row-chip">
+            <svg class="chip" viewBox="0 0 40 30" fill="none">
+                <rect x="1" y="1" width="38" height="28" rx="4" fill="#9CA3AF" stroke="#6B7280" stroke-width="0.8" />
+                <line x1="1" y1="10" x2="39" y2="10" stroke="#6B7280" stroke-width="0.6" />
+                <line x1="1" y1="20" x2="39" y2="20" stroke="#6B7280" stroke-width="0.6" />
+                <line x1="13" y1="1" x2="13" y2="29" stroke="#6B7280" stroke-width="0.6" />
+                <line x1="27" y1="1" x2="27" y2="29" stroke="#6B7280" stroke-width="0.6" />
+                <rect x="13" y="10" width="14" height="10" rx="1" fill="#D1D5DB" stroke="#6B7280" stroke-width="0.4" />
+                <rect x="2" y="2" width="36" height="4" rx="2" fill="#D1D5DB" opacity="0.3" />
+            </svg>
+        </div>
+
+        <div class="row-name">
+            <span class="holder">PRIYAK DEY</span>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════
+     CARD 3: HDFC Regalia (Mastercard)
+     Matches your CRED screenshot #3
+══════════════════════════════════ -->
+    <div class="card skin-hdfc-regalia">
+        <!-- Gold chevron overlay -->
+        <div class="regalia-chevron"></div>
+
+        <div class="row-top">
+            <!-- HDFC Logo in gold variant -->
+            <div class="hdfc-logo" style="background: transparent; border-color: #C9A84C;">
+                <div class="hdfc-icon" style="border-color: #C9A84C;">
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                        <path d="M1 1h2.5v2.5H1V1zm3.5 0H7v2.5H4.5V1zM1 4.5h2.5V7H1V4.5zm3.5 0H7V7H4.5V4.5z"
+                            fill="#C9A84C" />
+                    </svg>
+                </div>
+                <span class="hdfc-text" style="color: #C9A84C;">HDFC BANK</span>
+            </div>
+            <div class="amount-wrap">
+                <div class="amount-main">
+                    <span class="amount-big">₹70,827</span><span class="amount-dec">.00</span>
+                </div>
+                <div class="amount-sub">DUE ON 5 MAR</div>
+            </div>
+        </div>
+
+        <div class="row-network">
+            <!-- Mastercard SVG -->
+            <svg width="30" height="20" viewBox="0 0 30 20">
+                <circle cx="11" cy="10" r="10" fill="#EB001B" />
+                <circle cx="19" cy="10" r="10" fill="#F79E1B" />
+                <path d="M15 2.5a10 10 0 0 1 0 15A10 10 0 0 1 15 2.5z" fill="#FF5F00" />
+            </svg>
+            <span class="last4" style="color: #D4B896;">&bull;&bull;&nbsp;8856</span>
+        </div>
+
+        <div class="row-chip">
+            <svg class="chip" viewBox="0 0 40 30" fill="none">
+                <rect x="1" y="1" width="38" height="28" rx="4" fill="#C9A84C" stroke="#A07830" stroke-width="0.8" />
+                <line x1="1" y1="10" x2="39" y2="10" stroke="#A07830" stroke-width="0.6" />
+                <line x1="1" y1="20" x2="39" y2="20" stroke="#A07830" stroke-width="0.6" />
+                <line x1="13" y1="1" x2="13" y2="29" stroke="#A07830" stroke-width="0.6" />
+                <line x1="27" y1="1" x2="27" y2="29" stroke="#A07830" stroke-width="0.6" />
+                <rect x="13" y="10" width="14" height="10" rx="1" fill="#E8C96A" stroke="#A07830" stroke-width="0.4" />
+                <rect x="2" y="2" width="36" height="4" rx="2" fill="#E8C96A" opacity="0.3" />
+            </svg>
+        </div>
+
+        <div class="row-name">
+            <span class="holder">PRIYAK DEY</span>
+        </div>
+    </div>
+
+</body>
+
+</html>

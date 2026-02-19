@@ -72,7 +72,7 @@ export function CreditCards() {
           onClick={() => openModal("pay-bill")}
           className="px-6 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all"
         >
-          Pay Bill
+          Mark Bill As Paid
         </button>
         <GradientButton onClick={() => openModal("add-card")}>
           + Add Card
@@ -190,7 +190,7 @@ export function CreditCards() {
         <div className="p-6 border-b border-gray-200 dark:border-gray-800">
           <h3 className="text-lg font-semibold">Card Portfolio</h3>
         </div>
-        <div className="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="p-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
           {cards.map((card) => (
             <CreditCardVisual
               key={card.id}
@@ -280,7 +280,7 @@ export function CreditCards() {
       <FormModal
         open={activeModal === "pay-bill"}
         onClose={closeModal}
-        title="Pay Bill"
+        title="Mark Bill as Paid"
         subtitle="Record card bill payment status."
       >
         <PayBillForm

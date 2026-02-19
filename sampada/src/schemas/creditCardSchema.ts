@@ -49,7 +49,7 @@ export const addBillSchema = z.object({
 export type AddBillFormValues = z.infer<typeof addBillSchema>;
 
 /* ------------------------------------------------------------------ */
-/* Pay Bill                                                            */
+/* Mark Bill as Paid                                                            */
 /* ------------------------------------------------------------------ */
 
 const PAYMENT_TYPES = ["full", "min_due", "custom"] as const;
