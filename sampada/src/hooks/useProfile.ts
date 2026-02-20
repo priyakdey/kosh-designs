@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import backendApi from "@/services/backendApi";
+import httpClient from "@/services/httpClient";
 
 export interface ProfileDetailsResponse {
   name: string;
@@ -23,7 +23,7 @@ export function useProfile() {
   return useQuery({
     queryKey: PROFILE_QUERY_KEY,
     queryFn: async ({ signal }) => {
-      const res = await backendApi.get<ProfileDetailsResponse>("/profile", {
+      const res = await httpClient.get<ProfileDetailsResponse>("/profile", {
         signal,
         headers: {
           Accept: "application/json",
@@ -40,7 +40,7 @@ export function useSetupProfile() {
   return useMutation({
     mutationFn: async ({ displayName, timezone, currency }: ProfileSetupInput) => {
       try {
-        await backendApi.post(
+        await httpClient.post(
           "/profile",
           { displayName, timezone, currency },
           {

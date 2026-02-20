@@ -1,7 +1,7 @@
 import { API_BASE_URL, API_TIMEOUT_IN_MS } from "@/lib/constants";
 import axios from "axios";
 
-const backendApi = axios.create({
+const httpClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
@@ -11,4 +11,4 @@ const backendApi = axios.create({
   timeout: API_TIMEOUT_IN_MS,
 });
 
-export default backendApi;
+export default httpClient;
